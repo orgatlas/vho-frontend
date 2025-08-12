@@ -4,16 +4,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { extractPropertyDetails } from 'src/services/api';
 
 const loadingPhrases = [
-    "Polishing pixels...",
-    "Warming up the AI...",
-    "Brewing digital magic...",
-    "Counting virtual bricks...",
-    "Optimizing your viewing experience...",
-    "Almost there, just a few more bytes...",
-    "Summoning the perfect soundtrack...",
-    "Crafting cinematic moments...",
-    "Ensuring every detail shines...",
-    "Preparing for your grand reveal..."
+    "Looking up your listing...",
+    "Laying the foundation...",
+    "Measuring every square foot...",
+    "Finding the keys...",
+    "Polishing your virtual tour...",
+    "Finalizing property details...",
+    "Staging your perfect viewing...",
+    "Highlighting every feature...",
+    "Preparing your grand property reveal..."
 ];
 
 export const LoadingPage: React.FC = () => {

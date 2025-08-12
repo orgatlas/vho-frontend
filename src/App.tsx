@@ -12,23 +12,34 @@ import {VideoGeneratedPage} from './pages/VideoGeneratedPage';
 import {Layout} from './layouts/Layout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import UserPage from './pages/UserPage';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <Router>
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<LandingPage/>}/>
-                        <Route path="/property-details" element={<PropertyDetailsPage/>}/>
-                        <Route path="/checkout" element={<CheckoutPage/>}/>
-                        <Route path="/premium-features" element={<PremiumFeaturesPage/>}/>
-                        <Route path="/generating-video" element={<GeneratingVideoPage/>}/>
-                        <Route path="/loading" element={<LoadingPage/>}/>
-                        <Route path="/video-generated" element={<VideoGeneratedPage/>}/>
-                    </Routes>
-                </Layout>
+                <AuthProvider>
+                    <Layout>
+                        <Routes>
+                            <Route path="/" element={<LandingPage/>}/>
+                            <Route path="/property-details" element={<PropertyDetailsPage/>}/>
+                            <Route path="/checkout" element={<CheckoutPage/>}/>
+                            <Route path="/premium-features" element={<PremiumFeaturesPage/>}/>
+                            <Route path="/generating-video" element={<GeneratingVideoPage/>}/>
+                            <Route path="/loading" element={<LoadingPage/>}/>
+                            <Route path="/video-generated" element={<VideoGeneratedPage/>}/>
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                            <Route path="/user" element={<UserPage />} />
+                        </Routes>
+                    </Layout>
+                </AuthProvider>
             </Router>
             <ToastContainer />
         </ThemeProvider>

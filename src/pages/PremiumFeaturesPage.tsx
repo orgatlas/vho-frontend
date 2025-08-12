@@ -22,7 +22,6 @@ export const PremiumFeaturesPage: React.FC = () => {
     const [showAllMusicTracks, setShowAllMusicTracks] = useState(false);
     const [availableVoiceTracks, setAvailableVoiceTracks] = useState<Voice[]>([]);
     const [showAllVoiceTracks, setShowAllVoiceTracks] = useState(false);
-    const [logo, setLogo] = useState<File | null>(null);
     const [logoPlacement, setLogoPlacement] = useState('bottom_right');
     const [playing, setPlaying] = useState<string | null>(null);
     const [audioProgress, setAudioProgress] = useState(0);
@@ -147,75 +146,87 @@ export const PremiumFeaturesPage: React.FC = () => {
                                            tooltip="Choose a voiceover for your video."/>
                             <Divider sx={{mb: 2}}/>
                             <List>
-                                {(showAllVoiceTracks ? availableVoiceTracks : availableVoiceTracks.slice(0, 4)).map(track => {
-                                    const isSelected = selectedVoiceId === track.id;
+                                {(() => {
+                                    let tracksToDisplay = availableVoiceTracks;
+                                    if (!showAllVoiceTracks) {
+                                        const selectedTrack = availableVoiceTracks.find(track => track.id === selectedVoiceId);
+                                        if (selectedTrack && availableVoiceTracks.findIndex(track => track.id === selectedVoiceId) >= 4) {
+                                            const otherTracks = availableVoiceTracks.filter(track => track.id !== selectedVoiceId);
+                                            tracksToDisplay = [selectedTrack, ...otherTracks].slice(0, 4);
+                                        } else {
+                                            tracksToDisplay = availableVoiceTracks.slice(0, 4);
+                                        }
+                                    }
+                                    return tracksToDisplay.map(track => {
+                                        const isSelected = selectedVoiceId === track.id;
 
-                                    return (
-                                        <ListItem
-                                            key={track.src}
-                                            button
-                                            selected={isSelected}
-                                            onClick={async () => {
-                                                setVoice(track.src); // For audio player
-                                                setSelectedVoiceId(track.id); // For selection highlight
-                                                try {
-                                                    await setVoiceTrack(videoId, track.id); // API call with ID
-                                                    toast.success(`Voice set to ${track.name}`);
-                                                } catch (error) {
-                                                    console.error("Error setting voice track:", error);
-                                                    toast.error("Failed to set voice track.");
-                                                }
-                                            }}
-                                            sx={{
-                                                backgroundColor: isSelected ? 'primary.main' : 'transparent',
-                                                '&:hover': {
-                                                    backgroundColor: isSelected ? 'primary.dark' : 'action.hover',
-                                                },
-                                                color: isSelected ? 'common.white' : 'text.primary',
-                                            }}
-                                        >
-                                            <ListItemText
-                                                primary={track.name}
-                                                primaryTypographyProps={{
-                                                    color: isSelected ? 'inherit' : 'text.primary',
+                                        return (
+                                            <ListItem
+                                                key={track.src}
+                                                button
+                                                selected={isSelected}
+                                                onClick={async () => {
+                                                    setVoice(track.src); // For audio player
+                                                    setSelectedVoiceId(track.id); // For selection highlight
+                                                    try {
+                                                        await setVoiceTrack(videoId, track.id); // API call with ID
+                                                        toast.success(`Voice set to ${track.name}`);
+                                                    } catch (error) {
+                                                        console.error("Error setting voice track:", error);
+                                                        toast.error("Failed to set voice track.");
+                                                    }
                                                 }}
-                                            />
-                                            <ListItemSecondaryAction
                                                 sx={{
-                                                    position: 'absolute',
-                                                    right: 16,
-                                                    top: '50%',
-                                                    transform: 'translateY(-50%)',
+                                                    backgroundColor: isSelected ? 'primary.main' : 'transparent',
+                                                    '&:hover': {
+                                                        backgroundColor: isSelected ? 'primary.dark' : 'action.hover',
+                                                    },
+                                                    color: isSelected ? 'common.white' : 'text.primary',
                                                 }}
                                             >
-                                                <CircularProgress
-                                                    variant="determinate"
-                                                    value={
-                                                        playing === track.src && audioRef.current
-                                                            ? (audioRef.current.currentTime / audioRef.current.duration) * 100
-                                                            : 0
-                                                    }
-                                                    size={40}
-                                                    thickness={2}
-                                                    sx={{
-                                                        color: 'primary.main',
-                                                        position: 'absolute',
-                                                        top: 0,
-                                                        left: 0,
-                                                        zIndex: 1,
+                                                <ListItemText
+                                                    primary={track.name}
+                                                    primaryTypographyProps={{
+                                                        color: isSelected ? 'inherit' : 'text.primary',
                                                     }}
                                                 />
-                                                <IconButton
-                                                    onClick={() => togglePlay(track.src)}
-                                                    edge="end"
-                                                    sx={{position: 'relative', zIndex: 2}}
+                                                <ListItemSecondaryAction
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        right: 16,
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                    }}
                                                 >
-                                                    {playing === track.src ? <Pause/> : <PlayArrow/>}
-                                                </IconButton>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                    );
-                                })}
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={
+                                                            playing === track.src && audioRef.current
+                                                                ? (audioRef.current.currentTime / audioRef.current.duration) * 100
+                                                                : 0
+                                                        }
+                                                        size={40}
+                                                        thickness={2}
+                                                        sx={{
+                                                            color: 'primary.main',
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            left: 0,
+                                                            zIndex: 1,
+                                                        }}
+                                                    />
+                                                    <IconButton
+                                                        onClick={() => togglePlay(track.src)}
+                                                        edge="end"
+                                                        sx={{position: 'relative', zIndex: 2}}
+                                                    >
+                                                        {playing === track.src ? <Pause/> : <PlayArrow/>}
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
+                                            </ListItem>
+                                        );
+                                    });
+                                })()}
 
                                 {availableVoiceTracks.length > 5 && (
                                     <ListItem button onClick={() => setShowAllVoiceTracks(!showAllVoiceTracks)}>
@@ -233,75 +244,87 @@ export const PremiumFeaturesPage: React.FC = () => {
                                            tooltip="Select a background track for your video."/>
                             <Divider sx={{mb: 2}}/>
                             <List>
-                                {(showAllMusicTracks ? availableMusicTracks : availableMusicTracks.slice(0, 4)).map(track => {
-                                    const isSelected = selectedMusicId === track.id;
+                                {(() => {
+                                    let tracksToDisplay = availableMusicTracks;
+                                    if (!showAllMusicTracks) {
+                                        const selectedTrack = availableMusicTracks.find(track => track.id === selectedMusicId);
+                                        if (selectedTrack && availableMusicTracks.findIndex(track => track.id === selectedMusicId) >= 4) {
+                                            const otherTracks = availableMusicTracks.filter(track => track.id !== selectedMusicId);
+                                            tracksToDisplay = [selectedTrack, ...otherTracks].slice(0, 4);
+                                        } else {
+                                            tracksToDisplay = availableMusicTracks.slice(0, 4);
+                                        }
+                                    }
+                                    return tracksToDisplay.map(track => {
+                                        const isSelected = selectedMusicId === track.id;
 
-                                    return (
-                                        <ListItem
-                                            key={track.src}
-                                            button
-                                            selected={isSelected}
-                                            onClick={async () => {
-                                                setMusic(track.src); // For audio player
-                                                setSelectedMusicId(track.id); // For selection highlight
-                                                try {
-                                                    await setMusicTrack(videoId, track.id); // API call with ID
-                                                    toast.success(`Music set to ${track.title}`);
-                                                } catch (error) {
-                                                    console.error("Error setting music track:", error);
-                                                    toast.error("Failed to set music track.");
-                                                }
-                                            }}
-                                            sx={{
-                                                backgroundColor: isSelected ? 'primary.main' : 'transparent',
-                                                '&:hover': {
-                                                    backgroundColor: isSelected ? 'primary.dark' : 'action.hover',
-                                                },
-                                                color: isSelected ? 'common.white' : 'text.primary',
-                                            }}
-                                        >
-                                            <ListItemText
-                                                primary={track.title}
-                                                primaryTypographyProps={{
-                                                    color: isSelected ? 'inherit' : 'text.primary',
+                                        return (
+                                            <ListItem
+                                                key={track.src}
+                                                button
+                                                selected={isSelected}
+                                                onClick={async () => {
+                                                    setMusic(track.src); // For audio player
+                                                    setSelectedMusicId(track.id); // For selection highlight
+                                                    try {
+                                                        await setMusicTrack(videoId, track.id); // API call with ID
+                                                        toast.success(`Music set to ${track.title}`);
+                                                    } catch (error) {
+                                                        console.error("Error setting music track:", error);
+                                                        toast.error("Failed to set music track.");
+                                                    }
                                                 }}
-                                            />
-                                            <ListItemSecondaryAction
                                                 sx={{
-                                                    position: 'absolute',
-                                                    right: 16,
-                                                    top: '50%',
-                                                    transform: 'translateY(-50%)',
+                                                    backgroundColor: isSelected ? 'primary.main' : 'transparent',
+                                                    '&:hover': {
+                                                        backgroundColor: isSelected ? 'primary.dark' : 'action.hover',
+                                                    },
+                                                    color: isSelected ? 'common.white' : 'text.primary',
                                                 }}
                                             >
-                                                <CircularProgress
-                                                    variant="determinate"
-                                                    value={
-                                                        playing === track.src && audioRef.current
-                                                            ? (audioRef.current.currentTime / audioRef.current.duration) * 100
-                                                            : 0
-                                                    }
-                                                    size={40}
-                                                    thickness={2}
-                                                    sx={{
-                                                        color: 'primary.main',
-                                                        position: 'absolute',
-                                                        top: 0,
-                                                        left: 0,
-                                                        zIndex: 1,
+                                                <ListItemText
+                                                    primary={track.title}
+                                                    primaryTypographyProps={{
+                                                        color: isSelected ? 'inherit' : 'text.primary',
                                                     }}
                                                 />
-                                                <IconButton
-                                                    onClick={() => togglePlay(track.src)}
-                                                    edge="end"
-                                                    sx={{position: 'relative', zIndex: 2}}
+                                                <ListItemSecondaryAction
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        right: 16,
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                    }}
                                                 >
-                                                    {playing === track.src ? <Pause/> : <PlayArrow/>}
-                                                </IconButton>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                    );
-                                })}
+                                                    <CircularProgress
+                                                        variant="determinate"
+                                                        value={
+                                                            playing === track.src && audioRef.current
+                                                                ? (audioRef.current.currentTime / audioRef.current.duration) * 100
+                                                                : 0
+                                                        }
+                                                        size={40}
+                                                        thickness={2}
+                                                        sx={{
+                                                            color: 'primary.main',
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            left: 0,
+                                                            zIndex: 1,
+                                                        }}
+                                                    />
+                                                    <IconButton
+                                                        onClick={() => togglePlay(track.src)}
+                                                        edge="end"
+                                                        sx={{position: 'relative', zIndex: 2}}
+                                                    >
+                                                        {playing === track.src ? <Pause/> : <PlayArrow/>}
+                                                    </IconButton>
+                                                </ListItemSecondaryAction>
+                                            </ListItem>
+                                        );
+                                    });
+                                })()}
 
                                 {availableMusicTracks.length > 5 && (
                                     <ListItem button onClick={() => setShowAllMusicTracks(!showAllMusicTracks)}>

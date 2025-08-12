@@ -1,8 +1,14 @@
-
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Box, Button, CircularProgress, Container, Paper, TextField, Typography} from '@mui/material';
-import {createVideo, extractPropertyDetails} from 'src/services/api';
+import {
+    createVideo,
+    extractPropertyDetails,
+    getMusicTracks,
+    getPackages,
+    getVideoDetails,
+    getVoiceTracks
+} from 'src/services/api';
 import {PropertyDetails} from "src/types";
 import {useTheme} from "@mui/material/styles";
 
@@ -10,23 +16,50 @@ export const GeneratingVideoPage: React.FC = () => {
     const navigate = useNavigate();
     const theme = useTheme()
     const location = useLocation();
-    const {videoId, images, voice, music, logo, logoPlacement, agents} = location.state as { videoId: string, images: File[], voice: string, music: string, logo: File | null, logoPlacement: string, agents: Agent[] };
+    const {videoId, images, voice, music, logo, logoPlacement, agents} = location.state as {
+        videoId: string,
+        images: File[],
+        voice: string,
+        music: string,
+        logo: File | null,
+        logoPlacement: string,
+        agents: Agent[]
+    };
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(true);
 
     useEffect(() => {
-        if (videoId) {
-            const agentIds = agents.map(agent => agent.id);
-            createVideo(videoId, agentIds).then((data) => {
-                console.log(`Video created with ID: ${data.videoId}`);
-                setIsSubmitting(false);
-            }).catch(error => {
-                console.error('Error creating video:', error);
-                // Optionally, handle the error state in the UI
-            });
-        }
-    }, [videoId, agents]);
+        if (!videoId) return;
+
+        const fetchAndCreateVideo = async () => {
+            try {
+                const video = await getVideoDetails(videoId);
+
+                if (video.package) {
+                    if (video.locked) {
+                        navigate('/video-generated');
+                        return;
+                    }
+
+                    try {
+                        const data = await createVideo(videoId);
+                        console.log(`Video created with ID: ${data.videoId}`);
+                        setIsSubmitting(false);
+                    } catch (error) {
+                        console.error('Error creating video:', error);
+                    }
+
+                } else {
+                    navigate('/checkout', { state: { videoId: video.id } });
+                }
+            } catch (error) {
+                console.error('Error fetching video details:', error);
+            }
+        };
+
+        fetchAndCreateVideo();
+    }, [videoId]);
 
     const handleUrlSubmit = async () => {
         setLoading(true);
@@ -92,7 +125,7 @@ export const GeneratingVideoPage: React.FC = () => {
                                     minWidth: 120,
                                 }}
                             >
-                                {loading ? <CircularProgress size={24} color="inherit" /> : 'Get Started'}
+                                {loading ? <CircularProgress size={24} color="inherit"/> : 'Get Started'}
                             </Button>
                         </Box>
                     </Paper>
