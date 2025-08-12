@@ -19,8 +19,8 @@ import {
     Typography,
     CircularProgress,
 } from '@mui/material';
-import {getPackages, processPayment, getPropertyDetails} from 'src/services/api';
-import {PropertyDetails, Package} from "src/types";
+import {getPackages, processPayment, getVideoDetails} from 'src/services/api';
+import {Video, Package} from "src/types";
 import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
@@ -51,10 +51,11 @@ const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: 
 );
 
 
-const CheckoutForm: React.FC<{ plan: Package, propertyDetails: PropertyDetails, images: File[] }> = ({
+const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], agents: Agent[] }> = ({
                                                                                                          plan,
-                                                                                                         propertyDetails,
-                                                                                                         images
+                                                                                                         videoId,
+                                                                                                         images,
+                                                                                                         agents
                                                                                                      }) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -100,7 +101,7 @@ const CheckoutForm: React.FC<{ plan: Package, propertyDetails: PropertyDetails, 
 
         try {
             const response = await processPayment(
-                propertyDetails.id!,
+                videoId,
                 plan.id,
                 firstName,
                 lastName,
@@ -115,7 +116,7 @@ const CheckoutForm: React.FC<{ plan: Package, propertyDetails: PropertyDetails, 
             } else {
                 setPaymentSuccess(true);
                 const nextPath = plan.name.toLowerCase() === 'premium' ? '/premium-features' : '/generating-video';
-                navigate(nextPath, {state: {propertyDetails, images}});
+                navigate(nextPath, {state: {videoId, images, agents}});
             }
         } catch (error: any) {
             setPaymentError(error.message || 'An unexpected error occurred.');
@@ -150,7 +151,7 @@ const CheckoutForm: React.FC<{ plan: Package, propertyDetails: PropertyDetails, 
                 } else {
                     setPaymentSuccess(true);
                     const nextPath = plan.name.toLowerCase() === 'premium' ? '/premium-features' : '/generating-video';
-                    navigate(nextPath, {state: {propertyDetails, images}});
+                    navigate(nextPath, {state: {videoId, images, agents}});
                 }
             }
         } catch (error: any) {
@@ -323,26 +324,26 @@ export const CheckoutPage: React.FC = () => {
     const location = useLocation();
     const [packages, setPackages] = useState<Package[]>([]);
     const [selectedPlan, setSelectedPlan] = useState<Package | null>(null);
-    const {propertyDetails, images} = location.state as { propertyDetails: PropertyDetails, images: File[] };
+    const {videoId, images, agents} = location.state as { videoId: string, images: File[], agents: Agent[] };
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (propertyDetails.id) {
-            getPropertyDetails(propertyDetails.id).then(property => {
-                if (property.locked) {
+        if (videoId) {
+            getVideoDetails(videoId).then(video => {
+                if (video.locked) {
                     navigate('/video-generated');
-                } else if (property.package) {
-                    if (property.package.is_premium) {
-                        navigate('/premium-features', {state: {propertyDetails, images}});
+                } else if (video.package) {
+                    if (video.package.is_premium) {
+                        navigate('/premium-features', {state: {videoId, images}});
                     } else {
                         navigate('/');
                     }
                 } else {
-                    getPackages(propertyDetails.id).then(setPackages);
+                    getPackages(videoId).then(setPackages);
                 }
             });
         }
-    }, [propertyDetails.id, navigate, images]);
+    }, [videoId, navigate, images]);
 
     return (
         <Box sx={{width: '100vw', p: 5}}>
@@ -398,7 +399,7 @@ export const CheckoutPage: React.FC = () => {
                             <Typography variant="h5" gutterBottom>Order Summary</Typography>
                             <Divider sx={{my: 2}}/>
                             <Elements stripe={stripePromise}>
-                                <CheckoutForm plan={selectedPlan} propertyDetails={propertyDetails} images={images}/>
+                                <CheckoutForm plan={selectedPlan} videoId={videoId} images={images} agents={agents}/>
                             </Elements>
                         </Box>
                     </Grid>

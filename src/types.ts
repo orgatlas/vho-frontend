@@ -7,15 +7,11 @@ export interface PropertyDetails {
     carSpaces: string;
     propertyArea: string;
     price?: string;
-    askingPrice: string;
     description?: string;
-    agentName: string;
-    agentContact: string;
-    companyName: string;
-    companyLogo?: string;
+    company?: Company;
+    agents?: Agent[];
     images?: Image[];
-    package?: Package;
-    locked?: boolean;
+    video?: Video;
 }
 
 export interface Image {
@@ -51,11 +47,40 @@ export interface PaymentDetails {
 }
 
 export interface MusicTrack {
+    id: number;
     title: string;
     src: string;
 }
 
-export interface VoiceTrack {
+export interface Voice {
+    id: string;
     name: string;
     src: string;
+}
+export interface Video {
+    id: number;
+    file: string | null;
+    locked?: boolean;
+    package?: Package;
+    logo_position?: string;
+    background_music?: MusicTrack;
+    voice?: Voice;
+}
+
+export interface Company {
+    id: number;
+    name: string;
+    phone: string;
+    email: string;
+    website: string;
+    logo: string;
+}
+
+export interface Agent {
+    id: number;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
+    profile_picture: string;
 }

@@ -10,14 +10,15 @@ export const GeneratingVideoPage: React.FC = () => {
     const navigate = useNavigate();
     const theme = useTheme()
     const location = useLocation();
-    const {propertyDetails} = location.state as { propertyDetails: PropertyDetails };
+    const {videoId, images, voice, music, logo, logoPlacement, agents} = location.state as { videoId: string, images: File[], voice: string, music: string, logo: File | null, logoPlacement: string, agents: Agent[] };
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(true);
 
     useEffect(() => {
-        if (propertyDetails.id) {
-            createVideo(propertyDetails.id).then((data) => {
+        if (videoId) {
+            const agentIds = agents.map(agent => agent.id);
+            createVideo(videoId, agentIds).then((data) => {
                 console.log(`Video created with ID: ${data.videoId}`);
                 setIsSubmitting(false);
             }).catch(error => {
@@ -25,7 +26,7 @@ export const GeneratingVideoPage: React.FC = () => {
                 // Optionally, handle the error state in the UI
             });
         }
-    }, [propertyDetails]);
+    }, [videoId, agents]);
 
     const handleUrlSubmit = async () => {
         setLoading(true);

@@ -24,7 +24,7 @@ export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
                 </Toolbar>
             </AppBar>
             <Box component="main" sx={{flexGrow: 1, overflowY: 'auto'}}>
-                <Container maxWidth="lg" sx={{py: 4}}>
+                <Container maxWidth="xl" sx={{py: 4}}>
                     {children}
                 </Container>
             </Box>

@@ -4,9 +4,9 @@ import {
     Box, Button, Container, Grid, IconButton, Paper, Typography, Divider, CircularProgress,
     List, ListItem, ListItemText, ListItemSecondaryAction, Select, MenuItem, FormControl, InputLabel
 } from '@mui/material';
-import {useDropzone} from 'react-dropzone';
-import {getMusicTracks, getVoiceTracks, getPropertyDetails} from 'src/services/api';
-import {PropertyDetails} from "src/types";
+import {getMusicTracks, getVoiceTracks, getVideoDetails, setLogoPosition, setMusicTrack, setVoiceTrack} from 'src/services/api';
+import {MusicTrack, Voice, Video} from "src/types";
+import {toast} from 'react-toastify';
 import {
     RecordVoiceOver, Image, MusicNote, PlayArrow, Pause, Close, BrandingWatermark
 } from '@mui/icons-material';
@@ -15,54 +15,84 @@ import {SectionHeader} from "src/components/SectionHeader";
 export const PremiumFeaturesPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {propertyDetails, images} = location.state as { propertyDetails: PropertyDetails, images: File[] };
-    const [voice, setVoice] = useState('');
-    const [availableMusicTracks, setAvailableMusicTracks] = useState([]);
-    const [music, setMusic] = useState('');
+    const {videoId} = location.state as { videoId: string };
+    const [voice, setVoice] = useState(''); // For audio player src
+    const [availableMusicTracks, setAvailableMusicTracks] = useState<MusicTrack[]>([]);
+    const [music, setMusic] = useState(''); // For audio player src
     const [showAllMusicTracks, setShowAllMusicTracks] = useState(false);
-    const [availableVoiceTracks, setAvailableVoiceTracks] = useState([]);
+    const [availableVoiceTracks, setAvailableVoiceTracks] = useState<Voice[]>([]);
     const [showAllVoiceTracks, setShowAllVoiceTracks] = useState(false);
     const [logo, setLogo] = useState<File | null>(null);
-    const [logoPlacement, setLogoPlacement] = useState('top-right');
+    const [logoPlacement, setLogoPlacement] = useState('bottom_right');
     const [playing, setPlaying] = useState<string | null>(null);
     const [audioProgress, setAudioProgress] = useState(0);
     const audioRef = useRef<HTMLAudioElement>(null);
 
+    const [selectedMusicId, setSelectedMusicId] = useState<number | null>(null);
+    const [selectedVoiceId, setSelectedVoiceId] = useState<string | null>(null);
+
     useEffect(() => {
-        if (propertyDetails.id) {
-            getPropertyDetails(propertyDetails.id).then(property => {
-                if (property.locked) {
+        const fetchData = async () => {
+            try {
+                if (!videoId) return;
+
+                const [videoData, musicTracks, voiceTracks] = await Promise.all([
+                    getVideoDetails(videoId),
+                    getMusicTracks(),
+                    getVoiceTracks()
+                ]);
+
+
+                if (videoData.locked) {
                     navigate('/video-generated');
+                    return;
                 }
-            });
-        }
 
-        const fetchMusicTracks = async () => {
-            try {
-                const tracks = await getMusicTracks();
-                setAvailableMusicTracks(tracks);
-                if (tracks.length > 0) {
-                    setMusic(tracks[0].src);
+                // Set logo position
+                setLogoPlacement(videoData.logo_position || 'bottom_right')
+
+
+                // Set available tracks
+                setAvailableMusicTracks(musicTracks);
+                setAvailableVoiceTracks(voiceTracks);
+
+                // Set initial selected music
+                let initialMusicId: number | null = null;
+                if (videoData.background_music) {
+                    initialMusicId = videoData.background_music.id;
+                    console.log('setting music')
+                    console.log(initialMusicId);
                 }
+                setSelectedMusicId(initialMusicId);
+                if (initialMusicId) {
+                    const initialMusicTrack = musicTracks.find(t => t.id === initialMusicId);
+                    if (initialMusicTrack) {
+                        setMusic(initialMusicTrack.src); // For audio player
+                    }
+                }
+
+                // Set initial selected voice
+                let initialVoiceId: string | null = null;
+                if (videoData.voice) {
+                    initialVoiceId = videoData.voice.id;
+                    console.log('setting voice')
+                    console.log(initialVoiceId);
+                }
+                setSelectedVoiceId(initialVoiceId);
+                if (initialVoiceId) {
+                    const initialVoiceTrack = voiceTracks.find(t => t.id === initialVoiceId);
+                    if (initialVoiceTrack) {
+                        setVoice(initialVoiceTrack.src); // For audio player
+                    }
+                }
+
             } catch (error) {
-                console.error("Error fetching music tracks:", error);
+                console.error("Error fetching initial data:", error);
+                toast.error("Failed to load video details or tracks.");
             }
         };
 
-        const fetchVoiceTracks = async () => {
-            try {
-                const voices = await getVoiceTracks();
-                setAvailableVoiceTracks(voices);
-                if (voices.length > 0) {
-                    setVoice(voices[0].src);
-                }
-            } catch (error) {
-                console.error("Error fetching voice tracks:", error);
-            }
-        };
-
-        fetchMusicTracks();
-        fetchVoiceTracks();
+        fetchData();
 
         const audio = audioRef.current;
         if (!audio) return;
@@ -85,16 +115,10 @@ export const PremiumFeaturesPage: React.FC = () => {
             audio.removeEventListener('ended', resetProgress);
             audio.removeEventListener('pause', resetProgress);
         };
-    }, [propertyDetails.id, navigate]);
-
-    const onDrop = (acceptedFiles: File[]) => {
-        setLogo(acceptedFiles[0]);
-    };
-
-    const {getRootProps, getInputProps} = useDropzone({onDrop, multiple: false, accept: {'image/*': []}});
+    }, [videoId, navigate]); // Dependencies
 
     const handleCreateVideo = () => {
-        navigate('/generating-video', {state: {propertyDetails, images, voice, music, logo, logoPlacement}});
+        navigate('/generating-video', {state: {videoId}});
     };
 
     const togglePlay = (src: string) => {
@@ -124,14 +148,24 @@ export const PremiumFeaturesPage: React.FC = () => {
                             <Divider sx={{mb: 2}}/>
                             <List>
                                 {(showAllVoiceTracks ? availableVoiceTracks : availableVoiceTracks.slice(0, 4)).map(track => {
-                                    const isSelected = voice === track.src;
+                                    const isSelected = selectedVoiceId === track.id;
 
                                     return (
                                         <ListItem
                                             key={track.src}
                                             button
                                             selected={isSelected}
-                                            onClick={() => setVoice(track.src)}
+                                            onClick={async () => {
+                                                setVoice(track.src); // For audio player
+                                                setSelectedVoiceId(track.id); // For selection highlight
+                                                try {
+                                                    await setVoiceTrack(videoId, track.id); // API call with ID
+                                                    toast.success(`Voice set to ${track.name}`);
+                                                } catch (error) {
+                                                    console.error("Error setting voice track:", error);
+                                                    toast.error("Failed to set voice track.");
+                                                }
+                                            }}
                                             sx={{
                                                 backgroundColor: isSelected ? 'primary.main' : 'transparent',
                                                 '&:hover': {
@@ -174,9 +208,9 @@ export const PremiumFeaturesPage: React.FC = () => {
                                                 <IconButton
                                                     onClick={() => togglePlay(track.src)}
                                                     edge="end"
-                                                    sx={{ position: 'relative', zIndex: 2 }}
+                                                    sx={{position: 'relative', zIndex: 2}}
                                                 >
-                                                    {playing === track.src ? <Pause /> : <PlayArrow />}
+                                                    {playing === track.src ? <Pause/> : <PlayArrow/>}
                                                 </IconButton>
                                             </ListItemSecondaryAction>
                                         </ListItem>
@@ -187,7 +221,7 @@ export const PremiumFeaturesPage: React.FC = () => {
                                     <ListItem button onClick={() => setShowAllVoiceTracks(!showAllVoiceTracks)}>
                                         <ListItemText
                                             primary={showAllVoiceTracks ? 'Show Less' : 'Show More'}
-                                            sx={{ textAlign: 'center' }}
+                                            sx={{textAlign: 'center'}}
                                         />
                                     </ListItem>
                                 )}
@@ -200,14 +234,24 @@ export const PremiumFeaturesPage: React.FC = () => {
                             <Divider sx={{mb: 2}}/>
                             <List>
                                 {(showAllMusicTracks ? availableMusicTracks : availableMusicTracks.slice(0, 4)).map(track => {
-                                    const isSelected = music === track.src;
+                                    const isSelected = selectedMusicId === track.id;
 
                                     return (
                                         <ListItem
                                             key={track.src}
                                             button
                                             selected={isSelected}
-                                            onClick={() => setMusic(track.src)}
+                                            onClick={async () => {
+                                                setMusic(track.src); // For audio player
+                                                setSelectedMusicId(track.id); // For selection highlight
+                                                try {
+                                                    await setMusicTrack(videoId, track.id); // API call with ID
+                                                    toast.success(`Music set to ${track.title}`);
+                                                } catch (error) {
+                                                    console.error("Error setting music track:", error);
+                                                    toast.error("Failed to set music track.");
+                                                }
+                                            }}
                                             sx={{
                                                 backgroundColor: isSelected ? 'primary.main' : 'transparent',
                                                 '&:hover': {
@@ -270,53 +314,34 @@ export const PremiumFeaturesPage: React.FC = () => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                        <Box sx={{mb: 3}}>
-                            <SectionHeader icon={<Image color="primary"/>} title="Company Logo"
-                                           tooltip="Upload your company logo to be included in the video."/>
+                        <Box>
+                            <SectionHeader icon={<BrandingWatermark color="primary"/>} title="Company Logo Placement"
+                                           tooltip="Choose where your logo will appear in the video."/>
                             <Divider sx={{mb: 2}}/>
-                            <Box {...getRootProps()} sx={{
-                                p: 4,
-                                border: '2px dashed',
-                                borderColor: 'primary.main',
-                                borderRadius: 2,
-                                textAlign: 'center',
-                                background: (theme) => theme.palette.action.hover,
-                                cursor: 'pointer'
-                            }}>
-                                <input {...getInputProps()} />
-                                {logo ? (
-                                    <img src={URL.createObjectURL(logo)} alt="logo preview"
-                                         style={{maxHeight: 100, maxWidth: '100%'}}/>
-                                ) : (
-                                    <Box>
-                                        <Image sx={{fontSize: 48, color: 'primary.main'}}/>
-                                        <Typography>Drag & Drop Your Logo Here, or Click to Select</Typography>
-                                    </Box>
-                                )}
-                            </Box>
-                            {logo && (
-                                <Button startIcon={<Close/>} onClick={() => setLogo(null)} sx={{mt: 1}}>Remove
-                                    Logo</Button>
-                            )}
+                            <FormControl fullWidth>
+                                <Select
+                                    value={logoPlacement}
+                                    onChange={async (e) => {
+                                        const newPlacement = e.target.value as string;
+                                        setLogoPlacement(newPlacement);
+                                        if (videoId) {
+                                            try {
+                                                await setLogoPosition(videoId, newPlacement);
+                                                toast.success('Logo position updated successfully!');
+                                            } catch (error) {
+                                                console.error('Error setting logo position:', error);
+                                                toast.error('Failed to update logo position.');
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value={'top_left'}>Top Left</MenuItem>
+                                    <MenuItem value={'top_right'}>Top Right</MenuItem>
+                                    <MenuItem value={'bottom_left'}>Bottom Left</MenuItem>
+                                    <MenuItem value={'bottom_right'}>Bottom Right</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Box>
-                        {logo && (
-                            <Box>
-                                <SectionHeader icon={<BrandingWatermark color="primary"/>} title="Logo Placement"
-                                               tooltip="Choose where your logo will appear in the video."/>
-                                <Divider sx={{mb: 2}}/>
-                                <FormControl fullWidth>
-                                    <Select
-                                        value={logoPlacement}
-                                        onChange={(e) => setLogoPlacement(e.target.value)}
-                                    >
-                                        <MenuItem value={'top-left'}>Top Left</MenuItem>
-                                        <MenuItem value={'top-right'}>Top Right</MenuItem>
-                                        <MenuItem value={'bottom-left'}>Bottom Left</MenuItem>
-                                        <MenuItem value={'bottom-right'}>Bottom Right</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        )}
                     </Grid>
                 </Grid>
                 <audio ref={audioRef}/>
