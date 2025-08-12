@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from 'src/contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import {Email, Password, Person} from "@mui/icons-material";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -36,29 +37,31 @@ const LoginPage = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              placeholder="Email"
+              margin="normal"
+              required
+              id="email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
           />
+
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+              placeholder="Password"
+              margin="normal"
+              required
+              name="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
           />
+
           <Button
             type="submit"
             fullWidth

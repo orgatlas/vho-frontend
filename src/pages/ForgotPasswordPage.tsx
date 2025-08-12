@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { resetPassword } from '../services/api';
+import { resetPasswordRequest } from 'src/services/api';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const ForgotPasswordPage = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      await resetPassword(email);
+      await resetPasswordRequest(email);
       toast.success('Password reset link sent to your email!');
     } catch (error: any) {
       toast.error(error.message || 'Failed to send password reset link.');
@@ -40,7 +40,7 @@ const ForgotPasswordPage = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            placeholder="Email Address"
             name="email"
             autoComplete="email"
             autoFocus

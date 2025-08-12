@@ -14,8 +14,6 @@ import {
     LocationOn,
     PriceChange,
     Person,
-    Phone,
-    Business,
     Close,
     Image,
     SquareFoot,
@@ -25,10 +23,8 @@ import {
 import {SectionHeader} from "src/components/SectionHeader";
 import {getImageList, removeImage, uploadImage, getVideoDetails} from "src/services/api";
 import {toast} from "react-toastify";
-
-
-import {AgentsEditor} from "../components/AgentsEditor";
-import {CompanyEditor} from "../components/CompanyEditor";
+import {AgentsEditor} from "src/components/AgentsEditor";
+import {CompanyEditor} from "src/components/CompanyEditor";
 
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip: string }> = ({icon, label, tooltip}) => (
     <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>

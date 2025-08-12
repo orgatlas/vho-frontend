@@ -24,7 +24,7 @@ export const LoadingPage: React.FC = () => {
     useEffect(() => {
         const phraseInterval = setInterval(() => {
             setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % loadingPhrases.length);
-        }, 1500);
+        }, 3000);
 
         const fetchData = async () => {
             try {

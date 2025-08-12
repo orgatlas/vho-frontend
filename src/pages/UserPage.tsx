@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
-import { useAuth } from '../contexts/Auth';
+import { useAuth } from 'src/contexts/AuthContext';
 
 const UserPage = () => {
   const { user, loading } = useAuth();

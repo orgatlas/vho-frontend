@@ -2,7 +2,7 @@
 import React from 'react';
 import {AppBar, Box, Button, Container, Toolbar, Typography, Menu, MenuItem} from '@mui/material';
 import {Link, useLocation} from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from 'src/contexts/AuthContext';
 
 export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
     const location = useLocation();
@@ -46,9 +46,10 @@ export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
                                     color="inherit"
                                     onClick={handleMenu}
                                 >
-                                    {user?.name || 'User'}
+                                    {user?.first_name || 'User'}
                                 </Button>
                                 <Menu
+                                    sx={{color:'black'}}
                                     id="menu-appbar"
                                     anchorEl={anchorEl}
                                     anchorOrigin={{
@@ -69,8 +70,8 @@ export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
                             </>
                         ) : (
                             <>
-                                <Button color="inherit" component={Link} to="/login">Sign In</Button>
-                                <Button color="inherit" component={Link} to="/register">Register</Button>
+                                <Button variant={'outlined'} component={Link} to="/login">Sign In</Button>
+                                <Button variant={'outlined'} component={Link} to="/register">Register</Button>
                             </>
                         )
                     }
