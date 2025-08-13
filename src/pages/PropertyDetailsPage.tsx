@@ -1,7 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {
-    Box, Button, Container, Grid, IconButton, Paper, TextField, Typography, Divider, CircularProgress, Modal,
+    Box,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    Paper,
+    TextField,
+    Typography,
+    Divider,
+    CircularProgress,
+    Modal,
 
 } from '@mui/material';
 import {useDropzone} from 'react-dropzone';
@@ -21,10 +31,12 @@ import {
     ArrowBackIos
 } from '@mui/icons-material';
 import {SectionHeader} from "src/components/SectionHeader";
-import {getImageList, removeImage, uploadImage, getVideoDetails} from "src/services/api";
+import {getImageList, removeImage, uploadImage, getVideoDetails, updatePropertyDetails} from "src/services/api";
 import {toast} from "react-toastify";
 import {AgentsEditor} from "src/components/AgentsEditor";
 import {CompanyEditor} from "src/components/CompanyEditor";
+import {alpha, useTheme} from "@mui/material/styles";
+import {theme} from "@/components/theme/theme";
 
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip: string }> = ({icon, label, tooltip}) => (
     <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
@@ -50,6 +62,8 @@ const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip: s
 export const PropertyDetailsPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const theme = useTheme();
+    const [isDescriptionFocussed, setIsDescriptionFocussed] = useState<boolean>(false);
     const [propertyDetails, setPropertyDetails] = useState<PropertyDetails>(() => {
         const initialDetails = location.state?.propertyDetails || {};
         return {
@@ -57,8 +71,9 @@ export const PropertyDetailsPage: React.FC = () => {
             address: initialDetails.address || '',
             bedrooms: initialDetails.beds || '',
             bathrooms: initialDetails.bathrooms || '',
-            carSpaces: initialDetails.car_spaces || '',
-            propertyArea: initialDetails.area || '',
+            car_spaces: initialDetails.car_spaces || '',
+            property_area: initialDetails.area || '',
+            description: initialDetails.description || '',
             price: initialDetails.price || '',
             company: initialDetails.company,
             video: initialDetails.video,
@@ -140,7 +155,7 @@ export const PropertyDetailsPage: React.FC = () => {
 
     const {getRootProps, getInputProps} = useDropzone({onDrop});
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
         setPropertyDetails({...propertyDetails, [e.target.name]: e.target.value});
     };
 
@@ -162,9 +177,19 @@ export const PropertyDetailsPage: React.FC = () => {
         }
     }
 
-    const handleCreateVideo = () => {
+    const handleCreateVideo = async () => {
         setLoading(true);
-        navigate('/checkout', {state: {videoId: propertyDetails.video?.id, images, agents: propertyDetails.agents}});
+        const response = await updatePropertyDetails(
+            propertyDetails.id!,
+            propertyDetails.address || '',
+            propertyDetails.bedrooms || '',
+            propertyDetails.bathrooms || '',
+            propertyDetails.car_spaces || '',
+            propertyDetails.property_area || '',
+            propertyDetails.description || '',
+            propertyDetails.price || ''
+        );
+        navigate('/checkout', {state: {videoId: propertyDetails.video?.id}});
         setLoading(false);
     };
 
@@ -218,7 +243,7 @@ export const PropertyDetailsPage: React.FC = () => {
                                 <Grid item xs={4}>
                                     <FieldLabel icon={<TimeToLeave/>} label="Cars" tooltip="Number of car spaces."/>
                                     <TextField fullWidth placeholder="E.g. 1" name="carSpaces"
-                                               value={propertyDetails.carSpaces} onChange={handleInputChange}/>
+                                               value={propertyDetails.car_spaces} onChange={handleInputChange}/>
                                 </Grid>
                             </Grid>
                             <Box sx={{mt: 2}}>
@@ -226,6 +251,36 @@ export const PropertyDetailsPage: React.FC = () => {
                                             tooltip="Total property area in square meters."/>
                                 <TextField fullWidth placeholder="E.g. 500 sqm" name="propertyArea"
                                            value={propertyDetails.propertyArea} onChange={handleInputChange}/>
+                            </Box>
+                            <Box sx={{mt: 2}}>
+                                <FieldLabel icon={<Home/>} label="Description"
+                                            tooltip="Listing description of the properties features."/>
+                                <textarea
+                                    placeholder=""
+                                    name="propertyDescription"
+                                    value={propertyDetails.description}
+                                    onChange={(event) => handleInputChange(event)}
+                                    style={{
+                                        background: alpha(theme.palette.secondary.main, 0.1),
+                                        borderRadius: 10,
+                                        border: isDescriptionFocussed ? `2px solid ${theme.palette.primary.main}` : 'none',
+                                        boxShadow: 'none',
+                                        minWidth: '100%',
+                                        maxWidth: '100%',
+                                        outline: 'none',
+                                        resize: 'none',
+                                        minHeight: '200px',
+                                        maxHeight: '100%',
+                                        padding: isDescriptionFocussed ? '8px' : '10px',
+                                        fontWeight: 400,
+                                        overflowY: 'auto',
+                                        fontSize: 15,
+                                        fontFamily: ['"inter"', 'sans-serif'].join(','),
+                                        color: '#373e40',
+                                    }}
+                                    onFocus={() => setIsDescriptionFocussed(true)}
+                                    onBlur={() => setIsDescriptionFocussed(false)}
+                                />
                             </Box>
                         </Box>
                         <Box sx={{mb: 3}}>
@@ -246,13 +301,15 @@ export const PropertyDetailsPage: React.FC = () => {
                             <SectionHeader icon={<Person color="primary"/>} title="Agents"
                                            tooltip="Manage the agents for this property."/>
                             <Divider sx={{mb: 2}}/>
-                            <AgentsEditor propertyId={propertyDetails.id || propertyDetails.video?.id} agents={propertyDetails.agents}
+                            <AgentsEditor propertyId={propertyDetails.id || propertyDetails.video?.id}
+                                          agents={propertyDetails.agents}
                                           onAgentsChange={handleAgentsChange}/>
                         </Box>
 
                         <Box sx={{mb: 3}}>
-                            <CompanyEditor propertyId={propertyDetails.id || propertyDetails.video?.id} company={propertyDetails.company}
-                                          onCompanyChange={handleCompanyChange}/>
+                            <CompanyEditor propertyId={propertyDetails.id || propertyDetails.video?.id}
+                                           company={propertyDetails.company}
+                                           onCompanyChange={handleCompanyChange}/>
                         </Box>
 
                     </Grid>

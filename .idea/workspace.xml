@@ -6,15 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/contexts/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CheckoutPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ForgotPasswordPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ForgotPasswordPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoadingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoadingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/LoginPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PropertyDetailsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/RegisterPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/UserPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/UserPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
@@ -127,6 +119,8 @@
       <workItem from="1754930095159" duration="12036000" />
       <workItem from="1754992311302" duration="5892000" />
       <workItem from="1755006129720" duration="8537000" />
+      <workItem from="1755055135328" duration="4206000" />
+      <workItem from="1755096604199" duration="671000" />
     </task>
     <servers />
   </component>

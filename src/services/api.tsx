@@ -150,8 +150,8 @@ export const extractPropertyDetails = async (url: string): Promise<PropertyDetai
         address: property.address,
         bedrooms: property.beds,
         bathrooms: property.bathrooms,
-        carSpaces: property.car_spaces,
-        propertyArea: property.area,
+        car_spaces: property.car_spaces,
+        property_area: property.area,
         price: property.price,
         description: property.description,
         company: property.company,
@@ -164,6 +164,49 @@ export const extractPropertyDetails = async (url: string): Promise<PropertyDetai
         }))
     };
 };
+
+export const getPropertyDetails = async (url: string): Promise<PropertyDetails> => {
+    const response = await api.post('generation/property/details', {url});
+
+    const property = response.data.property;
+    const images = response.data.images;
+    const video = response.data.video;
+
+    return {
+        id: property.id,
+        title: property.title,
+        address: property.address,
+        bedrooms: property.beds,
+        bathrooms: property.bathrooms,
+        car_spaces: property.car_spaces,
+        property_area: property.area,
+        price: property.price,
+        description: property.description,
+        company: property.company,
+        agents: property.agents,
+        video: video,
+        images: images.map((img: any) => ({
+            id: img.id,
+            file: img.file,
+            description: img.description,
+        }))
+    };
+};
+
+export const updatePropertyDetails = async (property: string, address: string, beds: string, bathrooms: string, car_spaces: string, property_area: string, description: string, price: string): Promise<PropertyDetails> => {
+    const response = await api.post('generation/property/update', {
+        property:property,
+        address:address,
+        beds:beds,
+        bathrooms:bathrooms,
+        car_spaces:car_spaces,
+        property_area:property_area,
+        description:description,
+        price:price
+    });
+    return response.data;
+};
+
 
 export const processPayment = async (videoId: string, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
     client_secret: string,

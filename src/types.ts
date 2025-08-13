@@ -15,8 +15,8 @@ export interface PropertyDetails {
     address: string;
     bedrooms: string;
     bathrooms: string;
-    carSpaces: string;
-    propertyArea: string;
+    car_spaces: string;
+    property_area: string;
     price?: string;
     description?: string;
     company?: Company;
