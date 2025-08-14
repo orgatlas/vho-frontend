@@ -100,7 +100,7 @@ export const uploadImage = async (videoId: string, file: File): Promise<{
     formData.append('video', videoId);
     formData.append('file', file);
 
-    const response = await api.post('generation/image/upload', formData, {
+    const response = await api.post('image/upload', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -109,12 +109,12 @@ export const uploadImage = async (videoId: string, file: File): Promise<{
 };
 
 export const removeImage = async (videoId: string, imageId: string): Promise<{ message: string }> => {
-    const response = await api.post('generation/image/remove', {video: videoId, image: imageId});
+    const response = await api.post('image/remove', {video: videoId, image: imageId});
     return response.data;
 };
 
 export const getImageList = async (videoId: string): Promise<Image[]> => {
-    const response = await api.post('generation/image/list', {video: videoId});
+    const response = await api.post('image/list', {video: videoId});
     const images = response.data.images.map((image: any) => {
         const baseUrl = process.env.REACT_APP_API_BASE_URL?.replace('/api', '');
         return {
@@ -128,7 +128,7 @@ export const getImageList = async (videoId: string): Promise<Image[]> => {
 };
 
 export const getVideoDetails = async (videoId: string): Promise<Video> => {
-    const response = await api.post('generation/video/details', {video: videoId});
+    const response = await api.post('video/details', {video: videoId});
     return response.data.video;
 }
 
@@ -138,7 +138,7 @@ export const getPackages = async (videoId: string): Promise<Package[]> => {
 }
 
 export const extractPropertyDetails = async (url: string): Promise<PropertyDetails> => {
-    const response = await api.post('generation/listing/details', {url});
+    const response = await api.post('property/listing/details', {url});
 
     const property = response.data.property;
     const images = response.data.images;
@@ -166,7 +166,7 @@ export const extractPropertyDetails = async (url: string): Promise<PropertyDetai
 };
 
 export const getPropertyDetails = async (url: string): Promise<PropertyDetails> => {
-    const response = await api.post('generation/property/details', {url});
+    const response = await api.post('property/retrieve', {url});
 
     const property = response.data.property;
     const images = response.data.images;
@@ -194,7 +194,7 @@ export const getPropertyDetails = async (url: string): Promise<PropertyDetails> 
 };
 
 export const updatePropertyDetails = async (property: string, address: string, beds: string, bathrooms: string, car_spaces: string, property_area: string, description: string, price: string): Promise<PropertyDetails> => {
-    const response = await api.post('generation/property/update', {
+    const response = await api.post('property/update', {
         property:property,
         address:address,
         beds:beds,
@@ -224,7 +224,7 @@ export const processPayment = async (videoId: string, packageId: number, firstNa
 }
 
 export const getMusicTracks = async (): Promise<MusicTrack[]> => {
-    const response = await api.get('generation/music/list');
+    const response = await api.get('video/music/list');
     return response.data.background_music.map((track: any) => ({
         id: track.id,
         title: track.name,
@@ -233,7 +233,7 @@ export const getMusicTracks = async (): Promise<MusicTrack[]> => {
 }
 
 export const getVoiceTracks = async (): Promise<Voice[]> => {
-    const response = await api.get('generation/voice/list');
+    const response = await api.get('voice/list');
     return response.data.voices.map((voice: any) => ({
         id: voice.id,
         name: voice.name,
@@ -242,7 +242,7 @@ export const getVoiceTracks = async (): Promise<Voice[]> => {
 }
 
 export const createVideo = async (videoId: string, agentIds: number[]): Promise<{ videoId: string }> => {
-    const response = await api.post('generation/create', {video: videoId, agents: agentIds});
+    const response = await api.post('video/create', {video: videoId, agents: agentIds});
     return response.data;
 }
 
@@ -257,7 +257,7 @@ export const createAgent = async (propertyId: string, agentData: Agent, profileP
         formData.append('profile_picture', profilePicture);
     }
 
-    const response = await api.post('generation/agent/create', formData, {
+    const response = await api.post('agent/create', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -266,7 +266,7 @@ export const createAgent = async (propertyId: string, agentData: Agent, profileP
 };
 
 export const deleteAgent = async (propertyId: string, agentId: number): Promise<{ message: string }> => {
-    const response = await api.post('generation/agent/delete', {property: propertyId, agent: agentId});
+    const response = await api.post('agent/delete', {property: propertyId, agent: agentId});
     return response.data;
 };
 
@@ -282,7 +282,7 @@ export const updateAgent = async (propertyId: string, agentId: number, agentData
         formData.append('profile_picture', profilePicture);
     }
 
-    const response = await api.post('generation/agent/update', formData, {
+    const response = await api.post('agent/update', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -301,7 +301,7 @@ export const updateCompany = async (companyId: string, companyData: Company, log
         formData.append('logo', logo);
     }
 
-    const response = await api.post('generation/company/update', formData, {
+    const response = await api.post('company/update', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -310,16 +310,16 @@ export const updateCompany = async (companyId: string, companyData: Company, log
 };
 
 export const setLogoPosition = async (videoId: string, logoPosition: string): Promise<{ message: string }> => {
-    const response = await api.post('generation/logo/position/set', {video: videoId, logo_position: logoPosition});
+    const response = await api.post('video/logo/position/set', {video: videoId, logo_position: logoPosition});
     return response.data;
 };
 
 export const setMusicTrack = async (videoId: string, track: string): Promise<{ message: string }> => {
-    const response = await api.post('generation/music/set', {video: videoId, music: track});
+    const response = await api.post('video/music/set', {video: videoId, music: track});
     return response.data;
 };
 
 export const setVoiceTrack = async (videoId: string, voiceId: string): Promise<{ message: string }> => {
-    const response = await api.post('generation/voice/set', {video: videoId, voice: voiceId});
+    const response = await api.post('video/voice/set', {video: videoId, voice: voiceId});
     return response.data;
 };

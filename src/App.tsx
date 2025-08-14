@@ -17,6 +17,11 @@ import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import UserPage from './pages/UserPage';
 import { AuthProvider } from './contexts/AuthContext';
+import PropertyPage from './pages/PropertyPage';
+import UserListingsPage from './pages/UserListingsPage';
+import PropertyManagementPage from './pages/PropertyManagementPage';
+import VideoViewPage from './pages/VideoViewPage';
+import VideoEditorPage from './pages/VideoEditorPage';
 
 function App() {
     return (
@@ -37,6 +42,11 @@ function App() {
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                             <Route path="/user" element={<UserPage />} />
+                            <Route path="/property/:propertyId" element={<PropertyPage />} />
+                            <Route path="/listings" element={<UserListingsPage />} />
+                            <Route path="/listings/:propertyId/manage" element={<PropertyManagementPage />} />
+                            <Route path="/video/:videoId/view" element={<VideoViewPage />} />
+                            <Route path="/video/:videoId/edit" element={<VideoEditorPage />} />
                         </Routes>
                     </Layout>
                 </AuthProvider>
