@@ -18,6 +18,12 @@ import {toast} from 'react-toastify';
 import {Business, AddAPhoto, Phone, Email, Language, Edit} from '@mui/icons-material';
 import {SectionHeader} from "src/theme/components/SectionHeader";
 
+const getFullImageUrl = (path?: string) => {
+    if (!path) return '';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL?.replace('/api', '');
+    return `${baseUrl}${path}`;
+};
+
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({icon, label}) => (
     <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
         {React.cloneElement(icon, {
@@ -69,7 +75,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                 URL.revokeObjectURL(url);
             };
         } else if (editingCompany?.logo) {
-            setPreviewUrl(editingCompany.logo);
+            setPreviewUrl(getFullImageUrl(editingCompany.logo));
         } else {
             setPreviewUrl(null);
         }
@@ -97,7 +103,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
         setEditingCompany({...editingCompany, ...patch});
     };
 
-    const imageUrl = previewUrl || editingCompany?.logo || undefined;
+    const imageUrl = previewUrl || undefined;
 
     return (
         <Box sx={{my: 2}}>
@@ -180,7 +186,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                 ) : (
                     company ? (
                             <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
-                                <Avatar src={company.logo} sx={{width: 60, height: 60}} variant="rounded"/>
+                                <Avatar src={getFullImageUrl(company.logo)} sx={{width: 60, height: 60}} variant="rounded"/>
                                 <Box>
                                     <Typography variant="h6">{company.name}</Typography>
                                     <Typography variant="body2" color="text.primary">{company.email}

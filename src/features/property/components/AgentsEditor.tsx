@@ -19,6 +19,12 @@ import { createAgent, updateAgent, deleteAgent } from 'src/services/api';
 import { toast } from 'react-toastify';
 import { Delete, Edit, Person, Email, Phone, AddAPhoto } from '@mui/icons-material';
 
+const getFullImageUrl = (path?: string) => {
+    if (!path) return '';
+    const baseUrl = process.env.REACT_APP_API_BASE_URL?.replace('/api', '');
+    return `${baseUrl}${path}`;
+};
+
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({ icon, label }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         {React.cloneElement(icon, {
@@ -35,12 +41,12 @@ const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: 
 );
 
 interface AgentsEditorProps {
-    propertyId: string;
+    videoId: string;
     agents: Agent[];
     onAgentsChange: (agents: Agent[]) => void;
 }
 
-export const AgentsEditor: React.FC<AgentsEditorProps> = ({ propertyId, agents, onAgentsChange }) => {
+export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onAgentsChange }) => {
     // Form state
     const [newAgent, setNewAgent] = useState<Partial<Agent>>({});
     const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
@@ -88,12 +94,12 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ propertyId, agents, 
 
     // Add agent
     const handleAddAgent = async () => {
-        if (!propertyId) {
+        if (!videoId) {
             toast.error('Cannot add agent until property has been created');
             return;
         }
         try {
-            const createdAgent = await createAgent(propertyId, newAgent as Agent, profilePicture || undefined);
+            const createdAgent = await createAgent(videoId, newAgent as Agent, profilePicture || undefined);
             onAgentsChange([...agents, createdAgent]);
             setNewAgent({});
             setProfilePicture(null);
@@ -107,10 +113,10 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ propertyId, agents, 
 
     // Update agent
     const handleUpdateAgent = async () => {
-        if (!propertyId || !editingAgent) return;
+        if (!videoId || !editingAgent) return;
         try {
             const updatedAgent = await updateAgent(
-                propertyId,
+                videoId,
                 editingAgent.id,
                 editingAgent,
                 profilePicture || undefined
@@ -127,9 +133,9 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ propertyId, agents, 
 
     // Delete agent
     const handleDeleteAgent = async (agentId: number) => {
-        if (!propertyId) return;
+        if (!videoId) return;
         try {
-            await deleteAgent(propertyId, agentId);
+            await deleteAgent(videoId, agentId);
             onAgentsChange(agents.filter((a) => a.id !== agentId));
             toast.success('Agent deleted successfully');
         } catch (error) {
@@ -152,7 +158,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ propertyId, agents, 
         title: string
     ) => {
         // Prefer the uploaded preview URL, else fallback to agent.profile_picture
-        const imageUrl = previewUrl || (agent && (agent as any).profile_picture) || undefined;
+        const imageUrl = previewUrl || getFullImageUrl((agent as any).profile_picture);
 
         return (
             <Box sx={{ my: 2, p: 3, border: '1px solid', borderColor: 'grey.300', borderRadius: 2 }}>
@@ -277,7 +283,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ propertyId, agents, 
                             </Box>
                         }>
                             <ListItemAvatar>
-                                <Avatar src={(agent as any).profile_picture} />
+                                <Avatar src={getFullImageUrl((agent as any).profile_picture)} />
                             </ListItemAvatar>
                             <ListItemText primary={`${agent.first_name || ''} ${agent.last_name || ''}`} secondary={agent.email} />
                         </ListItem>
