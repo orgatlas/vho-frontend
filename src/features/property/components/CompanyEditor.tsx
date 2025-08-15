@@ -16,7 +16,7 @@ import {Company} from 'src/types';
 import {updateCompany} from 'src/services/api';
 import {toast} from 'react-toastify';
 import {Business, AddAPhoto, Phone, Email, Language, Edit} from '@mui/icons-material';
-import {SectionHeader} from "./SectionHeader";
+import {SectionHeader} from "src/theme/components/SectionHeader";
 
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({icon, label}) => (
     <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>

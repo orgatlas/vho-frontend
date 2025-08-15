@@ -1,4 +1,4 @@
-import { PropertyDetails, Video, Image } from '../types';
+import { Property, Video, Image } from 'src/types';
 
 // Helper to generate a random ID
 const generateId = () => Math.random().toString(36).substr(2, 9);
@@ -17,7 +17,7 @@ const mockImages: Image[] = [
 ];
 
 // Mock user listings data
-const mockUserListings: PropertyDetails[] = [
+const mockUserListings: Property[] = [
     {
         id: 'prop1',
         title: 'Beautiful Family Home',
@@ -82,7 +82,7 @@ const mockUserListings: PropertyDetails[] = [
     },
 ];
 
-export const getUserListings = async (): Promise<PropertyDetails[]> => {
+export const getUserListings = async (): Promise<Property[]> => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(mockUserListings);
@@ -90,7 +90,7 @@ export const getUserListings = async (): Promise<PropertyDetails[]> => {
     });
 };
 
-export const getMockPropertyDetails = async (propertyId: string): Promise<PropertyDetails | undefined> => {
+export const getMockPropertyDetails = async (propertyId: string): Promise<Property | undefined> => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(mockUserListings.find(p => p.id === propertyId));
@@ -98,7 +98,7 @@ export const getMockPropertyDetails = async (propertyId: string): Promise<Proper
     });
 };
 
-export const updateMockPropertyDetails = async (propertyId: string, updatedDetails: Partial<PropertyDetails>): Promise<PropertyDetails> => {
+export const updateMockPropertyDetails = async (propertyId: string, updatedDetails: Partial<Property>): Promise<Property> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const index = mockUserListings.findIndex(p => p.id === propertyId);

@@ -10,7 +10,7 @@ import {toast} from 'react-toastify';
 import {
     RecordVoiceOver, Image, MusicNote, PlayArrow, Pause, Close, BrandingWatermark
 } from '@mui/icons-material';
-import {SectionHeader} from "src/components/SectionHeader";
+import {SectionHeader} from "src/theme/components/SectionHeader";
 
 export const PremiumFeaturesPage: React.FC = () => {
     const navigate = useNavigate();

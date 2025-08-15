@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPropertyDetails } from '../services/api';
-import { PropertyDetails } from '../types';
-import { Layout } from '../layouts/Layout';
-import { SectionHeader } from '../components/SectionHeader';
+import { getProperty } from 'src/services/api';
+import { Property } from 'src/types';
+import { Layout } from 'src/layouts/Layout';
+import { SectionHeader } from 'src/theme/components/SectionHeader';
 
 const PropertyPage: React.FC = () => {
     const { propertyId } = useParams<{ propertyId: string }>();
-    const [property, setProperty] = useState<PropertyDetails | null>(null);
+    const [property, setProperty] = useState<Property | null>(null);
     const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
 
     useEffect(() => {
         if (propertyId) {
-            // Assuming getPropertyDetails can take a property ID directly,
+            // Assuming getProperty can take a property ID directly,
             // even though its signature shows 'url'.
             // This is based on the user's request to pass property ID as URL param.
-            getPropertyDetails(propertyId).then(setProperty);
+            getProperty(propertyId).then(setProperty);
         }
     }, [propertyId]);
 

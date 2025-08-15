@@ -1,15 +1,18 @@
+import {string} from "yup";
+
 export interface User {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  user: User;
+    token: string;
+    user: User;
 }
-export interface PropertyDetails {
+
+export interface Property {
     id?: string;
     title?: string;
     address: string;
@@ -68,8 +71,12 @@ export interface Voice {
     name: string;
     src: string;
 }
+
 export interface Video {
     id: number;
+    property: Property;
+    title: string | null
+    duration: number | null
     file: string | null;
     locked?: boolean;
     package?: Package;
@@ -94,4 +101,30 @@ export interface Agent {
     phone: string;
     email: string;
     profile_picture: string;
+}
+
+export interface Invoice {
+    id: number;
+    payment: Payment;
+    video: Video;
+    customer: Customer;
+}
+
+
+export interface Payment {
+    id: number;
+    customer: Customer;
+    stripe_payment_id: string;
+    status: string;
+    amount: any;
+    paid_at: string;
+}
+
+export interface Customer {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    stripe_customer_id: string;
 }

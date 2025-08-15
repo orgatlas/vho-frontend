@@ -25,7 +25,7 @@ import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 
-import {SectionHeader} from "src/components/SectionHeader";
+import {SectionHeader} from "src/theme/components/SectionHeader";
 import {CreditCard} from "@mui/icons-material";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);

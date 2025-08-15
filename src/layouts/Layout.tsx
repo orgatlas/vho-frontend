@@ -4,7 +4,7 @@ import {AppBar, Box, Button, Container, Toolbar, Typography, Menu, MenuItem} fro
 import {Link, useLocation} from 'react-router-dom';
 import { useAuth } from 'src/contexts/AuthContext';
 
-export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
+export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> = ({children, contained = true}) => {
     const location = useLocation();
     const isCheckoutPage = location.pathname === '/checkout';
     const { user, isAuthenticated, logout } = useAuth();
@@ -78,9 +78,13 @@ export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
                 </Toolbar>
             </AppBar>
             <Box component="main" sx={{flexGrow: 1, overflowY: 'auto'}}>
-                <Container maxWidth="xl" sx={{py: 4}}>
-                    {children}
-                </Container>
+                {contained ? (
+                    <Container maxWidth="xl" sx={{py: 4}}>
+                        {children}
+                    </Container>
+                ) : (
+                    children
+                )}
             </Box>
         </Box>
     );

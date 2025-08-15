@@ -3,69 +3,113 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {Box, Button, CircularProgress, Container, Paper, TextField, Typography} from '@mui/material';
 import {
     createVideo,
-    extractPropertyDetails,
-    getMusicTracks,
-    getPackages,
     getVideoDetails,
-    getVoiceTracks
 } from 'src/services/api';
-import {PropertyDetails} from "src/types";
 import {useTheme} from "@mui/material/styles";
 
 export const GeneratingVideoPage: React.FC = () => {
     const navigate = useNavigate();
     const theme = useTheme()
     const location = useLocation();
-    const {videoId, images, voice, music, logo, logoPlacement, agents} = location.state as {
-        videoId: string,
-        images: File[],
-        voice: string,
-        music: string,
-        logo: File | null,
-        logoPlacement: string,
-        agents: Agent[]
-    };
+    const {videoId} = location.state as { videoId: number };
     const [url, setUrl] = useState('');
     const [loading, setLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(true);
 
+    // useEffect(() => {
+    //     if (!videoId) return;
+    //
+    //     const fetchAndCreateVideo = async () => {
+    //         try {
+    //             const video = await getVideoDetails(videoId);
+    //
+    //             if (video.package) {
+    //                 if (video.locked) {
+    //                     navigate('/video-generated');
+    //                     return;
+    //                 }
+    //
+    //                 try {
+    //                     const data = await createVideo(videoId);
+    //                     console.log(`Video created with ID: ${data.videoId}`);
+    //                     setIsSubmitting(false);
+    //                 } catch (error) {
+    //                     console.error('Error creating video:', error);
+    //                 }
+    //
+    //             } else {
+    //                 navigate('/checkout', { state: { videoId: video.id } });
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching video details:', error);
+    //         }
+    //     };
+    //
+    //     fetchAndCreateVideo();
+    // }, [videoId]);
+
     useEffect(() => {
         if (!videoId) return;
 
-        const fetchAndCreateVideo = async () => {
+        let cancelled = false;
+
+        const init = async () => {
             try {
                 const video = await getVideoDetails(videoId);
 
-                if (video.package) {
-                    if (video.locked) {
-                        navigate('/video-generated');
-                        return;
-                    }
-
-                    try {
-                        const data = await createVideo(videoId);
-                        console.log(`Video created with ID: ${data.videoId}`);
-                        setIsSubmitting(false);
-                    } catch (error) {
-                        console.error('Error creating video:', error);
-                    }
-
-                } else {
+                if (!video.package) {
                     navigate('/checkout', { state: { videoId: video.id } });
+                    return;
                 }
+
+                if (video.locked) {
+                    navigate('/video-generated');
+                    return;
+                }
+
+                setIsSubmitting(true);
+
+                const pollCreateVideo = async () => {
+                    while (!cancelled) {
+                        try {
+                            const response = await createVideo(videoId);
+                            console.log(response.message);
+
+                            if (response.success) {
+                                console.log(`Video successfully submitted: ${videoId}`);
+                                setIsSubmitting(false);
+                                navigate('/video-generated');
+                                return; // stop loop
+                            } else {
+                                console.log('Payment not yet received, retrying...');
+                            }
+                        } catch (error) {
+                            console.error('Error during video creation:', error);
+                        }
+
+                        // Wait 2 seconds before trying again
+                        await new Promise(res => setTimeout(res, 2000));
+                    }
+                };
+
+                pollCreateVideo();
             } catch (error) {
                 console.error('Error fetching video details:', error);
             }
         };
 
-        fetchAndCreateVideo();
-    }, [videoId]);
+        init();
+
+        return () => {
+            cancelled = true;
+        };
+
+    }, [videoId, navigate]);
 
     const handleUrlSubmit = async () => {
         setLoading(true);
         try {
-            const newPropertyDetails = await extractPropertyDetails(url);
-            navigate('/property-details', {state: {propertyDetails: newPropertyDetails}});
+            navigate('/extracting-details', { state: { url } });
         } catch (error) {
             console.error(error);
         } finally {

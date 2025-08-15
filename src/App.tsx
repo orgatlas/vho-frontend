@@ -1,27 +1,27 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {CssBaseline, ThemeProvider} from '@mui/material';
-import {theme} from './components/theme/theme';
-import {LandingPage} from './pages/LandingPage';
-import {PropertyDetailsPage} from './pages/PropertyDetailsPage';
-import {CheckoutPage} from './pages/CheckoutPage';
-import {PremiumFeaturesPage} from './pages/PremiumFeaturesPage';
-import {GeneratingVideoPage} from './pages/GeneratingVideoPage';
-import {LoadingPage} from './pages/LoadingPage';
-import {VideoGeneratedPage} from './pages/VideoGeneratedPage';
+import {theme} from 'src/theme/theme';
+import {LandingPage} from 'src/features/landing/pages/LandingPage';
+import {PropertyDetailsPage} from 'src/features/property/pages/PropertyDetailsPage';
+import {CheckoutPage} from 'src/features/checkout/pages/CheckoutPage';
+import {PremiumFeaturesPage} from 'src/features/checkout/pages/PremiumFeaturesPage';
+import {GeneratingVideoPage} from 'src/features/video/pages/GeneratingVideoPage';
+import {ExtractingDetailsPage} from 'src/features/property/pages/ExtractingDetailsPage';
+import {VideoGeneratedPage} from 'src/features/video/pages/VideoGeneratedPage';
 import {Layout} from './layouts/Layout';
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import UserPage from './pages/UserPage';
-import { AuthProvider } from './contexts/AuthContext';
-import PropertyPage from './pages/PropertyPage';
-import UserListingsPage from './pages/UserListingsPage';
-import PropertyManagementPage from './pages/PropertyManagementPage';
-import VideoViewPage from './pages/VideoViewPage';
-import VideoEditorPage from './pages/VideoEditorPage';
+import RegisterPage from 'src/features/auth/pages/RegisterPage';
+import LoginPage from 'src/features/auth/pages/LoginPage';
+import ForgotPasswordPage from 'src/features/auth/pages/ForgotPasswordPage';
+import UserPage from 'src/features/user/pages/UserPage';
+import {AuthProvider} from './contexts/AuthContext';
+import PropertyPage from 'src/features/property/pages/PropertyPage';
+import {UserListingsPage} from 'src/features/property/pages/UserListingsPage';
+import {PropertyManagementPage} from 'src/features/property/pages/PropertyManagementPage';
+import {VideoViewPage} from 'src/features/video/pages/VideoViewPage';
+import {VideoEditorPage} from 'src/features/video/pages/VideoEditorPage';
 
 function App() {
     return (
@@ -29,29 +29,30 @@ function App() {
             <CssBaseline/>
             <Router>
                 <AuthProvider>
-                    <Layout>
-                        <Routes>
-                            <Route path="/" element={<LandingPage/>}/>
-                            <Route path="/property-details" element={<PropertyDetailsPage/>}/>
-                            <Route path="/checkout" element={<CheckoutPage/>}/>
-                            <Route path="/premium-features" element={<PremiumFeaturesPage/>}/>
-                            <Route path="/generating-video" element={<GeneratingVideoPage/>}/>
-                            <Route path="/loading" element={<LoadingPage/>}/>
-                            <Route path="/video-generated" element={<VideoGeneratedPage/>}/>
-                            <Route path="/register" element={<RegisterPage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                            <Route path="/user" element={<UserPage />} />
-                            <Route path="/property/:propertyId" element={<PropertyPage />} />
-                            <Route path="/listings" element={<UserListingsPage />} />
-                            <Route path="/listings/:propertyId/manage" element={<PropertyManagementPage />} />
-                            <Route path="/video/:videoId/view" element={<VideoViewPage />} />
-                            <Route path="/video/:videoId/edit" element={<VideoEditorPage />} />
-                        </Routes>
-                    </Layout>
+                    <Routes>
+                        {/* Landing page with full-width layout */}
+                        <Route path="/" element={<Layout contained={false}><LandingPage /></Layout>} />
+
+                        {/* All other pages with contained layout */}
+                        <Route path="/property-details" element={<Layout><PropertyDetailsPage /></Layout>} />
+                        <Route path="/checkout" element={<Layout><CheckoutPage /></Layout>} />
+                        <Route path="/premium-features" element={<Layout><PremiumFeaturesPage /></Layout>} />
+                        <Route path="/generating-video" element={<Layout><GeneratingVideoPage /></Layout>} />
+                        <Route path="/video-generated" element={<Layout><VideoGeneratedPage /></Layout>} />
+                        <Route path="/register" element={<Layout><RegisterPage /></Layout>} />
+                        <Route path="/login" element={<Layout><LoginPage /></Layout>} />
+                        <Route path="/forgot-password" element={<Layout><ForgotPasswordPage /></Layout>} />
+                        <Route path="/user" element={<Layout><UserPage /></Layout>} />
+                        <Route path="/property/:propertyId" element={<Layout><PropertyPage /></Layout>} />
+                        <Route path="/listings" element={<Layout><UserListingsPage /></Layout>} />
+                        <Route path="/listings/:propertyId/manage" element={<Layout><PropertyManagementPage /></Layout>} />
+                        <Route path="/video/:videoId/view" element={<Layout><VideoViewPage /></Layout>} />
+                        <Route path="/video/:videoId/edit" element={<Layout><VideoEditorPage /></Layout>} />
+                        <Route path="/extracting-details" element={<Layout><ExtractingDetailsPage /></Layout>} />
+                    </Routes>
                 </AuthProvider>
             </Router>
-            <ToastContainer />
+            <ToastContainer/>
         </ThemeProvider>
     );
 }
