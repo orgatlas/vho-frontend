@@ -331,3 +331,9 @@ export const getVideoList = async (propertyId: string, params: any): Promise<{ v
     return response.data;
 };
 
+export const convertCurrency = async (cost: number, code: string): Promise<number> => {
+    const response = await api.post('billing/currency/convert', {cost: cost, code: code});
+    return response.data.converted_price;
+};
+
+

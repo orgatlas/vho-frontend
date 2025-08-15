@@ -20,18 +20,20 @@ import {
     CircularProgress,
 } from '@mui/material';
 import {getPackages, processPayment, getVideoDetails} from 'src/services/api';
-import {Package} from "src/types";
+import {Package, Agent} from "src/types";
 import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 
 import {SectionHeader} from "src/theme/components/SectionHeader";
 import {CreditCard} from "@mui/icons-material";
+import {CurrencySelector} from "src/components/CurrencySelector";
+import {PriceDisplay} from "src/components/PriceDisplay";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
-const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: string]: unknown }>(
-    function StripeInput(props, ref) {
+const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: string]: unknown }>((
+    props, ref) => {
         const {component: Component, ...other} = props;
         const elementRef = React.useRef<any>();
 
@@ -51,11 +53,12 @@ const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: 
 );
 
 
-const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], agents: Agent[] }> = ({
+const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], agents: Agent[], currency: string }> = ({
                                                                                                          plan,
                                                                                                          videoId,
                                                                                                          images,
-                                                                                                         agents
+                                                                                                         agents,
+                                                                                                         currency
                                                                                                      }) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -181,13 +184,13 @@ const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], a
                 <Typography>Package: {plan.name}</Typography>
                 {(costBreakdown && costBreakdown.discount === 0) &&(
                     <Box>
-                        <Typography variant="h6">Total: ${costBreakdown.total_cost}</Typography>
+                        <Typography variant="h6" component="div">Total: <PriceDisplay cost={costBreakdown.total_cost} currency={currency} /></Typography>
                     </Box>
                 )}
                 {(costBreakdown && costBreakdown.discount > 0) &&(
                     <Box>
-                        <Typography>Discount: ${costBreakdown.discount}</Typography>
-                        <Typography variant="h6">Total: ${costBreakdown.total_cost}</Typography>
+                        <Typography component="div">Discount: <PriceDisplay cost={costBreakdown.discount} currency={currency} /></Typography>
+                        <Typography variant="h6" component="div">Total: <PriceDisplay cost={costBreakdown.total_cost} currency={currency} /></Typography>
                     </Box>
                 )}
                 <Divider sx={{my: 2}}/>
@@ -320,12 +323,56 @@ const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], a
     );
 };
 
+const localeCurrencyMap: { [key: string]: string } = {
+    'en-US': 'USD',
+    'en-GB': 'GBP',
+    'en-CA': 'CAD',
+    'en-AU': 'AUD',
+    'ja-JP': 'JPY',
+    'de-DE': 'EUR',
+    'fr-FR': 'EUR',
+    'es-ES': 'EUR',
+    'it-IT': 'EUR',
+    'nl-NL': 'EUR',
+    'pt-PT': 'EUR',
+};
+
+const getDefaultCurrency = (): string => {
+    const locale = navigator.language;
+
+    // Return the mapped currency if exists
+    if (locale in localeCurrencyMap) {
+        return localeCurrencyMap[locale];
+    }
+
+    // For other European locales, default to EUR
+    if (
+        locale.startsWith('en-') ||
+        locale.startsWith('de-') ||
+        locale.startsWith('fr-') ||
+        locale.startsWith('es-') ||
+        locale.startsWith('it-') ||
+        locale.startsWith('nl-') ||
+        locale.startsWith('pt-')
+    ) {
+        return 'EUR';
+    }
+
+    // Default fallback
+    return 'AUD';
+};
+
 export const CheckoutPage: React.FC = () => {
     const location = useLocation();
     const [packages, setPackages] = useState<Package[]>([]);
     const [selectedPlan, setSelectedPlan] = useState<Package | null>(null);
     const {videoId, images, agents} = location.state as { videoId: string, images: File[], agents: Agent[] };
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [currency, setCurrency] = useState('AUD');
+
+    useEffect(() => {
+        setCurrency(getDefaultCurrency());
+    }, []);
 
     useEffect(() => {
         if (videoId) {
@@ -347,7 +394,10 @@ export const CheckoutPage: React.FC = () => {
 
     return (
         <Box sx={{width: '100vw', p: 5}}>
-            <Typography variant="h4" gutterBottom>Select your creation kit</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h4" gutterBottom>Select your creation kit</Typography>
+                <CurrencySelector selectedCurrency={currency} onCurrencyChange={setCurrency} />
+            </Box>
 
             <Grid container alignItems="top">
                 {/* Left Panel - Plans */}
@@ -374,7 +424,9 @@ export const CheckoutPage: React.FC = () => {
                                             <Chip label="Most Popular" color="primary"/>}
                                     />
                                     <CardContent>
-                                        <Typography variant="h4" sx={{mb: 2}}>${plan.price}</Typography>
+                                        <Typography variant="h4" sx={{mb: 2}} component="div">
+                                            <PriceDisplay cost={plan.price} currency={currency} />
+                                        </Typography>
                                         <List dense>
                                             {plan.features.map((feature) => (
                                                 <ListItem key={feature} disableGutters>
@@ -399,7 +451,7 @@ export const CheckoutPage: React.FC = () => {
                             <Typography variant="h5" gutterBottom>Order Summary</Typography>
                             <Divider sx={{my: 2}}/>
                             <Elements stripe={stripePromise}>
-                                <CheckoutForm plan={selectedPlan} videoId={videoId} images={images} agents={agents}/>
+                                <CheckoutForm plan={selectedPlan} videoId={videoId} images={images} agents={agents} currency={currency} />
                             </Elements>
                         </Box>
                     </Grid>
