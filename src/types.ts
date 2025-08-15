@@ -13,7 +13,7 @@ export interface AuthResponse {
 }
 
 export interface Property {
-    id?: string;
+    id: number;
     title?: string;
     address: string;
     bedrooms: string;

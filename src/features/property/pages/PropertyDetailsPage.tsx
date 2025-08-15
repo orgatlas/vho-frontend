@@ -92,23 +92,38 @@ export const PropertyDetailsPage: React.FC = () => {
             return;
         }
 
-        for (const file of acceptedFiles) {
-            try {
-                const response = await uploadImage(video.id, file);
-                if (response.warnings && response.warnings.length > 0) {
-                    toast.warn(response.warnings.join('\n'));
-                }
-                const newImage: ImageType = {
-                    id: response.id,
-                    file: response.file_url,
-                    description: '',
-                    preview: URL.createObjectURL(file)
-                };
-                setImages(prevImages => [...prevImages, newImage]);
-            } catch (error) {
-                console.error('Error uploading image:', error);
+        setImages(prevImages => {
+            if (prevImages.length >= 20) {
+                toast.error("You can only upload a maximum of 20 images.");
+                return prevImages; // don't process new files
             }
-        }
+
+            // Calculate how many files we can still add
+            const remainingSlots = 20 - prevImages.length;
+            const filesToUpload = acceptedFiles.slice(0, remainingSlots);
+
+            (async () => {
+                for (const file of filesToUpload) {
+                    try {
+                        const response = await uploadImage(video.id, file);
+                        if (response.warnings && response.warnings.length > 0) {
+                            toast.warn(response.warnings.join('\n'));
+                        }
+                        const newImage: ImageType = {
+                            id: response.id,
+                            file: response.file_url,
+                            description: '',
+                            preview: URL.createObjectURL(file)
+                        };
+                        setImages(prev => [...prev, newImage]);
+                    } catch (error) {
+                        console.error('Error uploading image:', error);
+                    }
+                }
+            })();
+
+            return prevImages; // Keep state unchanged here; uploads will update later
+        });
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -147,12 +162,29 @@ export const PropertyDetailsPage: React.FC = () => {
 
     const handleContinue = async () => {
         if (!video?.id || !video.property) return;
+
         setLoading(true);
+        // Check if image count exceeds the limit
+        if (images.length > 20) {
+            toast.error("You can only upload a maximum of 20 images.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const updatedVideo = await updatePropertyDetails(video.id, video.property);
-            setVideo(updatedVideo);
+            const updatedProperty = await updatePropertyDetails(
+                video.property.id,
+                video.property.address,
+                video.property.bedrooms,
+                video.property.bathrooms,
+                video.property.car_spaces,
+                video.property.property_area,
+                video.property.description,
+                video.property.price,
+            );
             navigate('/checkout', { state: { videoId: video.id } });
         } catch (error) {
+            toast.error("Failed to update property details. Try again later.");
             console.error("Failed to update property details:", error);
         } finally {
             setLoading(false);

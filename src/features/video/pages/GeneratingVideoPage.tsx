@@ -6,6 +6,7 @@ import {
     getVideoDetails,
 } from 'src/services/api';
 import {useTheme} from "@mui/material/styles";
+import {toast} from "react-toastify";
 
 export const GeneratingVideoPage: React.FC = () => {
     const navigate = useNavigate();
@@ -106,15 +107,12 @@ export const GeneratingVideoPage: React.FC = () => {
 
     }, [videoId, navigate]);
 
-    const handleUrlSubmit = async () => {
-        setLoading(true);
-        try {
-            navigate('/extracting-details', { state: { url } });
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
+    const handleUrlSubmit = () => {
+        if (!url.trim() || !url.includes('.')) {
+            toast.error("Please enter a valid property listing URL.");
+            return;
         }
+        navigate('/extracting-details', { state: { url } });
     };
 
     return (
@@ -147,7 +145,7 @@ export const GeneratingVideoPage: React.FC = () => {
                             Ready for Your Next Video?
                         </Typography>
                         <Typography color="text.secondary" sx={{mb: 3}}>
-                            Enter another property URL to start a new project.
+                            Enter another property URL.
                         </Typography>
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <TextField
@@ -162,14 +160,13 @@ export const GeneratingVideoPage: React.FC = () => {
                                 color="primary"
                                 onClick={handleUrlSubmit}
                                 size="large"
-                                disabled={loading}
                                 sx={{
                                     whiteSpace: 'nowrap',
                                     flexShrink: 0,
                                     minWidth: 120,
                                 }}
                             >
-                                {loading ? <CircularProgress size={24} color="inherit"/> : 'Get Started'}
+                                Get Started
                             </Button>
                         </Box>
                     </Paper>

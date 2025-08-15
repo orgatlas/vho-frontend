@@ -5,37 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/features/landing/homepage-spec.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/property/pages/ExtractingDetailsPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/user/user-management-spec.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AgentsEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/AgentsEditor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CompanyEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SectionHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/components/SectionHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/theme/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/loading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/theme/theme.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/theme.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ForgotPasswordPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/pages/ForgotPasswordPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/GeneratingVideoPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/GeneratingVideoPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoadingPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/pages/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PremiumFeaturesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PropertyManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PropertyPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/pages/RegisterPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/UserListingsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/UserListingsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/UserPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/user/pages/UserPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/VideoEditorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/VideoGeneratedPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoGeneratedPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/VideoViewPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoViewPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/pages/GeneratingVideoPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/GeneratingVideoPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/mockApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/mockApi.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,21 +37,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "com.codeium.enabled": "true",
-    "last_opened_file_path": "/Volumes/X9 Pro/Development/Projects/clover/frontend/src/layouts",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Volumes/X9 Pro/Development/Projects/clover/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/clover/frontend/src/layouts&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/clover/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/layouts" />
@@ -151,7 +124,7 @@
       <workItem from="1755096604199" duration="4431000" />
       <workItem from="1755118242261" duration="84000" />
       <workItem from="1755162852526" duration="704000" />
-      <workItem from="1755164098635" duration="18688000" />
+      <workItem from="1755164098635" duration="20577000" />
     </task>
     <servers />
   </component>

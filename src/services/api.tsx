@@ -170,16 +170,16 @@ export const getProperty = async (url: string): Promise<Property> => {
     };
 };
 
-export const updatePropertyDetails = async (property: string, address: string, beds: string, bathrooms: string, car_spaces: string, property_area: string, description: string, price: string): Promise<Property> => {
+export const updatePropertyDetails = async (property: number, address: string, beds: string, bathrooms: string, car_spaces: string, property_area: string, description: string | undefined, price: string | undefined): Promise<Property> => {
     const response = await api.post('property/update', {
-        property:property,
-        address:address,
-        beds:beds,
-        bathrooms:bathrooms,
-        car_spaces:car_spaces,
-        property_area:property_area,
-        description:description,
-        price:price
+        property: property,
+        address: address,
+        beds: beds,
+        bathrooms: bathrooms,
+        car_spaces: car_spaces,
+        property_area: property_area,
+        description: description,
+        price: price
     });
     return response.data;
 };
@@ -218,7 +218,7 @@ export const getVoiceTracks = async (): Promise<Voice[]> => {
     }));
 }
 
-export const createVideo = async (videoId: number): Promise<{ success: string, message:string }> => {
+export const createVideo = async (videoId: number): Promise<{ success: string, message: string }> => {
     const response = await api.post('video/create', {video: videoId});
     return response.data;
 }
@@ -302,32 +302,32 @@ export const setVoiceTrack = async (videoId: number, voiceId: string): Promise<{
 };
 
 export const getSceneList = async (videoId: number): Promise<Scene[]> => {
-    const response = await api.post('video/scene/list', { video: videoId });
+    const response = await api.post('video/scene/list', {video: videoId});
     return response.data.scenes;
 };
 
 export const saveVideo = async (videoId: number): Promise<{ message: string }> => {
-    const response = await api.post('video/save', { video: videoId });
+    const response = await api.post('video/save', {video: videoId});
     return response.data;
 };
 
 export const updateScene = async (sceneId: string, data: { script?: string; order?: number }): Promise<Scene> => {
-    const response = await api.post('video/scene/update', { scene: sceneId, ...data });
+    const response = await api.post('video/scene/update', {scene: sceneId, ...data});
     return response.data.scene;
 };
 
 export const updateSceneAnimation = async (sceneId: string, animate: boolean): Promise<Scene> => {
-    const response = await api.post('video/scene/animation/update', { scene: sceneId, animate });
+    const response = await api.post('video/scene/animation/update', {scene: sceneId, animate});
     return response.data.scene;
 };
 
 export const getPropertyList = async (params: any): Promise<{ properties: Property[], total: number }> => {
-    const response = await api.get('property/list', { params });
+    const response = await api.get('property/list', {params});
     return response.data;
 };
 
 export const getVideoList = async (propertyId: string, params: any): Promise<{ videos: Video[], total: number }> => {
-    const response = await api.get(`video/list/${propertyId}`, { params });
+    const response = await api.get(`video/list/${propertyId}`, {params});
     return response.data;
 };
 
