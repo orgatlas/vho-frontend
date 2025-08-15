@@ -55,7 +55,6 @@ const RegisterPage = () => {
                         id="last_name"
                         placeholder="Last Name"
                         name="last_name"
-                        autoFocus
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                     />

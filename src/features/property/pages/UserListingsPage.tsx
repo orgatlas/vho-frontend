@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Grid, Box, Typography, CircularProgress, Button, Paper } from '@mui/material';
+import { Container, Grid, Box, Typography, CircularProgress, Button, Paper, SelectChangeEvent } from '@mui/material';
 import { getPropertyList } from 'src/services/api';
 import { Property } from 'src/types';
 import { PropertyCard } from '../components/PropertyCard';
 import { FilterSortToolbar } from 'src/components/FilterSortToolbar';
 import { toast } from 'react-toastify';
+import { useDebounce } from 'src/hooks/useDebounce';
 
 export const UserListingsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -13,34 +14,74 @@ export const UserListingsPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    // Add state for filters and sorting later
 
-    const fetchProperties = useCallback(async (pageNum: number) => {
+    // New state for filtering and sorting
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortOption, setSortOption] = useState('created_at');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+    const [resultsPerPage, setResultsPerPage] = useState(12);
+
+    const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
+    const fetchProperties = useCallback(async (
+        pageNum: number,
+        search: string,
+        sortBy: string,
+        order: 'asc' | 'desc',
+        limit: number,
+        append: boolean = false
+    ) => {
         setIsLoading(true);
         try {
-            const { properties: newProperties, total } = await getPropertyList({ page: pageNum, limit: 12 });
-            setProperties(prev => pageNum === 1 ? newProperties : [...prev, ...newProperties]);
-            setHasMore(properties.length + newProperties.length < total);
+            const params = {
+                page: pageNum,
+                per_page: limit,
+                search: search,
+                sort_by: sortBy,
+                sort_order: order,
+            };
+            const { properties: newProperties, total } = await getPropertyList(params);
+
+            setProperties(prev => append ? [...prev, ...newProperties] : newProperties);
+            setHasMore(pageNum * limit < total);
+
         } catch (error) {
             toast.error("Failed to fetch properties.");
             console.error(error);
         } finally {
             setIsLoading(false);
         }
-    }, [properties.length]);
+    }, []);
 
     useEffect(() => {
-        fetchProperties(1);
-    }, [fetchProperties]);
+        setPage(1);
+        fetchProperties(1, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, false);
+    }, [debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, fetchProperties]);
 
     const handleLoadMore = () => {
         const nextPage = page + 1;
         setPage(nextPage);
-        fetchProperties(nextPage);
+        fetchProperties(nextPage, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, true);
     };
 
-    const handleCardClick = (propertyId: string) => {
+    const handleCardClick = (propertyId: number) => {
         navigate(`/listings/${propertyId}/manage`);
+    };
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSortChange = (event: SelectChangeEvent<string>) => {
+        setSortOption(event.target.value);
+    };
+
+    const handleSortOrderChange = (event: SelectChangeEvent<'asc' | 'desc'>) => {
+        setSortOrder(event.target.value as 'asc' | 'desc');
+    };
+
+    const handleResultsPerPageChange = (event: SelectChangeEvent<unknown>) => {
+        setResultsPerPage(event.target.value as number);
     };
 
     return (
@@ -49,7 +90,16 @@ export const UserListingsPage: React.FC = () => {
                 My Properties
             </Typography>
             <Paper sx={{ mb: 3 }} elevation={2}>
-                <FilterSortToolbar />
+                <FilterSortToolbar
+                    searchQuery={searchQuery}
+                    onSearchChange={handleSearchChange}
+                    sortOption={sortOption}
+                    onSortChange={handleSortChange}
+                    sortOrder={sortOrder}
+                    onSortOrderChange={handleSortOrderChange}
+                    resultsPerPage={resultsPerPage}
+                    onResultsPerPageChange={handleResultsPerPageChange}
+                />
             </Paper>
             <Grid container spacing={3}>
                 {properties.map(property => (

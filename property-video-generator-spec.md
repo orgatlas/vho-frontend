@@ -32,7 +32,7 @@ I am building a website that takes in a URL, extracts the property information a
    - Displays pricing based on number of scenes (mocked API for now).
    - Includes:
      - Basic plan: video generation only
-     - Premium plan: voice selection, 1080p HD video, company logo, no Clover branding
+     - Premium plan: voice selection, 1080p HD video, company logo, no Clips2Close branding
 
 4. **Payments Page**
    - Uses Stripe Elements for payment collection.
@@ -51,7 +51,7 @@ I am building a website that takes in a URL, extracts the property information a
    - Dropzone for company logo, and an option to select a placement option (top right, top left, bottom right, bottom left) this should be a visual selection
 
 6. **Creating video screen**
-   - Displays the Clover logo
+   - Displays the Clips2Close logo
    - Shows a "Creating Video" message
    - Shows a "It is safe to leave this page, you will receive an email when your video is ready"
    - Option to enter another url to create a new video and restart the workflow

@@ -141,7 +141,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <FieldLabel icon={<Business/>} label="Company Name"/>
                                 <TextField
                                     fullWidth
-                                    placeholder="E.g. Clover Real Estate"
+                                    placeholder="E.g. Clips2Close Real Estate"
                                     value={editingCompany?.name || ''}
                                     onChange={(e) => setEditingCompanyPartial({name: e.target.value})}
                                 />
@@ -159,7 +159,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <FieldLabel icon={<Email/>} label="Email"/>
                                 <TextField
                                     fullWidth
-                                    placeholder="E.g. contact@clover.com"
+                                    placeholder="E.g. contact@clips2close.com"
                                     value={editingCompany?.email || ''}
                                     onChange={(e) => setEditingCompanyPartial({email: e.target.value})}
                                 />
@@ -168,7 +168,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <FieldLabel icon={<Language/>} label="Website"/>
                                 <TextField
                                     fullWidth
-                                    placeholder="E.g. www.clover.com"
+                                    placeholder="E.g. www.clips2close.com"
                                     value={editingCompany?.website || ''}
                                     onChange={(e) => setEditingCompanyPartial({website: e.target.value})}
                                 />

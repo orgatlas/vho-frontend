@@ -210,7 +210,7 @@ export const getMusicTracks = async (): Promise<MusicTrack[]> => {
 }
 
 export const getVoiceTracks = async (): Promise<Voice[]> => {
-    const response = await api.get('voice/list');
+    const response = await api.get('video/voice/list');
     return response.data.voices.map((voice: any) => ({
         id: voice.id,
         name: voice.name,
@@ -321,9 +321,18 @@ export const updateSceneAnimation = async (sceneId: string, animate: boolean): P
     return response.data.scene;
 };
 
-export const getPropertyList = async (params: any): Promise<{ properties: Property[], total: number }> => {
-    const response = await api.get('property/list', {params});
-    return response.data;
+export const getPropertyList = async (
+    params: any
+): Promise<{ properties: Property[]; total: number; page: number; per_page: number; total_pages: number }> => {
+    const response = await api.post('property/search', params);
+
+    return {
+        properties: response.data.results,
+        total: response.data.total,
+        page: response.data.page,
+        per_page: response.data.per_page,
+        total_pages: response.data.total_pages
+    };
 };
 
 export const getVideoList = async (propertyId: string, params: any): Promise<{ videos: Video[], total: number }> => {

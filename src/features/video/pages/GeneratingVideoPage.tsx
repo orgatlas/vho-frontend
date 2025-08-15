@@ -5,49 +5,12 @@ import {
     createVideo,
     getVideoDetails,
 } from 'src/services/api';
-import {useTheme} from "@mui/material/styles";
 import {toast} from "react-toastify";
 
 export const GeneratingVideoPage: React.FC = () => {
     const navigate = useNavigate();
-    const theme = useTheme()
     const location = useLocation();
     const {videoId} = location.state as { videoId: number };
-    const [url, setUrl] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(true);
-
-    // useEffect(() => {
-    //     if (!videoId) return;
-    //
-    //     const fetchAndCreateVideo = async () => {
-    //         try {
-    //             const video = await getVideoDetails(videoId);
-    //
-    //             if (video.package) {
-    //                 if (video.locked) {
-    //                     navigate('/video-generated');
-    //                     return;
-    //                 }
-    //
-    //                 try {
-    //                     const data = await createVideo(videoId);
-    //                     console.log(`Video created with ID: ${data.videoId}`);
-    //                     setIsSubmitting(false);
-    //                 } catch (error) {
-    //                     console.error('Error creating video:', error);
-    //                 }
-    //
-    //             } else {
-    //                 navigate('/checkout', { state: { videoId: video.id } });
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching video details:', error);
-    //         }
-    //     };
-    //
-    //     fetchAndCreateVideo();
-    // }, [videoId]);
 
     useEffect(() => {
         if (!videoId) return;
@@ -59,7 +22,7 @@ export const GeneratingVideoPage: React.FC = () => {
                 const video = await getVideoDetails(videoId);
 
                 if (!video.package) {
-                    navigate('/checkout', { state: { videoId: video.id } });
+                    navigate('/checkout', {state: {videoId: video.id}});
                     return;
                 }
 
@@ -68,7 +31,6 @@ export const GeneratingVideoPage: React.FC = () => {
                     return;
                 }
 
-                setIsSubmitting(true);
 
                 const pollCreateVideo = async () => {
                     while (!cancelled) {
@@ -78,13 +40,13 @@ export const GeneratingVideoPage: React.FC = () => {
 
                             if (response.success) {
                                 console.log(`Video successfully submitted: ${videoId}`);
-                                setIsSubmitting(false);
                                 navigate('/video-generated');
                                 return; // stop loop
                             } else {
                                 console.log('Payment not yet received, retrying...');
                             }
                         } catch (error) {
+                            toast.error('Error during video creation');
                             console.error('Error during video creation:', error);
                         }
 
@@ -107,70 +69,18 @@ export const GeneratingVideoPage: React.FC = () => {
 
     }, [videoId, navigate]);
 
-    const handleUrlSubmit = () => {
-        if (!url.trim() || !url.includes('.')) {
-            toast.error("Please enter a valid property listing URL.");
-            return;
-        }
-        navigate('/extracting-details', { state: { url } });
-    };
+
 
     return (
         <Container maxWidth="md">
             <Box sx={{my: 8, textAlign: 'center'}}>
-                {isSubmitting ? (
-                    <>
-                        <CircularProgress size={60} sx={{mb: 3}}/>
-                        <Typography variant="h4" component="h1" gutterBottom>
-                            Submitting your video
-                        </Typography>
-                        <Typography variant="h6" color="text.primary" sx={{mb: 6}}>
-                            Please wait, do not close this page
-                        </Typography>
-                    </>
-                ) : (
-                    <>
-                        <Typography variant="h4" component="h1" gutterBottom>
-                            Your video is being created!
-                        </Typography>
-                        <Typography variant="h6" color="text.primary" sx={{mb: 6}}>
-                            It is safe to leave this page. You will receive an email when your video is ready.
-                        </Typography>
-                    </>
-                )}
-
-                {!isSubmitting && (
-                    <Paper sx={{p: 4, mt: 6}} elevation={3}>
-                        <Typography variant="h5" component="h2" gutterBottom>
-                            Ready for Your Next Video?
-                        </Typography>
-                        <Typography color="text.secondary" sx={{mb: 3}}>
-                            Enter another property URL.
-                        </Typography>
-                        <Box sx={{display: 'flex', alignItems: 'center'}}>
-                            <TextField
-                                fullWidth
-                                placeholder="Enter property URL"
-                                value={url}
-                                onChange={(e) => setUrl(e.target.value)}
-                                sx={{mr: 2, background: theme.palette.background.default}}
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleUrlSubmit}
-                                size="large"
-                                sx={{
-                                    whiteSpace: 'nowrap',
-                                    flexShrink: 0,
-                                    minWidth: 120,
-                                }}
-                            >
-                                Get Started
-                            </Button>
-                        </Box>
-                    </Paper>
-                )}
+                <CircularProgress size={60} sx={{mb: 3}}/>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Submitting your video
+                </Typography>
+                <Typography variant="h6" color="text.primary" sx={{mb: 6}}>
+                    Please wait, do not close this page
+                </Typography>
             </Box>
         </Container>
     );
