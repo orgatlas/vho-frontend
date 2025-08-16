@@ -127,7 +127,7 @@ export const getImageList = async (videoId: number): Promise<Image[]> => {
     return images;
 };
 
-export const getVideoDetails = async (videoId: number): Promise<Video> => {
+export const getVideoDetails = async (videoId: number | string): Promise<Video> => {
     const response = await api.post('video/details', {video: videoId});
     return response.data.video;
 }
@@ -142,32 +142,32 @@ export const extractVideoDetailsFromUrl = async (url: string): Promise<Video> =>
     return response.data.video;
 };
 
-export const getProperty = async (url: string): Promise<Property> => {
-    const response = await api.post('property/details', {url});
+export const getProperty = async (propertyId: string): Promise<Property> => {
+    const response = await api.post('property/details', {property: propertyId});
 
-    const property = response.data.property;
-    const images = response.data.images;
-    const video = response.data.video;
-
-    return {
-        id: property.id,
-        title: property.title,
-        address: property.address,
-        bedrooms: property.beds,
-        bathrooms: property.bathrooms,
-        car_spaces: property.car_spaces,
-        property_area: property.area,
-        price: property.price,
-        description: property.description,
-        company: property.company,
-        agents: property.agents,
-        video: video,
-        images: images.map((img: any) => ({
-            id: img.id,
-            file: img.file,
-            description: img.description,
-        }))
-    };
+    return response.data.property;
+    // const images = response.data.images;
+    // const video = response.data.video;
+    //
+    // return {
+    //     id: property.id,
+    //     title: property.title,
+    //     address: property.address,
+    //     bedrooms: property.beds,
+    //     bathrooms: property.bathrooms,
+    //     car_spaces: property.car_spaces,
+    //     property_area: property.area,
+    //     price: property.price,
+    //     description: property.description,
+    //     company: property.company,
+    //     agents: property.agents,
+    //     video: video,
+    //     images: images.map((img: any) => ({
+    //         id: img.id,
+    //         file: img.file,
+    //         description: img.description,
+    //     }))
+    // };
 };
 
 export const updatePropertyDetails = async (property: number, address: string, beds: string, bathrooms: string, car_spaces: string, property_area: string, description: string | undefined, price: string | undefined): Promise<Property> => {
@@ -301,7 +301,7 @@ export const setVoiceTrack = async (videoId: number, voiceId: string): Promise<{
     return response.data;
 };
 
-export const getSceneList = async (videoId: number): Promise<Scene[]> => {
+export const getSceneList = async (videoId: number | string): Promise<Scene[]> => {
     const response = await api.post('video/scene/list', {video: videoId});
     return response.data.scenes;
 };
@@ -311,7 +311,10 @@ export const saveVideo = async (videoId: number): Promise<{ message: string }> =
     return response.data;
 };
 
-export const updateScene = async (sceneId: string, data: { script?: string; order?: number }): Promise<Scene> => {
+export const updateScene = async (sceneId: string | number, data: {
+    script?: string;
+    order?: number
+}): Promise<Scene> => {
     const response = await api.post('video/scene/update', {scene: sceneId, ...data});
     return response.data.scene;
 };
@@ -322,9 +325,19 @@ export const updateSceneAnimation = async (sceneId: string, animate: boolean): P
 };
 
 export const getPropertyList = async (
-    params: any
+    page: number,
+    per_page: number,
+    search: string,
+    sort_by: string,
+    sort_order: string,
 ): Promise<{ properties: Property[]; total: number; page: number; per_page: number; total_pages: number }> => {
-    const response = await api.post('property/search', params);
+    const response = await api.post('property/search', {
+        page: page,
+        per_page: per_page,
+        search: search,
+        sort_by: sort_by,
+        sort_order: sort_order,
+    });
 
     return {
         properties: response.data.results,
@@ -335,9 +348,30 @@ export const getPropertyList = async (
     };
 };
 
-export const getVideoList = async (propertyId: string, params: any): Promise<{ videos: Video[], total: number }> => {
-    const response = await api.get(`video/list/${propertyId}`, {params});
-    return response.data;
+export const getVideoList = async (
+    property_id: string | number,
+    page: number,
+    per_page: number,
+    search: string,
+    sort_by: string,
+    sort_order: string,
+): Promise<{ videos: Video[]; total: number; page: number; per_page: number; total_pages: number }> => {
+    const response = await api.post('video/search', {
+        property: property_id,
+        page: page,
+        per_page: per_page,
+        search: search,
+        sort_by: sort_by,
+        sort_order: sort_order,
+    });
+
+    return {
+        videos: response.data.results,
+        total: response.data.total,
+        page: response.data.page,
+        per_page: response.data.per_page,
+        total_pages: response.data.total_pages
+    };
 };
 
 export const convertCurrency = async (cost: number, code: string): Promise<number> => {

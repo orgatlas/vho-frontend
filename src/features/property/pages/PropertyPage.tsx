@@ -12,9 +12,6 @@ const PropertyPage: React.FC = () => {
 
     useEffect(() => {
         if (propertyId) {
-            // Assuming getProperty can take a property ID directly,
-            // even though its signature shows 'url'.
-            // This is based on the user's request to pass property ID as URL param.
             getProperty(propertyId).then(setProperty);
         }
     }, [propertyId]);

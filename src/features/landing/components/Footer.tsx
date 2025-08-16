@@ -12,9 +12,9 @@ export const Footer: React.FC = () => {
                     <Grid container spacing={4} justifyContent="space-between" alignItems="center">
                         <Grid item xs={12} sm={4}>
                             <Box display="flex" alignItems="center" mb={2}>
-                                <img src={Logo} alt="Clips2Close Logo" style={{ height: 40, marginRight: 16 }} />
+                                <img src={Logo} alt="Virtual Home Open Logo" style={{ height: 40, marginRight: 16 }} />
                                 <Typography variant="h5" component="h2" fontWeight="bold">
-                                    Clips2Close
+                                    Virtual Home Open
                                 </Typography>
                             </Box>
                             <Typography variant="body2" color="rgba(255, 255, 255, 0.7)">

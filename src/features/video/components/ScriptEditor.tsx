@@ -1,36 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, Button, CircularProgress } from '@mui/material';
-import { Scene } from 'src/types';
-import { updateScene } from 'src/services/api';
-import { toast } from 'react-toastify';
+import React, {useState, useEffect} from 'react';
+import {Box, Typography, TextField} from '@mui/material';
+import {Scene} from 'src/types';
+import {updateScene} from 'src/services/api';
+import {toast} from 'react-toastify';
+import {useDebounce} from 'src/hooks/useDebounce';
 
 interface ScriptEditorProps {
     scene: Scene;
 }
 
-export const ScriptEditor: React.FC<ScriptEditorProps> = ({ scene }) => {
-    const [script, setScript] = useState(scene.script || '');
-    const [isSaving, setIsSaving] = useState(false);
+export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene}) => {
+    const [script, setScript] = useState(scene.audio.script || '');
+    const [status, setStatus] = useState<'Script' | 'Saving' | 'Saved'>('Script');
+    const debouncedScript = useDebounce(script, 1000);
 
     useEffect(() => {
-        setScript(scene.script || '');
+        setScript(scene.audio.script || '');
     }, [scene]);
 
-    const handleSave = async () => {
-        setIsSaving(true);
-        try {
-            await updateScene(scene.id, { script });
-            toast.success("Script saved and audio regenerated.");
-        } catch (error) {
-            console.error("Failed to update script", error);
-        } finally {
-            setIsSaving(false);
+    useEffect(() => {
+        const handleSave = async () => {
+            setStatus('Saving');
+            try {
+                await updateScene(scene.id, {script: debouncedScript});
+                toast.success("Script saved and audio regenerated.");
+                setStatus('Saved');
+            } catch (error) {
+                console.error("Failed to update script", error);
+                setStatus('Script'); // Revert to script on error
+            }
+        };
+
+        if (debouncedScript && debouncedScript !== scene.audio.script) {
+            handleSave();
         }
-    };
+    }, [debouncedScript, scene.id, scene.audio.script]);
+
+    useEffect(() => {
+        if (status === 'Saved') {
+            const timer = setTimeout(() => setStatus('Saved'), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [status]);
+
 
     return (
-        <Box sx={{ pt: 4 }}>
-            <Typography variant="h6" gutterBottom>Edit Script</Typography>
+        <Box sx={{pt: 4}}>
             <TextField
                 fullWidth
                 multiline
@@ -38,15 +53,11 @@ export const ScriptEditor: React.FC<ScriptEditorProps> = ({ scene }) => {
                 value={script}
                 onChange={(e) => setScript(e.target.value)}
                 variant="outlined"
-                sx={{ mb: 2 }}
+                sx={{mb: 2}}
             />
-            <Button
-                variant="contained"
-                onClick={handleSave}
-                disabled={isSaving || script === scene.script}
-            >
-                {isSaving ? <CircularProgress size={24} /> : 'Save Script'}
-            </Button>
+            <Typography variant="body1" sx={{textAlign: 'right', width: '100%', pr: 4}} gutterBottom>
+                {status === 'Saving' ? 'Saving...' : status === 'Saved' ? 'Saved' : 'Saved'}
+            </Typography>
         </Box>
     );
 };

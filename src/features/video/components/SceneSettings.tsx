@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Grid, IconButton } from '@mui/material';
 import { Close,TextFields, Movie } from '@mui/icons-material';
-import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
+import { PanelGroup, Panel } from 'react-resizable-panels';
 import { Scene } from 'src/types';
 import { ScriptEditor } from './ScriptEditor';
 import { AnimationSettings } from './AnimationSettings';
+import ResizeHandle from "src/features/video/components/ResizeHandle";
 
 interface SceneSettingsProps {
     scene: Scene | null;
@@ -63,7 +64,6 @@ export const SceneSettings: React.FC<SceneSettingsProps> = ({ scene }) => {
         <PanelGroup direction="horizontal">
             <Panel defaultSize={editingMode ? 50 : 100} minSize={30}>
                 <Box sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>Settings for Scene {scene.order}</Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <SettingsTile icon={<TextFields fontSize="large" />} title="Script" onClick={() => setEditingMode('script')} />
@@ -76,7 +76,7 @@ export const SceneSettings: React.FC<SceneSettingsProps> = ({ scene }) => {
             </Panel>
             {editingMode && (
                 <>
-                    <PanelResizeHandle />
+                    <ResizeHandle orientation="vertical" />
                     <Panel defaultSize={50} minSize={30}>
                         <Box sx={{ position: 'relative', height: '100%', p: 2, overflowY: 'auto' }}>
                             <IconButton

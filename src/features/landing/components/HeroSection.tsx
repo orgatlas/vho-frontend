@@ -48,12 +48,12 @@ export const HeroSection: React.FC = () => {
                 <motion.div initial="hidden" animate="visible" variants={containerVariants}>
                     <motion.div variants={itemVariants}>
                         <Typography variant="h2" component="h1" fontWeight="bold" gutterBottom>
-                            Intelligent Property Videos
+                            Bring Listings to Life
                         </Typography>
                     </motion.div>
                     <motion.div variants={itemVariants}>
                         <Typography variant="h5" component="p" sx={{mb: 4, color: 'rgba(255, 255, 255, 0.8)'}}>
-                            Turn your property listing into a stunning marketing video in seconds.
+                            Turn your property listing into a stunning narrated marketing video in minutes
                         </Typography>
                     </motion.div>
                     <motion.div variants={itemVariants}>
@@ -67,7 +67,7 @@ export const HeroSection: React.FC = () => {
                                 alignItems: 'stretch' // Ensure children stretch to the same height
                             }}
                         >
-                            
+
                             <TextField
                                 fullWidth
                                 placeholder="Paste your property listing URL here..."

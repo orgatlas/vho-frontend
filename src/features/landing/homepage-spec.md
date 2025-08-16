@@ -11,7 +11,7 @@ The homepage should clearly communicate the value proposition, guide the user to
     - **Purpose:** Immediately encourage users to enter a property listing URL and create a video.
     - **Components:**
         - Large, centered headline with a short tagline.
-        - Subheading that explains the benefit (e.g., *"Turn your property listing into a stunning marketing video in seconds"*).
+        - Subheading that explains the benefit (e.g., *"Turn your property listing into a stunning marketing video in minutes"*).
         - Input field (full width on mobile, centered and medium-width on desktop) to paste a property listing URL.
         - Primary CTA button labeled **"Create Video"** next to or below the input.
         - Background: Either a high-quality blurred property photo/video loop or a clean gradient overlay.

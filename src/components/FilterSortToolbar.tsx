@@ -26,7 +26,7 @@ export const FilterSortToolbar: React.FC<FilterSortToolbarProps> = ({
         <Box sx={{ p: 2, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
             <TextField
                 label="Search"
-                variant="outlined"
+                variant="filled"
                 value={searchQuery}
                 onChange={onSearchChange}
                 sx={{ flexGrow: 1, minWidth: '200px' }}

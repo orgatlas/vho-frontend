@@ -46,11 +46,20 @@ export interface Package {
 }
 
 export interface Scene {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    features: string[];
+    id: string | number;
+    video: Video;
+    order: number;
+    duration: number;
+    audio: Audio;
+    image: Image;
+    file: string;
+}
+
+export interface Audio {
+    id: string | number;
+    voice: Voice;
+    script: string;
+    file: string;
 }
 
 export interface PaymentDetails {

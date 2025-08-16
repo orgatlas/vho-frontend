@@ -1,8 +1,25 @@
 import React from 'react';
-import {AppBar, Box, Button, Container, Toolbar, Typography, Menu, MenuItem} from '@mui/material';
+import {
+    AppBar,
+    Avatar,
+    Box,
+    Button,
+    Container,
+    Divider,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Popover,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import {Link, useLocation} from 'react-router-dom';
 import { useAuth } from 'src/contexts/AuthContext';
 import {useTheme} from "@mui/material/styles";
+import {Apartment, Logout, Settings} from "@mui/icons-material";
 
 export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> = ({children, contained = true}) => {
     const location = useLocation();
@@ -35,38 +52,71 @@ export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> 
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         <Link to="/" style={{textDecoration: 'none', color: 'inherit'}}>
-                            Clips2Close
+                            Virtual Home Open
                         </Link>
                     </Typography>
                     {
                         isAuthenticated ? (
                             <>
-
-                                <Button variant={'outlined'} sx={{color:theme.palette.text.secondary}}
-                                    onClick={handleMenu}
-                                >
-                                    {user?.first_name || 'User'}
-                                </Button>
-                                <Menu
-                                    sx={{color:'black'}}
-                                    id="menu-appbar"
+                                <IconButton onClick={handleMenu} sx={{p: 0}}>
+                                    <Avatar sx={{bgcolor: theme.palette.primary.main}}>
+                                        {user?.first_name?.[0]?.toUpperCase() || 'U'}
+                                    </Avatar>
+                                </IconButton>
+                                <Popover
+                                    open={open}
                                     anchorEl={anchorEl}
+                                    onClose={handleClose}
                                     anchorOrigin={{
-                                        vertical: 'top',
+                                        vertical: 'bottom',
                                         horizontal: 'right',
                                     }}
-                                    keepMounted
                                     transformOrigin={{
                                         vertical: 'top',
                                         horizontal: 'right',
                                     }}
-                                    open={open}
-                                    onClose={handleClose}
+                                    PaperProps={{
+                                        sx: {
+                                            mt: 1.5,
+                                            backgroundColor: theme.palette.background.default,
+                                            color: theme.palette.text.primary,
+                                            borderRadius: '10px',
+                                            boxShadow: theme.shadows[3],
+                                            border: `1px solid ${theme.palette.divider}`
+                                        }
+                                    }}
                                 >
-                                    <MenuItem component={Link} to="/listings" onClick={handleClose}>Properties</MenuItem>
-                                    <MenuItem component={Link} to="/user" onClick={handleClose}>Settings</MenuItem>
-                                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                                </Menu>
+                                    <Box sx={{p: 2}}>
+                                        <Typography variant="h6">{user?.first_name} {user?.last_name}</Typography>
+                                        <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
+                                    </Box>
+                                    <Divider />
+                                    <List sx={{p:1}}>
+                                        <ListItem disablePadding>
+                                            <ListItemButton component={Link} to="/listings" onClick={handleClose}>
+                                                <ListItemIcon>
+                                                    <Apartment fontSize="small" />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Properties" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                        <ListItem disablePadding>
+                                            <ListItemButton component={Link} to="/user" onClick={handleClose}>
+                                                <ListItemIcon>
+                                                    <Settings fontSize="small" />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Settings" />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </List>
+                                    <Divider />
+                                    <Box sx={{p: 1}}>
+                                        <Button fullWidth variant="text" onClick={handleLogout} sx={{color: theme.palette.error.main}}>
+                                            <Logout sx={{mr: 1}}/>
+                                            Logout
+                                        </Button>
+                                    </Box>
+                                </Popover>
                             </>
                         ) : (
                             <>

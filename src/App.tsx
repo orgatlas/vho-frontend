@@ -47,7 +47,7 @@ function App() {
                         <Route path="/listings" element={<Layout><UserListingsPage /></Layout>} />
                         <Route path="/listings/:propertyId/manage" element={<Layout><PropertyManagementPage /></Layout>} />
                         <Route path="/video/:videoId/view" element={<Layout><VideoViewPage /></Layout>} />
-                        <Route path="/video/:videoId/edit" element={<Layout><VideoEditorPage /></Layout>} />
+                        <Route path="/video/:videoId/edit" element={<VideoEditorPage />} />
                         <Route path="/extracting-details" element={<Layout><ExtractingDetailsPage /></Layout>} />
                     </Routes>
                 </AuthProvider>
