@@ -1,7 +1,6 @@
 import type { } from '@mui/material/themeCssVarsAugmentation';
 import { alpha } from '@mui/material/styles';
 import { createTheme } from '@mui/material';
-import 'src/assets/fonts/migra/font.css'
 import 'src/assets/fonts/inter/font.css';
 
 const light = '#c2f2ed'
@@ -42,7 +41,6 @@ export const theme = createTheme({
     typography: {
         fontFamily: ['"inter"', 'sans-serif'].join(','),
         h1: {
-            fontFamily: ['"Migra"', 'serif'].join(','),
             fontSize: 60,
             fontWeight: 600,
             lineHeight: 78 / 70,

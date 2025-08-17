@@ -15,7 +15,7 @@ export const VideoEditorHeader: React.FC<VideoEditorHeaderProps> = ({ video, onS
                 {video?.property.address || 'Video Editor'}
             </Typography>
             <Button variant="contained" color="primary" onClick={onSave} disabled={isSaving}>
-                {isSaving ? <CircularProgress size={24} /> : 'Save & Generate'}
+                {isSaving ? <CircularProgress size={24} /> : 'Save'}
             </Button>
         </Paper>
     );

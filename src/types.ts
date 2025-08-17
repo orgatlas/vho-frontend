@@ -71,7 +71,7 @@ export interface PaymentDetails {
 
 export interface MusicTrack {
     id: number;
-    title: string;
+    name: string;
     src: string;
 }
 
@@ -92,6 +92,8 @@ export interface Video {
     logo_position?: string;
     background_music?: MusicTrack;
     voice?: Voice;
+    created: string;
+    last_updated: string;
 }
 
 export interface Company {

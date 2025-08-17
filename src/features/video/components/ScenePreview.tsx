@@ -11,9 +11,9 @@ interface ScenePreviewProps {
 export const ScenePreview: React.FC<ScenePreviewProps> = ({scene}) => {
     const playerRef = useRef<ReactPlayer>(null);
     const playerWrapperRef = useRef<HTMLDivElement>(null);
-    const [playing, setPlaying] = useState(true);
+    const [playing, setPlaying] = useState(false);
     const [played, setPlayed] = useState(0);
-    const [volume, setVolume] = useState(0.8);
+    const [volume, setVolume] = useState(1);
     const [controlsWidth, setControlsWidth] = useState<number | undefined>(undefined);
 
     const handlePlayPause = () => setPlaying(!playing);

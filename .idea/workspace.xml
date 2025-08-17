@@ -5,32 +5,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/features/video/components/ResizeHandle.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/property-video-generator-spec.md" beforeDir="false" afterPath="$PROJECT_DIR$/property-video-generator-spec.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo512.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/Clover Logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/Clover Logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extrabold.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extrabold.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extrabold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extrabold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extrabold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extralight.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extralight.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extralight.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extralight.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/Migra-Extralight.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtraboldItalic.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtraboldItalic.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtraboldItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtraboldItalic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtraboldItalic.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtralightItalic.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtralightItalic.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtralightItalic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtralightItalic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/MigraItalic-ExtralightItalic.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/fonts/migra/font.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/FilterSortToolbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FilterSortToolbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/homepage-spec.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/homepage-spec.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/property/components/PropertyCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/PropertyCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/property/pages/UserListingsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/UserListingsPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/components/ScenePreview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/ScenePreview.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/SceneSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/SceneSettings.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/components/ScriptEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/ScriptEditor.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/components/VideoCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/VideoCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/components/VideoSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/VideoSettings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/LeftPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/LeftPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/RightPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/RightPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/VideoEditorHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/VideoEditorHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/layouts/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/theme.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/theme.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,35 +82,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/clover/frontend/src/layouts&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/clover/frontend/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Volumes/X9 Pro/Development/Projects/clover/frontend/src/assets/images",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Volumes/X9 Pro/Development/Projects/clover/frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/images" />
+      <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/src/layouts" />
       <recent name="$PROJECT_DIR$/src/features/user" />
       <recent name="$PROJECT_DIR$/src/assets/fonts/Inter" />
-      <recent name="$PROJECT_DIR$/src/assets" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/features/property/components" />
       <recent name="$PROJECT_DIR$/src/theme/pages" />
       <recent name="$PROJECT_DIR$/src/theme/components" />
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/features/video" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -148,7 +172,9 @@
       <workItem from="1755162852526" duration="704000" />
       <workItem from="1755164098635" duration="31264000" />
       <workItem from="1755330260462" duration="3686000" />
-      <workItem from="1755348155487" duration="11500000" />
+      <workItem from="1755348155487" duration="12020000" />
+      <workItem from="1755414204211" duration="8620000" />
+      <workItem from="1755434225644" duration="5173000" />
     </task>
     <servers />
   </component>

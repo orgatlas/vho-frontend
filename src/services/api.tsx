@@ -204,7 +204,7 @@ export const getMusicTracks = async (): Promise<MusicTrack[]> => {
     const response = await api.get('video/music/list');
     return response.data.background_music.map((track: any) => ({
         id: track.id,
-        title: track.name,
+        name: track.name,
         src: track.preview,
     }));
 }
@@ -306,16 +306,18 @@ export const getSceneList = async (videoId: number | string): Promise<Scene[]> =
     return response.data.scenes;
 };
 
-export const saveVideo = async (videoId: number): Promise<{ message: string }> => {
-    const response = await api.post('video/save', {video: videoId});
+export const saveVideo = async (videoId: number | string): Promise<{ message: string }> => {
+    const response = await api.post('video/update', {video: videoId});
     return response.data;
 };
 
-export const updateScene = async (sceneId: string | number, data: {
-    script?: string;
-    order?: number
-}): Promise<Scene> => {
-    const response = await api.post('video/scene/update', {scene: sceneId, ...data});
+export const updateSceneScript = async (sceneId: string | number, script?: string): Promise<Scene> => {
+    const response = await api.post('video/scene/update', {scene: sceneId, script: script});
+    return response.data.scene;
+};
+
+export const updateSceneOrder = async (sceneId: string | number, order: number): Promise<Scene> => {
+    const response = await api.post('video/scene/update', {scene: sceneId, order: order});
     return response.data.scene;
 };
 

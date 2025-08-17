@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Box, Typography, Paper } from '@mui/material';
 import { Scene } from 'src/types';
@@ -13,17 +13,29 @@ interface SceneListProps {
 
 export const SceneList: React.FC<SceneListProps> = ({ scenes, selectedScene, onSelectScene, onReorderScenes }) => {
 
+    const [orderedScenes, setOrderedScenes] = useState<Scene[]>(() => [...scenes].sort((a, b) => a.order - b.order));
+
+    useEffect(() => {
+        const propIds = scenes.map(s => s.id).sort().join(',');
+        const stateIds = orderedScenes.map(s => s.id).sort().join(',');
+
+        if (propIds !== stateIds) {
+            setOrderedScenes([...scenes].sort((a, b) => a.order - b.order));
+        }
+    }, [scenes, orderedScenes]);
+
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
         if (!destination) {
             return;
         }
 
-        const reorderedScenes = Array.from(scenes);
-        const [removed] = reorderedScenes.splice(source.index, 1);
-        reorderedScenes.splice(destination.index, 0, removed);
+        const reordered = Array.from(orderedScenes);
+        const [removed] = reordered.splice(source.index, 1);
+        reordered.splice(destination.index, 0, removed);
 
-        onReorderScenes(reorderedScenes);
+        setOrderedScenes(reordered);
+        onReorderScenes(reordered);
     };
 
     return (
@@ -31,7 +43,7 @@ export const SceneList: React.FC<SceneListProps> = ({ scenes, selectedScene, onS
             <Droppable droppableId="scenes">
                 {(provided) => (
                     <Box {...provided.droppableProps} ref={provided.innerRef} sx={{ p: 1, height: '100%', overflowY: 'auto' }}>
-                        {scenes.map((scene, index) => (
+                        {orderedScenes.map((scene, index) => (
                             <Draggable key={scene.id} draggableId={scene.id.toString()} index={index}>
                                 {(provided, snapshot) => (
                                     <Paper

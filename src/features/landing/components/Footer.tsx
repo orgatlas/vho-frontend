@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Container, Grid, Link, IconButton } from '@mui/material';
 import { Facebook, Twitter, LinkedIn } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import Logo from 'src/assets/Clover Logo.svg';
+import Logo from 'src/assets/images/logo.png';
 
 export const Footer: React.FC = () => {
     return (
@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
                         </Grid>
                         <Grid item xs={6} sm={2}>
                             <Typography variant="h6" gutterBottom>Legal</Typography>
-                            <Link href="#" color="inherit" display="block" sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>Terms of Service</Link>
+                            <Link href="/terms-of-service" color="inherit" display="block" sx={{ mb: 1, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>Terms of Service</Link>
                             <Link href="#" color="inherit" display="block" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>Privacy Policy</Link>
                         </Grid>
                         <Grid item xs={12} sm={3} sx={{ textAlign: { xs: 'left', sm: 'right' } }}>

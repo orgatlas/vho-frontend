@@ -1,20 +1,18 @@
 import React from 'react';
 import {Box, Typography, IconButton, Paper, Stack, Chip} from '@mui/material';
 import {Edit} from '@mui/icons-material';
-import {Video, Voice, MusicTrack} from 'src/types';
+import {Video} from 'src/types';
 import {useTheme} from "@mui/material/styles";
 
 interface VideoSettingsProps {
     video: Video | null;
-    voices: Voice[];
-    musicTracks: MusicTrack[];
     onEditVoice: () => void;
     onEditMusic: () => void;
 }
 
-export const VideoSettings: React.FC<VideoSettingsProps> = ({video, voices, musicTracks, onEditVoice, onEditMusic}) => {
-    const selectedVoice = voices.find(v => v.id === video?.voice!.id);
-    const selectedMusic = musicTracks.find(m => m.id === video?.background_music!.id);
+export const VideoSettings: React.FC<VideoSettingsProps> = ({video, onEditVoice, onEditMusic}) => {
+    const selectedVoice = video?.voice;
+    const selectedMusic = video?.background_music;
     const theme = useTheme();
 
     return (
@@ -55,7 +53,7 @@ export const VideoSettings: React.FC<VideoSettingsProps> = ({video, voices, musi
                             fontSize: '18px',
                             color: theme.palette.text.secondary
                         }}
-                              label={selectedMusic ? selectedMusic.title : 'Not Selected'}/>
+                              label={selectedMusic && selectedMusic.name ? selectedMusic.name : 'Not Selected'}/>
                     </Box>
                     <IconButton onClick={onEditMusic}>
                         <Edit sx={{color: 'white'}}/>

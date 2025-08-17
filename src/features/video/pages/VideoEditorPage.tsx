@@ -11,7 +11,8 @@ import {
     getVideoDetails,
     getSceneList,
     saveVideo,
-    updateScene,
+    updateSceneOrder,
+    updateSceneScript,
     getVoiceTracks,
     getMusicTracks,
     setVoiceTrack,
@@ -74,10 +75,9 @@ export const VideoEditorPage: React.FC = () => {
         setScenes(reorderedScenes);
         try {
             const updatePromises = reorderedScenes.map((scene, index) =>
-                updateScene(scene.id, {order: index + 1})
+                updateSceneOrder(scene.id, index + 1)
             );
             await Promise.all(updatePromises);
-            toast.success("Scene order saved!");
         } catch (error) {
             console.error("Failed to update scene order", error);
             toast.error("Could not save new scene order.");
@@ -90,7 +90,7 @@ export const VideoEditorPage: React.FC = () => {
         try {
             await saveVideo(videoId);
             toast.success("Video saved successfully!");
-            navigate(`/listings/${video?.property_id}/manage`);
+            navigate(`/listings/${video?.property.id}/manage`);
         } catch (error) {
             console.error("Failed to save video", error);
         } finally {
@@ -102,7 +102,10 @@ export const VideoEditorPage: React.FC = () => {
         if (!video?.id) return;
         try {
             await setVoiceTrack(video.id, voiceId);
-            setVideo(prev => prev ? {...prev, voice_id: voiceId} : null);
+            const selectedVoice = availableVoices.find(v => v.id === voiceId);
+            if (selectedVoice) {
+                setVideo(prev => prev ? {...prev, voice: selectedVoice} : null);
+            }
             toast.success("Narrator voice updated.");
         } catch (error) {
             console.error("Failed to set voice track", error);
@@ -114,7 +117,10 @@ export const VideoEditorPage: React.FC = () => {
         if (!video?.id) return;
         try {
             await setMusicTrack(video.id, musicId);
-            setVideo(prev => prev ? {...prev, music_id: musicId} : null);
+            const selectedMusic = availableMusic.find(m => m.id === musicId);
+            if (selectedMusic) {
+                setVideo(prev => prev ? {...prev, background_music: selectedMusic} : null);
+            }
             toast.success("Background music updated.");
         } catch (error) {
             console.error("Failed to set music track", error);

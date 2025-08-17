@@ -29,7 +29,7 @@ export const UserListingsPage: React.FC = () => {
 
     // New state for filtering and sorting
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortOption, setSortOption] = useState('created_at');
+    const [sortOption, setSortOption] = useState('created');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [resultsPerPage, setResultsPerPage] = useState(12);
 
@@ -100,15 +100,14 @@ export const UserListingsPage: React.FC = () => {
                 <Typography variant="h4" component="h1">
                     My Properties
                 </Typography>
-                <Button variant="contained" startIcon={<Add />} onClick={handleCreateNew}>
-                    Create New Property
-                </Button>
+                {/*<Button variant="contained" startIcon={<Add />} onClick={handleCreateNew}>*/}
+                {/*    Create New Property*/}
+                {/*</Button>*/}
             </Box>
 
             <Paper sx={{
-                mb: 3,
+                mb: 2,
                 borderRadius: '10px',
-                border: `1px solid ${theme.palette.divider}`,
                 boxShadow: 'none',
                 backgroundColor: theme.palette.background.default,
             }} >

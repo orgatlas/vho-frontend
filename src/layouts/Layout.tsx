@@ -19,7 +19,7 @@ import {
 import {Link, useLocation} from 'react-router-dom';
 import { useAuth } from 'src/contexts/AuthContext';
 import {useTheme} from "@mui/material/styles";
-import {Apartment, Logout, Settings} from "@mui/icons-material";
+import {Apartment, HelpOutline, Logout, Settings} from "@mui/icons-material";
 
 export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> = ({children, contained = true}) => {
     const location = useLocation();
@@ -55,12 +55,15 @@ export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> 
                             Virtual Home Open
                         </Link>
                     </Typography>
+                    <IconButton component={Link} to="/support" sx={{ color: 'inherit', mr: 1 }}>
+                        <HelpOutline />
+                    </IconButton>
                     {
                         isAuthenticated ? (
                             <>
                                 <IconButton onClick={handleMenu} sx={{p: 0}}>
-                                    <Avatar sx={{bgcolor: theme.palette.primary.main}}>
-                                        {user?.first_name?.[0]?.toUpperCase() || 'U'}
+                                    <Avatar sx={{bgcolor: theme.palette.background.paper}}>
+                                        {user?.first_name?.[0]?.toUpperCase() || 'U'}{user?.last_name?.[0]?.toUpperCase() || ''}
                                     </Avatar>
                                 </IconButton>
                                 <Popover

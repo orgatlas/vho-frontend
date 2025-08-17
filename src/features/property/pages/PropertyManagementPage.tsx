@@ -33,7 +33,7 @@ export const PropertyManagementPage: React.FC = () => {
 
     // New state for filtering and sorting
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortOption, setSortOption] = useState('created_at');
+    const [sortOption, setSortOption] = useState('created');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [resultsPerPage, setResultsPerPage] = useState(12);
 
@@ -98,10 +98,6 @@ export const PropertyManagementPage: React.FC = () => {
         fetchVideos(nextPage, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, true);
     };
 
-    const handleVideoClick = (videoId: string) => {
-        navigate(`/video/${videoId}/view`);
-    };
-
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
@@ -133,40 +129,39 @@ export const PropertyManagementPage: React.FC = () => {
                     p: 3,
                     mb: 4,
                     borderRadius: '10px',
-                    border: `1px solid ${theme.palette.divider}`,
                     boxShadow: 'none',
                     backgroundColor: theme.palette.background.default,
                 }}>
-                    <Typography variant="h4" component="h1" gutterBottom>{property.address}</Typography>
-                    <Typography variant="h5" color="primary" gutterBottom>${Number(property.price).toLocaleString()}</Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary', mt: 1, gap: 2 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <BedOutlined sx={{ mr: 1 }} />
+                    <Typography variant="h4" component="h1" color={'text.primary'} gutterBottom>{property.address}</Typography>
+                    <Typography variant="h5" color="primary"
+                                gutterBottom>{property.price}</Typography>
+                    <Box sx={{display: 'flex', alignItems: 'center', color: 'text.primary', mt: 1, gap: 2}}>
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                            <BedOutlined sx={{mr: 1}}/>
                             <Typography variant="body1">{property.bedrooms} Beds</Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <BathtubOutlined sx={{ mr: 1 }} />
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                            <BathtubOutlined sx={{mr: 1}}/>
                             <Typography variant="body1">{property.bathrooms} Baths</Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <DirectionsCarOutlined sx={{ mr: 1 }} />
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                            <DirectionsCarOutlined sx={{mr: 1}}/>
                             <Typography variant="body1">{property.car_spaces} Cars</Typography>
                         </Box>
                     </Box>
                 </Paper>
             )}
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2}}>
                 <Typography variant="h5" component="h2">Videos</Typography>
-                <Button variant="contained" startIcon={<Add />} onClick={handleGenerateVideo}>
-                    Generate New Video
-                </Button>
+                {/*<Button variant="contained" startIcon={<Add/>} onClick={handleGenerateVideo}>*/}
+                {/*    Generate New Video*/}
+                {/*</Button>*/}
             </Box>
 
             <Paper sx={{
                 mb: 3,
                 borderRadius: '10px',
-                border: `1px solid ${theme.palette.divider}`,
                 boxShadow: 'none',
                 backgroundColor: theme.palette.background.default,
             }}>
@@ -183,8 +178,8 @@ export const PropertyManagementPage: React.FC = () => {
             </Paper>
 
             {isVideosLoading && videos.length === 0 ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-                    <CircularProgress />
+                <Box sx={{display: 'flex', justifyContent: 'center', my: 4}}>
+                    <CircularProgress/>
                 </Box>
             ) : !isVideosLoading && videos.length === 0 ? (
                 <Paper sx={{
@@ -192,15 +187,14 @@ export const PropertyManagementPage: React.FC = () => {
                     p: 4,
                     mt: 4,
                     borderRadius: '10px',
-                    border: `1px solid ${theme.palette.divider}`,
                     boxShadow: 'none',
                     backgroundColor: theme.palette.background.default,
                 }}>
-                    <VideocamOutlined sx={{ fontSize: 60, color: theme.palette.secondary.light }} />
+                    <VideocamOutlined sx={{fontSize: 60, color: theme.palette.secondary.light}}/>
                     <Typography variant="h5" component="p" gutterBottom sx={{mt: 2}}>
                         No videos found for this property.
                     </Typography>
-                    <Typography color="text.secondary" sx={{mb: 3}}>
+                    <Typography color="text.primary" sx={{mb: 3}}>
                         Get started by generating your first video.
                     </Typography>
                     <Button variant="contained" onClick={handleGenerateVideo}>
@@ -211,9 +205,7 @@ export const PropertyManagementPage: React.FC = () => {
                 <Grid container spacing={3}>
                     {videos.map(video => (
                         <Grid item key={video.id} xs={12} sm={6} md={4}>
-                            <Box onClick={() => handleVideoClick(video.id)} sx={{cursor: 'pointer'}}>
-                                <VideoCard video={video}/>
-                            </Box>
+                            <VideoCard video={video}/>
                         </Grid>
                     ))}
                 </Grid>
@@ -222,7 +214,7 @@ export const PropertyManagementPage: React.FC = () => {
             {hasMore && !isVideosLoading && (
                 <Box sx={{display: 'flex', justifyContent: 'center', my: 4}}>
                     <Button variant="contained" onClick={handleLoadMore} disabled={isVideosLoading}>
-                        {isVideosLoading ? <CircularProgress size={24} /> : 'Load More'}
+                        {isVideosLoading ? <CircularProgress size={24}/> : 'Load More'}
                     </Button>
                 </Box>
             )}

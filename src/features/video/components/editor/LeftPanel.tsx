@@ -23,14 +23,14 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                                                         onSelectScene,
                                                         onReorderScenes,
                                                         video,
-                                                        voices,
-                                                        musicTracks,
                                                         onEditVoice,
                                                         onEditMusic
                                                     }) => {
+    const showPremiumSettings = video?.package?.is_premium;
+
     return (
         <PanelGroup direction="vertical">
-            <Panel defaultSize={65} minSize={40}>
+            <Panel defaultSize={showPremiumSettings ? 65 : 100} minSize={40}>
                 <SceneList
                     scenes={scenes}
                     selectedScene={selectedScene}
@@ -38,16 +38,18 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                     onReorderScenes={onReorderScenes}
                 />
             </Panel>
-            <ResizeHandle orientation="horizontal"/>
-            <Panel defaultSize={35} minSize={20}>
-                <VideoSettings
-                    video={video}
-                    voices={voices}
-                    musicTracks={musicTracks}
-                    onEditVoice={onEditVoice}
-                    onEditMusic={onEditMusic}
-                />
-            </Panel>
+            {showPremiumSettings && (
+                <>
+                    <ResizeHandle orientation="horizontal"/>
+                    <Panel defaultSize={35} minSize={20}>
+                        <VideoSettings
+                            video={video}
+                            onEditVoice={onEditVoice}
+                            onEditMusic={onEditMusic}
+                        />
+                    </Panel>
+                </>
+            )}
         </PanelGroup>
     );
 };

@@ -63,8 +63,6 @@ export const RightPanel: React.FC<RightPanelProps> = ({
             <Panel defaultSize={40} minSize={20}>
                 {/*<SceneSettings scene={scene} />*/}
                 {scene ? <ScriptEditor scene={scene}/> : <Typography>Select a scene to view its settings.</Typography>}
-
-
             </Panel>
         </PanelGroup>
     );
