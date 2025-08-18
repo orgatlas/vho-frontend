@@ -36,7 +36,7 @@ const itemVariants = {
 
 export const HowItWorksSection: React.FC = () => {
     return (
-        <Box sx={{ py: { xs: 6, md: 10 }, backgroundColor: '#f7f9fc' }}>
+        <Box sx={{ py: { xs: 6, md: 10 } }}>
             <Container maxWidth="lg">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={itemVariants}>
                     <Typography variant="h3" component="h2" textAlign="center" fontWeight="bold" gutterBottom>

@@ -19,7 +19,7 @@ import {
 import {Link, useLocation} from 'react-router-dom';
 import { useAuth } from 'src/contexts/AuthContext';
 import {useTheme} from "@mui/material/styles";
-import {Apartment, HelpOutline, Logout, Settings} from "@mui/icons-material";
+import {Apartment, HelpOutline, Logout, Support} from "@mui/icons-material";
 
 export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> = ({children, contained = true}) => {
     const location = useLocation();
@@ -55,9 +55,6 @@ export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> 
                             Virtual Home Open
                         </Link>
                     </Typography>
-                    <IconButton component={Link} to="/support" sx={{ color: 'inherit', mr: 1 }}>
-                        <HelpOutline />
-                    </IconButton>
                     {
                         isAuthenticated ? (
                             <>
@@ -104,11 +101,11 @@ export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> 
                                             </ListItemButton>
                                         </ListItem>
                                         <ListItem disablePadding>
-                                            <ListItemButton component={Link} to="/user" onClick={handleClose}>
+                                            <ListItemButton component={Link} to="/support" onClick={handleClose}>
                                                 <ListItemIcon>
-                                                    <Settings fontSize="small" />
+                                                    <Support fontSize="small" />
                                                 </ListItemIcon>
-                                                <ListItemText primary="Settings" />
+                                                <ListItemText primary="Support" />
                                             </ListItemButton>
                                         </ListItem>
                                     </List>
@@ -125,9 +122,13 @@ export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> 
                             <>
                                 <Button variant={'outlined'} sx={{color:theme.palette.text.secondary}} component={Link} to="/login">Sign In</Button>
                                 <Button variant={'outlined'} sx={{color:theme.palette.text.secondary}} component={Link} to="/register">Register</Button>
+                                <IconButton component={Link} to="/support" sx={{ color: 'inherit', mr: 1 }}>
+                                    <HelpOutline />
+                                </IconButton>
                             </>
                         )
                     }
+
                 </Toolbar>
             </AppBar>
             <Box component="main" sx={{flexGrow: 1, overflowY: 'auto'}}>

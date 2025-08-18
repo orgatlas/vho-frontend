@@ -90,6 +90,10 @@ export const resetPassword = async (email: string) => {
     return response.data;
 };
 
+export const submitContactForm = async (first_name:string, last_name: string ,email: string, message:string) => {
+    const response = await api.post('mail/contact/submit', {first_name: first_name, last_name: last_name, email: email, message:message});
+    return response.data;
+};
 
 export const uploadImage = async (videoId: number, file: File): Promise<{
     id: string,
@@ -132,9 +136,18 @@ export const getVideoDetails = async (videoId: number | string): Promise<Video> 
     return response.data.video;
 }
 
-export const getPackages = async (videoId: number): Promise<Package[]> => {
-    const response = await api.post('billing/packages', {video: videoId});
+export const getPackages = async (videoId: number | null, scenes?: number, currency?: string): Promise<Package[]> => {
+    const payload: any = {};
+    if (videoId) payload.video = videoId;
+    if (scenes) payload.scenes = scenes;
+    if (currency) payload.currency = currency;
+    const response = await api.post('billing/packages', payload);
     return response.data.packages;
+}
+
+export const getPricing = async (scenes: number): Promise<any> => {
+    const response = await api.post('billing/pricing', {scenes:scenes});
+    return response.data;
 }
 
 export const extractVideoDetailsFromUrl = async (url: string): Promise<Video> => {
@@ -310,6 +323,11 @@ export const saveVideo = async (videoId: number | string): Promise<{ message: st
     const response = await api.post('video/update', {video: videoId});
     return response.data;
 };
+
+export const updateVideoTitle = async (videoId: number | string, newTitle: string): Promise<Property> => {
+    const response = await api.post('video/title/update', {video: videoId, title: newTitle});
+    return response.data.property;
+}
 
 export const updateSceneScript = async (sceneId: string | number, script?: string): Promise<Scene> => {
     const response = await api.post('video/scene/update', {scene: sceneId, script: script});
