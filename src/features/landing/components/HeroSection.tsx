@@ -53,7 +53,7 @@ export const HeroSection: React.FC = () => {
                     </motion.div>
                     <motion.div variants={itemVariants}>
                         <Typography variant="h5" component="p" sx={{mb: 4, color: 'rgba(255, 255, 255, 0.8)'}}>
-                            Turn your property listing into a stunning narrated marketing video in minutes
+                            Turn your property listing into a stunning narrated video
                         </Typography>
                     </motion.div>
                     <motion.div variants={itemVariants}>

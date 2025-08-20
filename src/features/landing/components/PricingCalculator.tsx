@@ -1,11 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Slider, Typography, CircularProgress, Card, CardContent, Grid, Container} from '@mui/material';
+import {
+    Box,
+    Slider,
+    Typography,
+    CircularProgress,
+    Card,
+    CardContent,
+    Grid,
+    Container,
+    Chip,
+    Menu,
+    MenuItem
+} from '@mui/material';
 import {getPricing} from 'src/services/api';
-import {CurrencySelector} from 'src/components/CurrencySelector';
 import {PriceDisplay} from 'src/components/PriceDisplay';
 import {useDebounce} from 'src/hooks/useDebounce';
-import {SectionHeader} from 'src/theme/components/SectionHeader';
 import {AttachMoney} from '@mui/icons-material';
+import {motion} from "framer-motion";
 
 const localeCurrencyMap: { [key: string]: string } = {
     'en-US': 'USD',
@@ -44,6 +55,7 @@ const getDefaultCurrency = (): string => {
     return 'AUD';
 };
 
+const supportedCurrencies = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY'];
 
 export const PricingCalculator: React.FC = () => {
     const [scenes, setScenes] = useState<number>(5);
@@ -51,6 +63,9 @@ export const PricingCalculator: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [currency, setCurrency] = useState<string>('AUD');
     const debouncedScenes = useDebounce(scenes, 500);
+
+    const [currencyAnchor, setCurrencyAnchor] = useState<null | HTMLElement>(null);
+    const currencyMenuOpen = Boolean(currencyAnchor);
 
     useEffect(() => {
         setCurrency(getDefaultCurrency());
@@ -71,41 +86,69 @@ export const PricingCalculator: React.FC = () => {
         setScenes(newValue as number);
     };
 
+    const fireCurrencyChange = (value: string) => {
+        setCurrency(value);
+        setCurrencyAnchor(null);
+    };
+
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+    };
+
     return (
-        <Container maxWidth="md" sx={{py: {xs: 4, md: 8}}}>
+        <Container maxWidth="md" sx={{py: {xs: 4, md: 8}}} id={'pricing'}>
+            <motion.div initial="hidden" whileInView="visible" viewport={{once: true, amount: 0.5}}
+                        variants={itemVariants}>
+                <Typography variant="h3" component="h2" textAlign="center" fontWeight="bold" gutterBottom>
+                    Pricing
+                </Typography>
+                <Typography variant="h6" textAlign="center" color="text.primary" sx={{mb: 6}}>
+                    Transparent Per Video Pricing
+                </Typography>
+            </motion.div>
             <Card elevation={3} sx={{p: 3, backgroundColor: 'background.paper'}}>
                 <CardContent>
-                    <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
-                        <AttachMoney color={"text.secondary"}/>
-                        <Typography variant="h6" sx={{ml: 1}}>
-                            Pricing Calculator
-                        </Typography>
+                    <Box sx={{width: '100%', display: 'flex', justifyContent: 'space-between', mb: 4}}>
+                        <Typography variant={'h5'} gutterBottom>{scenes} Listing Images</Typography>
+
+                        <Chip
+                            label={currency}
+                            color="primary"
+                            variant="outlined"
+                            onClick={(e) => setCurrencyAnchor(e.currentTarget)}
+                            sx={{cursor: 'pointer'}}
+                        />
+                        <Menu
+                            anchorEl={currencyAnchor}
+                            open={currencyMenuOpen}
+                            onClose={() => setCurrencyAnchor(null)}
+                        >
+                            {supportedCurrencies.map((c) => (
+                                <MenuItem key={c} onClick={() => fireCurrencyChange(c)}>{c}</MenuItem>
+                            ))}
+                        </Menu>
+
                     </Box>
-                    <Grid container spacing={2} alignItems="center" sx={{mt: 2}}>
-                        <Grid item xs={12} md={9}>
-                            <Typography gutterBottom>{scenes} Listing Images</Typography>
-                            <Slider
-                                value={scenes}
-                                onChange={handleSliderChange}
-                                aria-labelledby="scenes-slider"
-                                valueLabelDisplay="auto"
-                                step={1}
-                                marks
-                                min={1}
-                                max={20}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={3}>
-                            <CurrencySelector selectedCurrency={currency} onCurrencyChange={setCurrency}/>
-                        </Grid>
-                    </Grid>
+
+                    <Slider
+                        value={scenes}
+                        onChange={handleSliderChange}
+                        aria-labelledby="scenes-slider"
+                        valueLabelDisplay="auto"
+                        step={1}
+                        min={1}
+                        max={20}
+                    />
+
                     <Box sx={{mt: 4, textAlign: 'center'}}>
                         <Typography variant="h6" gutterBottom>Starting from</Typography>
                         {loading ? (
                             <CircularProgress/>
                         ) : (
                             price !== null ? (
-                                <Typography variant="h4" component="div" color="primary.dark" sx={{fontWeight: 'bold'}}>
+                                <Typography variant="h4" component="div" color="primary"
+                                            sx={{fontWeight: 'bold'}}>
                                     <PriceDisplay cost={price} currency={currency}/>
                                 </Typography>
                             ) : (

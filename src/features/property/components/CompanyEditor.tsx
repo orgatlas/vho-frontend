@@ -188,10 +188,10 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                             <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
                                 <Avatar src={getFullImageUrl(company.logo)} sx={{width: 60, height: 60}} variant="rounded"/>
                                 <Box>
-                                    <Typography variant="h6">{company.name}</Typography>
-                                    <Typography variant="body2" color="text.primary">{company.email}
+                                    <Typography variant="h6">{company.name || ''}</Typography>
+                                    <Typography variant="body2" color="text.primary">{company.email || ''}
                                     </Typography>
-                                    <Typography variant="body2" color="text.primary">{company.phone}
+                                    <Typography variant="body2" color="text.primary">{company.phone || ''}
                                     </Typography>
                                 </Box>
                                 <IconButton

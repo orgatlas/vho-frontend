@@ -9,7 +9,7 @@ import {
     CardActions,
     IconButton,
     Menu,
-    MenuItem
+    MenuItem, CircularProgress
 } from '@mui/material';
 import { Video } from 'src/types';
 import {VideocamOutlined, Download, Edit, Share, PlayArrow, Pause} from "@mui/icons-material";
@@ -158,47 +158,54 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
                     </Typography>
                 </CardContent>
             </Box>
-            <CardActions sx={{ justifyContent: 'flex-end', paddingTop: 0 }}>
-                <IconButton onClick={handleDownload} aria-label="download">
-                    <Download />
-                </IconButton>
-                <IconButton onClick={handleEdit} aria-label="edit">
-                    <Edit />
-                </IconButton>
-                <IconButton onClick={handleShareClick} aria-label="share">
-                    <Share />
-                </IconButton>
-                <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleShareClose}
-                >
-                    <MenuItem onClick={handleShareClose}>
-                        <FacebookShareButton url={shareUrl} quote={video.title || ''}>
-                            <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                                <FacebookIcon size={32} round />
-                                <Typography>Facebook</Typography>
-                            </Box>
-                        </FacebookShareButton>
-                    </MenuItem>
-                    <MenuItem onClick={handleShareClose}>
-                        <TwitterShareButton url={shareUrl} title={video.title || ''}>
-                             <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                                <TwitterIcon size={32} round />
-                                <Typography>Twitter</Typography>
-                            </Box>
-                        </TwitterShareButton>
-                    </MenuItem>
-                    <MenuItem onClick={handleShareClose}>
-                        <EmailShareButton url={shareUrl} subject={video.title || ''} body="Check out this video:">
-                             <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                                <EmailIcon size={32} round />
-                                 <Typography>Email</Typography>
-                            </Box>
-                        </EmailShareButton>
-                    </MenuItem>
-                </Menu>
-            </CardActions>
+            {video.locked ? (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', p: 2, gap: 1 }}>
+                    <CircularProgress size={20} />
+                    <Typography variant="body2" color="text.secondary">Creating</Typography>
+                </Box>
+            ) : (
+                <CardActions sx={{ justifyContent: 'flex-end', paddingTop: 0 }}>
+                    <IconButton onClick={handleDownload} aria-label="download">
+                        <Download />
+                    </IconButton>
+                    <IconButton onClick={handleEdit} aria-label="edit">
+                        <Edit />
+                    </IconButton>
+                    <IconButton onClick={handleShareClick} aria-label="share">
+                        <Share />
+                    </IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleShareClose}
+                    >
+                        <MenuItem onClick={handleShareClose}>
+                            <FacebookShareButton url={shareUrl} quote={video.title || ''}>
+                                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                    <FacebookIcon size={32} round />
+                                    <Typography>Facebook</Typography>
+                                </Box>
+                            </FacebookShareButton>
+                        </MenuItem>
+                        <MenuItem onClick={handleShareClose}>
+                            <TwitterShareButton url={shareUrl} title={video.title || ''}>
+                                 <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                    <TwitterIcon size={32} round />
+                                    <Typography>Twitter</Typography>
+                                </Box>
+                            </TwitterShareButton>
+                        </MenuItem>
+                        <MenuItem onClick={handleShareClose}>
+                            <EmailShareButton url={shareUrl} subject={video.title || ''} body="Check out this video:">
+                                 <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                    <EmailIcon size={32} round />
+                                     <Typography>Email</Typography>
+                                 </Box>
+                            </EmailShareButton>
+                        </MenuItem>
+                    </Menu>
+                </CardActions>
+            )}
         </Card>
     );
 };

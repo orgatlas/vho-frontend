@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import RegisterPage from 'src/features/auth/pages/RegisterPage';
 import LoginPage from 'src/features/auth/pages/LoginPage';
 import ForgotPasswordPage from 'src/features/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from 'src/features/auth/pages/ResetPasswordPage';
 import UserPage from 'src/features/user/pages/UserPage';
 import {AuthProvider} from './contexts/AuthContext';
 import PropertyPage from 'src/features/property/pages/PropertyPage';
@@ -24,6 +25,8 @@ import {VideoViewPage} from 'src/features/video/pages/VideoViewPage';
 import {VideoEditorPage} from 'src/features/video/pages/VideoEditorPage';
 import {SupportPage} from 'src/features/support/pages/SupportPage';
 import {TermsOfServicePage} from 'src/features/legal/pages/TermsOfServicePage';
+import {AcceptableUsePolicyPage} from 'src/features/legal/pages/AcceptableUsePage';
+import {PrivacyPolicyPage} from 'src/features/legal/pages/PrivacyPolicyPage';
 
 function App() {
     return (
@@ -44,6 +47,7 @@ function App() {
                         <Route path="/register" element={<Layout><RegisterPage/></Layout>}/>
                         <Route path="/login" element={<Layout><LoginPage/></Layout>}/>
                         <Route path="/forgot-password" element={<Layout><ForgotPasswordPage/></Layout>}/>
+                        <Route path="/password/reset" element={<Layout><ResetPasswordPage/></Layout>}/>
                         <Route path="/user" element={<Layout><UserPage/></Layout>}/>
                         <Route path="/property/:propertyId" element={<Layout><PropertyPage/></Layout>}/>
                         <Route path="/listings" element={<Layout><UserListingsPage/></Layout>}/>
@@ -54,6 +58,8 @@ function App() {
                         <Route path="/extracting-details" element={<Layout><ExtractingDetailsPage/></Layout>}/>
                         <Route path="/support" element={<Layout><SupportPage/></Layout>}/>
                         <Route path="/terms-of-service" element={<Layout><TermsOfServicePage/></Layout>}/>
+                        <Route path="/acceptable-use" element={<Layout><AcceptableUsePolicyPage/></Layout>}/>
+                        <Route path="/privacy" element={<Layout><PrivacyPolicyPage/></Layout>}/>
                     </Routes>
                 </AuthProvider>
             </Router>

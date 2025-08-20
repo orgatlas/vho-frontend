@@ -12,7 +12,6 @@ import {
     getSceneList,
     saveVideo,
     updateSceneOrder,
-    updateSceneScript,
     getVoiceTracks,
     getMusicTracks,
     setVoiceTrack,
@@ -54,6 +53,11 @@ export const VideoEditorPage: React.FC = () => {
                     getMusicTracks(),
                 ]);
                 setVideo(videoDetails);
+                if (videoDetails.locked) {
+                    toast.error("Please wait for the changes to apply before re-editing the video.");
+                    navigate('/listings/'+videoDetails.property.id+'/manage');
+                    return;
+                }
                 setScenes(sceneList);
                 setAvailableVoices(voiceList);
                 setAvailableMusic(musicList);
@@ -81,6 +85,25 @@ export const VideoEditorPage: React.FC = () => {
         } catch (error) {
             console.error("Failed to update scene order", error);
             toast.error("Could not save new scene order.");
+        }
+    };
+
+    const handleScriptUpdate = async () => {
+        if (!videoId) return;
+        try {
+            const sceneList = await getSceneList(videoId);
+            setScenes(sceneList);
+            if (selectedScene) {
+                const updatedSelectedScene = sceneList.find(s => s.id === selectedScene.id);
+                if (updatedSelectedScene) {
+                    setSelectedScene(updatedSelectedScene);
+                } else {
+                    setSelectedScene(sceneList.length > 0 ? sceneList[0] : null);
+                }
+            }
+        } catch (error) {
+            toast.error("Failed to refresh script data.");
+            console.error("Failed to refresh scene data after script update", error);
         }
     };
 
@@ -138,7 +161,7 @@ export const VideoEditorPage: React.FC = () => {
 
     return (
         <Container maxWidth={false} disableGutters sx={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
-            <VideoEditorHeader video={video} onSave={handleSave} isSaving={isSaving}/>
+            <VideoEditorHeader video={video} onSave={handleSave} isSaving={isSaving} onBack={() => navigate(-1)}/>
 
             <Box sx={{flex: 1}}>
                 <PanelGroup direction="horizontal">
@@ -166,6 +189,7 @@ export const VideoEditorPage: React.FC = () => {
                             availableMusic={availableMusic}
                             onSelectVoice={handleSelectVoice}
                             onSelectMusic={handleSelectMusic}
+                            onScriptUpdate={handleScriptUpdate}
                         />
                     </Panel>
                 </PanelGroup>

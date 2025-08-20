@@ -5,16 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/demo/video.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/legal/pages/AcceptableUsePage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/legal/pages/PrivacyPolicyPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo192.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo512.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/images/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/contexts/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/auth/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/pages/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/DemoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/DemoSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/FaqSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/FaqSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/PricingCalculator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/PricingCalculator.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/LeftPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/LeftPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/legal/pages/TermsOfServicePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/legal/pages/TermsOfServicePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/components/ScriptEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/ScriptEditor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/components/VideoCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/VideoCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/RightPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/RightPanel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/VideoEditorHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/VideoEditorHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,36 +68,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/clover/frontend/src/assets/images&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/clover/frontend/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Volumes/X9 Pro/Development/Projects/clover/frontend/src/assets/images/demo",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Volumes/X9 Pro/Development/Projects/clover/frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/assets/images" />
+      <recent name="$PROJECT_DIR$/src/assets/images/demo" />
       <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/src/assets/images" />
+      <recent name="$PROJECT_DIR$/src/features/legal/pages" />
       <recent name="$PROJECT_DIR$/src/layouts" />
-      <recent name="$PROJECT_DIR$/src/features/user" />
-      <recent name="$PROJECT_DIR$/src/assets/fonts/Inter" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/images/demo" />
       <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/features/property/components" />
       <recent name="$PROJECT_DIR$/src/theme/pages" />
       <recent name="$PROJECT_DIR$/src/theme/components" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -138,7 +163,9 @@
       <workItem from="1755434225644" duration="5173000" />
       <workItem from="1755466224211" duration="622000" />
       <workItem from="1755515955250" duration="664000" />
-      <workItem from="1755531282291" duration="6852000" />
+      <workItem from="1755531282291" duration="7007000" />
+      <workItem from="1755585505525" duration="8374000" />
+      <workItem from="1755611643705" duration="9787000" />
     </task>
     <servers />
   </component>

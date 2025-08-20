@@ -268,7 +268,7 @@ export const PremiumFeaturesPage: React.FC = () => {
                                                     setSelectedMusicId(track.id); // For selection highlight
                                                     try {
                                                         await setMusicTrack(videoId, track.id); // API call with ID
-                                                        toast.success(`Music set to ${track.title}`);
+                                                        toast.success(`Music set to ${track.name}`);
                                                     } catch (error) {
                                                         console.error("Error setting music track:", error);
                                                         toast.error("Failed to set music track.");
@@ -283,7 +283,7 @@ export const PremiumFeaturesPage: React.FC = () => {
                                                 }}
                                             >
                                                 <ListItemText
-                                                    primary={track.title}
+                                                    primary={track.name}
                                                     primaryTypographyProps={{
                                                         color: isSelected ? 'inherit' : 'text.primary',
                                                     }}

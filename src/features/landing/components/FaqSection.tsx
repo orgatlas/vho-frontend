@@ -54,7 +54,7 @@ const itemVariants = {
 export const FaqSection: React.FC = () => {
     return (
         <Box sx={{ py: { xs: 6, md: 10 } }}>
-            <Container maxWidth="md">
+            <Container maxWidth="md" id={'faq'}>
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={itemVariants}>
                     <Typography variant="h3" component="h2" textAlign="center" fontWeight="bold" gutterBottom>
                         Frequently Asked Questions

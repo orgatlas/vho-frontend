@@ -195,10 +195,10 @@ export const PropertyManagementPage: React.FC = () => {
                         No videos found for this property.
                     </Typography>
                     <Typography color="text.primary" sx={{mb: 3}}>
-                        Get started by generating your first video.
+                        Get started by making your first video.
                     </Typography>
                     <Button variant="contained" onClick={handleGenerateVideo}>
-                        Generate Video
+                        Create Video
                     </Button>
                 </Paper>
             ) : (

@@ -1,11 +1,10 @@
 import React from 'react';
 import {PanelGroup, Panel} from 'react-resizable-panels';
 import {ScenePreview} from 'src/features/video/components/ScenePreview';
-import {SceneSettings} from 'src/features/video/components/SceneSettings';
 import {Scene, Video, Voice, MusicTrack} from 'src/types';
 import {TrackSelectionPanel} from './TrackSelectionPanel';
 import {ScriptEditor} from "src/features/video/components/ScriptEditor";
-import {Box, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import ResizeHandle from "src/features/video/components/ResizeHandle";
 
 interface RightPanelProps {
@@ -17,6 +16,7 @@ interface RightPanelProps {
     availableMusic: MusicTrack[];
     onSelectVoice: (voiceId: string) => void;
     onSelectMusic: (musicId: number) => void;
+    onScriptUpdate: () => void;
 }
 
 export const RightPanel: React.FC<RightPanelProps> = ({
@@ -28,6 +28,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                                                           availableMusic,
                                                           onSelectVoice,
                                                           onSelectMusic,
+                                                          onScriptUpdate
                                                       }) => {
     if (view === 'voices') {
         return (
@@ -61,8 +62,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
             </Panel>
             <ResizeHandle orientation="horizontal" />
             <Panel defaultSize={40} minSize={20}>
-                {/*<SceneSettings scene={scene} />*/}
-                {scene ? <ScriptEditor scene={scene}/> : <Typography>Select a scene to view its settings.</Typography>}
+                {scene ? <ScriptEditor key={scene.id} scene={scene} onScriptUpdate={onScriptUpdate}/> : <Typography>Select a scene to view its settings.</Typography>}
             </Panel>
         </PanelGroup>
     );

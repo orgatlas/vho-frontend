@@ -11,9 +11,9 @@ export const LandingPage: React.FC = () => {
     return (
         <Box>
             <HeroSection />
-            <PricingCalculator />
             <HowItWorksSection />
             <DemoSection />
+            <PricingCalculator />
             <FaqSection />
             <Footer />
         </Box>

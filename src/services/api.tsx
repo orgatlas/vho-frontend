@@ -75,9 +75,11 @@ export const logout = async () => {
     return response.data;
 };
 
-export const getUser = async () => {
-    const response = await api.post('auth/user', {email});
-    return response.data;
+export const getUser = async (token:string) => {
+    const response = await api.get('auth/user', {withCredentials:true, headers: {
+            Authorization: `Bearer ${token}`,
+        }});
+    return response.data.user;
 };
 
 export const resetPasswordRequest = async (email: string) => {
@@ -85,8 +87,8 @@ export const resetPasswordRequest = async (email: string) => {
     return response.data;
 };
 
-export const resetPassword = async (email: string) => {
-    const response = await api.post('auth/password/reset', {email});
+export const resetPassword = async (email: string, password: string, token: string) => {
+    const response = await api.post('auth/password/reset', {email:email, password:password, token:token});
     return response.data;
 };
 

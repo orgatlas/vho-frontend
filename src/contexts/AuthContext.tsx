@@ -22,7 +22,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             const token = localStorage.getItem('authToken');
             if (token) {
                 try {
-                    const userData = await apiGetUser();
+                    const userData = await apiGetUser(token);
                     setUser(userData);
                 } catch (error) {
                     console.error('Failed to load user from token:', error);

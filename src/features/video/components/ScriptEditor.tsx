@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Typography, TextField} from '@mui/material';
 import {Scene} from 'src/types';
-import {updateSceneOrder, updateSceneScript} from 'src/services/api';
-import {toast} from 'react-toastify';
+import {updateSceneScript} from 'src/services/api';
 import {useDebounce} from 'src/hooks/useDebounce';
 import {alpha, useTheme} from "@mui/material/styles";
 
 interface ScriptEditorProps {
     scene: Scene;
+    onScriptUpdate: () => void;
 }
 
-export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene}) => {
+export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene, onScriptUpdate}) => {
     const [script, setScript] = useState(scene.audio.script || '');
     const [status, setStatus] = useState<'Script' | 'Saving' | 'Saved'>('Script');
     const debouncedScript = useDebounce(script, 1000);
@@ -26,6 +26,7 @@ export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene}) => {
             try {
                 await updateSceneScript(scene.id, debouncedScript);
                 setStatus('Saved');
+                onScriptUpdate();
             } catch (error) {
                 console.error("Failed to update script", error);
                 setStatus('Script'); // Revert to script on error
@@ -35,11 +36,11 @@ export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene}) => {
         if (debouncedScript && debouncedScript !== scene.audio.script) {
             handleSave();
         }
-    }, [debouncedScript, scene.id, scene.audio.script]);
+    }, [debouncedScript, scene.id, scene.audio.script, onScriptUpdate]);
 
     useEffect(() => {
         if (status === 'Saved') {
-            const timer = setTimeout(() => setStatus('Saved'), 2000);
+            const timer = setTimeout(() => setStatus('Script'), 2000);
             return () => clearTimeout(timer);
         }
     }, [status]);
@@ -72,7 +73,7 @@ export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene}) => {
                 }}
             />
             <Typography variant="body1" sx={{textAlign: 'right', width: '100%', pr: 4}} gutterBottom>
-                {status === 'Saving' ? 'Saving...' : status === 'Saved' ? 'Saved' : 'Saved'}
+                {status === 'Saving' ? 'Saving...' : status === 'Saved' ? 'Saved' : ''}
             </Typography>
         </Box>
     );

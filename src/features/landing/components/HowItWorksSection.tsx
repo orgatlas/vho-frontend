@@ -36,13 +36,13 @@ const itemVariants = {
 
 export const HowItWorksSection: React.FC = () => {
     return (
-        <Box sx={{ py: { xs: 6, md: 10 } }}>
+        <Box sx={{ py: { xs: 6, md: 10 } }} id={'howitworks'}>
             <Container maxWidth="lg">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }} variants={itemVariants}>
                     <Typography variant="h3" component="h2" textAlign="center" fontWeight="bold" gutterBottom>
                         How It Works
                     </Typography>
-                    <Typography variant="h6" textAlign="center" color="text.secondary" sx={{ mb: 6 }}>
+                    <Typography variant="h6" textAlign="center" color="text.primary" sx={{ mb: 6 }}>
                         A seamless process from listing to video.
                     </Typography>
                 </motion.div>

@@ -15,7 +15,6 @@ const LoginPage = () => {
     event.preventDefault();
     try {
       await login(email, password);
-      toast.success('Logged in successfully!');
       navigate('/'); // Redirect to home or dashboard after login
     } catch (error: any) {
       toast.error(error.message || 'Login failed.');
