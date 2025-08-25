@@ -9,7 +9,6 @@ import img3 from 'src/assets/images/demo/3.jpg';
 import img4 from 'src/assets/images/demo/4.jpg';
 import img5 from 'src/assets/images/demo/5.jpg';
 import img6 from 'src/assets/images/demo/6.jpg';
-import video from 'src/assets/images/demo/video.mp4';
 
 const images = [
     {
@@ -56,7 +55,7 @@ const VideoPlayer = ({ inView }: { inView: boolean }) => {
         <Box sx={{ width: '100%', height: '100%', backgroundColor: 'black', borderRadius: 2, overflow: 'hidden' }}>
             <video
                 ref={videoRef}
-                src={video}
+                src={'https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/demo.mp4'}
                 width="100%"
                 height="100%"
                 controls
