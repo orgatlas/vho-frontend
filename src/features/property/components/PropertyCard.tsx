@@ -51,7 +51,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                             width: '100%',
                             objectFit: 'cover',
                         }}
-                        image={`${process.env.REACT_APP_BASE_URL}${property.images![currentIndex].file}`}
+                        image={`${property.images![currentIndex].file}`}
                         alt={property.address}
                     />
                     {property.images!.length > 1 && (

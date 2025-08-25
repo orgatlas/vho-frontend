@@ -56,7 +56,7 @@ export const ScenePreview: React.FC<ScenePreviewProps> = ({scene}) => {
                         <ReactPlayer
                             ref={playerRef}
                             key={scene.id}
-                            url={process.env.REACT_APP_BASE_URL + scene.file}
+                            url={scene.file}
                             playing={playing}
                             volume={volume}
                             width="100%"

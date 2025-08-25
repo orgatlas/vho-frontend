@@ -61,7 +61,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
 
     const handleDownload = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}${video.file}`);
+            const response = await fetch(`${video.file}`);
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -111,7 +111,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
                                 height: 180,
                                 objectFit: 'cover',
                             }}
-                            src={`${process.env.REACT_APP_BASE_URL}${video.file}`}
+                            src={`${video.file}`}
                             loop
                             muted
                             playsInline
