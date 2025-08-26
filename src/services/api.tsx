@@ -122,12 +122,11 @@ export const removeImage = async (videoId: number, imageId: string): Promise<{ m
 export const getImageList = async (videoId: number): Promise<Image[]> => {
     const response = await api.post('image/list', {video: videoId});
     const images = response.data.images.map((image: any) => {
-        const baseUrl = process.env.REACT_APP_API_BASE_URL?.replace('/api', '');
         return {
             id: image.id,
             file: image.file,
             description: image.description || '',
-            preview: `${baseUrl}${image.file}`,
+            preview: `${image.file}`,
         }
     });
     return images;

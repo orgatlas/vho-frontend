@@ -20,8 +20,7 @@ import {SectionHeader} from "src/theme/components/SectionHeader";
 
 const getFullImageUrl = (path?: string) => {
     if (!path) return '';
-    const baseUrl = process.env.REACT_APP_API_BASE_URL?.replace('/api', '');
-    return `${baseUrl}${path}`;
+    return `${path}`;
 };
 
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({icon, label}) => (
