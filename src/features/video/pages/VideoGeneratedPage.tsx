@@ -1,20 +1,20 @@
 import React, {useState} from 'react';
 import {Box, Typography, Container, TextField, Button, Paper} from '@mui/material';
 import {toast} from "react-toastify";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useTheme} from "@mui/material/styles";
 
 export const VideoGeneratedPage: React.FC = () => {
     const navigate = useNavigate();
     const theme = useTheme()
-    const [url, setUrl] = useState('');
+    const [address, setAddress] = useState('');
 
-    const handleUrlSubmit = () => {
-        if (!url.trim() || !url.includes('.')) {
-            toast.error("Please enter a valid property listing URL.");
+    const handleAddressSubmit = () => {
+        if (!address.trim()) {
+            toast.error("Please enter a valid property address.");
             return;
         }
-        navigate('/extracting-details', {state: {url}});
+        navigate('/extracting-details', {state: {address}});
     };
 
     return (
@@ -32,20 +32,20 @@ export const VideoGeneratedPage: React.FC = () => {
                         Ready for Your Next Video?
                     </Typography>
                     <Typography color="text.secondary" sx={{mb: 3}}>
-                        Enter another property URL.
+                        Enter another property address.
                     </Typography>
                     <Box sx={{display: 'flex', alignItems: 'center'}}>
                         <TextField
                             fullWidth
-                            placeholder="Enter property URL"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
+                            placeholder="Enter property address"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
                             sx={{mr: 2, background: theme.palette.background.default}}
                         />
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={handleUrlSubmit}
+                            onClick={handleAddressSubmit}
                             size="large"
                             sx={{
                                 whiteSpace: 'nowrap',

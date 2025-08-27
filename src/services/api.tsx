@@ -137,7 +137,7 @@ export const getVideoDetails = async (videoId: number | string): Promise<Video> 
     return response.data.video;
 }
 
-export const getPackages = async (videoId: number | null, scenes?: number, currency?: string): Promise<Package[]> => {
+export const getPackages = async (videoId: number | string, scenes?: number, currency?: string): Promise<Package[]> => {
     const payload: any = {};
     if (videoId) payload.video = videoId;
     if (scenes) payload.scenes = scenes;
@@ -151,10 +151,16 @@ export const getPricing = async (scenes: number): Promise<any> => {
     return response.data;
 }
 
-export const extractVideoDetailsFromUrl = async (url: string): Promise<Video> => {
-    const response = await api.post('property/retrieve', {url});
+export const extractVideoDetailsFromAddress = async (address: string): Promise<Video> => {
+    const response = await api.post('property/retrieve', {address});
     return response.data.video;
 };
+
+// Not used at the moment
+// export const extractVideoDetailsFromUrl = async (url: string): Promise<Video> => {
+//     const response = await api.post('property/retrieve', {url});
+//     return response.data.video;
+// };
 
 export const getProperty = async (propertyId: string): Promise<Property> => {
     const response = await api.post('property/details', {property: propertyId});
@@ -199,7 +205,7 @@ export const updatePropertyDetails = async (property: number, address: string, b
 };
 
 
-export const processPayment = async (videoId: number, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
+export const processPayment = async (videoId: number|string, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
     client_secret: string,
     total_cost: number
 }> => {

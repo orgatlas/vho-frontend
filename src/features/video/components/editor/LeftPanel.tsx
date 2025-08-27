@@ -15,6 +15,7 @@ interface LeftPanelProps {
     musicTracks: MusicTrack[];
     onEditVoice: () => void;
     onEditMusic: () => void;
+    isReordering: boolean;
 }
 
 export const LeftPanel: React.FC<LeftPanelProps> = ({
@@ -24,7 +25,8 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                                                         onReorderScenes,
                                                         video,
                                                         onEditVoice,
-                                                        onEditMusic
+                                                        onEditMusic,
+                                                        isReordering
                                                     }) => {
     const showPremiumSettings = video?.package?.is_premium;
 
@@ -36,6 +38,7 @@ export const LeftPanel: React.FC<LeftPanelProps> = ({
                     selectedScene={selectedScene}
                     onSelectScene={onSelectScene}
                     onReorderScenes={onReorderScenes}
+                    isReordering={isReordering}
                 />
             </Panel>
             {showPremiumSettings && (

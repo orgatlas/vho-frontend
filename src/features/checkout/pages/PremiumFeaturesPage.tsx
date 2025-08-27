@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {
     Box, Button, Container, Grid, IconButton, Paper, Typography, Divider, CircularProgress,
     List, ListItem, ListItemText, ListItemSecondaryAction, Select, MenuItem, FormControl, InputLabel
@@ -15,7 +15,7 @@ import {SectionHeader} from "src/theme/components/SectionHeader";
 export const PremiumFeaturesPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {videoId} = location.state as { videoId: string };
+    const {videoId} = useParams<{ videoId: string }>();
     const [voice, setVoice] = useState(''); // For audio player src
     const [availableMusicTracks, setAvailableMusicTracks] = useState<MusicTrack[]>([]);
     const [music, setMusic] = useState(''); // For audio player src
@@ -29,11 +29,14 @@ export const PremiumFeaturesPage: React.FC = () => {
 
     const [selectedMusicId, setSelectedMusicId] = useState<number | null>(null);
     const [selectedVoiceId, setSelectedVoiceId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!videoId) return;
+                setLoading(true);
 
                 const [videoData, musicTracks, voiceTracks] = await Promise.all([
                     getVideoDetails(videoId),
@@ -88,6 +91,8 @@ export const PremiumFeaturesPage: React.FC = () => {
             } catch (error) {
                 console.error("Error fetching initial data:", error);
                 toast.error("Failed to load video details or tracks.");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -117,7 +122,7 @@ export const PremiumFeaturesPage: React.FC = () => {
     }, [videoId, navigate]); // Dependencies
 
     const handleCreateVideo = () => {
-        navigate('/generating-video', {state: {videoId}});
+        navigate(`/generating-video/${videoId}`);
     };
 
     const togglePlay = (src: string) => {
@@ -132,6 +137,14 @@ export const PremiumFeaturesPage: React.FC = () => {
             }
         }
     };
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Container maxWidth="lg">
@@ -164,16 +177,20 @@ export const PremiumFeaturesPage: React.FC = () => {
                                             <ListItem
                                                 key={track.src}
                                                 button
+                                                disabled={actionLoading}
                                                 selected={isSelected}
                                                 onClick={async () => {
                                                     setVoice(track.src); // For audio player
                                                     setSelectedVoiceId(track.id); // For selection highlight
                                                     try {
+                                                        setActionLoading(true);
                                                         await setVoiceTrack(videoId, track.id); // API call with ID
                                                         toast.success(`Voice set to ${track.name}`);
                                                     } catch (error) {
                                                         console.error("Error setting voice track:", error);
                                                         toast.error("Failed to set voice track.");
+                                                    } finally {
+                                                        setActionLoading(false);
                                                     }
                                                 }}
                                                 sx={{
@@ -262,16 +279,20 @@ export const PremiumFeaturesPage: React.FC = () => {
                                             <ListItem
                                                 key={track.src}
                                                 button
+                                                disabled={actionLoading}
                                                 selected={isSelected}
                                                 onClick={async () => {
                                                     setMusic(track.src); // For audio player
                                                     setSelectedMusicId(track.id); // For selection highlight
                                                     try {
+                                                        setActionLoading(true);
                                                         await setMusicTrack(videoId, track.id); // API call with ID
                                                         toast.success(`Music set to ${track.name}`);
                                                     } catch (error) {
                                                         console.error("Error setting music track:", error);
                                                         toast.error("Failed to set music track.");
+                                                    } finally {
+                                                        setActionLoading(false);
                                                     }
                                                 }}
                                                 sx={{
@@ -344,16 +365,20 @@ export const PremiumFeaturesPage: React.FC = () => {
                             <FormControl fullWidth>
                                 <Select
                                     value={logoPlacement}
+                                    disabled={actionLoading}
                                     onChange={async (e) => {
                                         const newPlacement = e.target.value as string;
                                         setLogoPlacement(newPlacement);
                                         if (videoId) {
                                             try {
+                                                setActionLoading(true);
                                                 await setLogoPosition(videoId, newPlacement);
                                                 toast.success('Logo position updated successfully!');
                                             } catch (error) {
                                                 console.error('Error setting logo position:', error);
                                                 toast.error('Failed to update logo position.');
+                                            } finally {
+                                                setActionLoading(false);
                                             }
                                         }
                                     }}
@@ -372,8 +397,8 @@ export const PremiumFeaturesPage: React.FC = () => {
             <Paper sx={{position: 'fixed', bottom: 0, left: 0, right: 0, p: 2, zIndex: 1100}} elevation={3}>
                 <Container maxWidth="lg">
                     <Box sx={{textAlign: 'right'}}>
-                        <Button variant="contained" color="primary" onClick={handleCreateVideo} size="large">
-                            Create Video
+                        <Button variant="contained" color="primary" onClick={handleCreateVideo} size="large" disabled={actionLoading}>
+                            {actionLoading ? <CircularProgress size={24} color="inherit"/> : 'Create Video'}
                         </Button>
                     </Box>
                 </Container>

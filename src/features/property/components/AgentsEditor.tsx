@@ -18,6 +18,7 @@ import { Agent } from 'src/types';
 import { createAgent, updateAgent, deleteAgent } from 'src/services/api';
 import { toast } from 'react-toastify';
 import { Delete, Edit, Person, Email, Phone, AddAPhoto } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 
 const getFullImageUrl = (path?: string) => {
     if (!path) return '';
@@ -49,6 +50,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
     // Form state
     const [newAgent, setNewAgent] = useState<Partial<Agent>>({});
     const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
+    const [loading, setLoading] = useState(false);
 
     // Picture state is separate so add/edit don't clobber each other accidentally
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
@@ -97,6 +99,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
             toast.error('Cannot add agent until property has been created');
             return;
         }
+        setLoading(true);
         try {
             const createdAgent = await createAgent(videoId, newAgent as Agent, profilePicture || undefined);
             onAgentsChange([...agents, createdAgent]);
@@ -107,12 +110,15 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
         } catch (error) {
             console.error('Error adding agent:', error);
             toast.error('Failed to add agent');
+        } finally {
+            setLoading(false);
         }
     };
 
     // Update agent
     const handleUpdateAgent = async () => {
         if (!videoId || !editingAgent) return;
+        setLoading(true);
         try {
             const updatedAgent = await updateAgent(
                 videoId,
@@ -127,12 +133,15 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
         } catch (error) {
             console.error('Error updating agent:', error);
             toast.error('Failed to update agent');
+        } finally {
+            setLoading(false);
         }
     };
 
     // Delete agent
     const handleDeleteAgent = async (agentId: number) => {
         if (!videoId) return;
+        setLoading(true);
         try {
             await deleteAgent(videoId, agentId);
             onAgentsChange(agents.filter((a) => a.id !== agentId));
@@ -140,6 +149,8 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
         } catch (error) {
             console.error('Error deleting agent:', error);
             toast.error('Failed to delete agent');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -234,6 +245,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 3 }}>
                     <Button
                         variant="outlined"
+                        disabled={loading}
                         onClick={() => {
                             // cancel behavior: close form & reset picture
                             setProfilePicture(null);
@@ -247,8 +259,8 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                     >
                         Cancel
                     </Button>
-                    <Button onClick={onSave} variant="contained">
-                        Save
+                    <Button onClick={onSave} variant="contained" disabled={loading}>
+                        {loading ? <CircularProgress size={24} /> : 'Save'}
                     </Button>
                 </Box>
             </Box>
@@ -266,6 +278,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                             <Box>
                                 <IconButton
                                     aria-label="edit agent"
+                                    disabled={loading}
                                     onClick={() => {
                                         setEditingAgent(agent);
                                         setProfilePicture(null); // clear uploaded picture so avatar shows existing one
@@ -275,6 +288,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                                 </IconButton>
                                 <IconButton
                                     aria-label="delete agent"
+                                    disabled={loading}
                                     onClick={() => handleDeleteAgent(agent.id)}
                                 >
                                     <Delete />

@@ -88,6 +88,7 @@ export interface Video {
     duration: number | null
     file: string | null;
     locked?: boolean;
+    is_paid?: boolean;
     package?: Package;
     logo_position?: string;
     background_music?: MusicTrack;

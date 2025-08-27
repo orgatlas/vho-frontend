@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Box, Typography, TextField, Button, Container} from '@mui/material';
+import {Box, Typography, Button, Container} from '@mui/material';
+import AddressAutocomplete from './AddressAutocomplete';
 import {motion} from 'framer-motion';
 import {toast} from 'react-toastify';
 import {useTheme} from "@mui/material/styles";
 
 export const HeroSection: React.FC = () => {
     const navigate = useNavigate();
-    const [url, setUrl] = useState('');
-    const theme = useTheme();
+    const [address, setAddress] = useState('');
 
     const handleCreateVideo = () => {
-        if (!url.trim() || !url.includes('.')) {
-            toast.error("Please enter a valid property listing URL.");
+        if (!address.trim()) {
+            toast.error("Please enter a valid address.");
             return;
         }
-        navigate('/extracting-details', {state: {url}});
+        navigate('/extracting-details', {state: {address}});
     };
 
     const containerVariants = {
@@ -68,13 +68,7 @@ export const HeroSection: React.FC = () => {
                             }}
                         >
 
-                            <TextField
-                                fullWidth
-                                placeholder="Paste your property listing URL here..."
-                                value={url}
-                                onChange={(e) => setUrl(e.target.value)}
-                                sx={{mr: 2, background: theme.palette.background.default}}
-                            />
+                            <AddressAutocomplete onAddressSelect={setAddress} fullWidth />
 
                             <motion.div whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
                                 <Button

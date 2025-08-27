@@ -4,15 +4,18 @@ import { getProperty } from 'src/services/api';
 import { Property } from 'src/types';
 import { Layout } from 'src/layouts/Layout';
 import { SectionHeader } from 'src/theme/components/SectionHeader';
+import { CircularProgress, Box } from '@mui/material';
 
 const PropertyPage: React.FC = () => {
     const { propertyId } = useParams<{ propertyId: string }>();
     const [property, setProperty] = useState<Property | null>(null);
     const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (propertyId) {
-            getProperty(propertyId).then(setProperty);
+            setLoading(true);
+            getProperty(propertyId).then(setProperty).finally(() => setLoading(false));
         }
     }, [propertyId]);
 
@@ -27,8 +30,12 @@ const PropertyPage: React.FC = () => {
         }
     }, [property]);
 
+    if (loading) {
+        return <Layout><Box sx={{display: 'flex', justifyContent: 'center', my: 4}}><CircularProgress/></Box></Layout>;
+    }
+
     if (!property) {
-        return <Layout><div className="flex justify-center items-center h-screen">Loading...</div></Layout>;
+        return <Layout><div className="flex justify-center items-center h-screen">Property not found</div></Layout>;
     }
 
     const handleThumbnailClick = (mediaUrl: string) => {

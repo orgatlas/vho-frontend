@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {Box, Button, CircularProgress, Container, Paper, TextField, Typography} from '@mui/material';
 import {
     createVideo,
@@ -9,8 +9,7 @@ import {toast} from "react-toastify";
 
 export const GeneratingVideoPage: React.FC = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const {videoId} = location.state as { videoId: number };
+    const {videoId} = useParams<{ videoId: string }>();
 
     useEffect(() => {
         if (!videoId) return;
@@ -68,7 +67,6 @@ export const GeneratingVideoPage: React.FC = () => {
         };
 
     }, [videoId, navigate]);
-
 
 
     return (

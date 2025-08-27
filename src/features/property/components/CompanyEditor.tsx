@@ -17,6 +17,7 @@ import {updateCompany} from 'src/services/api';
 import {toast} from 'react-toastify';
 import {Business, AddAPhoto, Phone, Email, Language, Edit} from '@mui/icons-material';
 import {SectionHeader} from "src/theme/components/SectionHeader";
+import {CircularProgress} from "@mui/material";
 
 const getFullImageUrl = (path?: string) => {
     if (!path) return '';
@@ -48,6 +49,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
     const [editingCompany, setEditingCompany] = useState<Partial<Company> | null>(company);
     const [logo, setLogo] = useState<File | null>(null);
     const [isEditing, setIsEditing] = useState(!company);
+    const [loading, setLoading] = useState(false);
 
     const {getRootProps, getInputProps} = useDropzone({
         onDrop: (acceptedFiles) => {
@@ -82,6 +84,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
 
     const handleUpdateCompany = async () => {
         if (!company?.id || !editingCompany) return;
+        setLoading(true);
         try {
             const updatedCompany = await updateCompany(
                 company.id,
@@ -95,6 +98,8 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
         } catch (error) {
             console.error('Error updating company:', error);
             toast.error('Failed to update company');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -176,9 +181,9 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                         </Grid>
 
                         <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 3}}>
-                            <Button variant="outlined" onClick={() => setIsEditing(false)} sx={{mr: 1}}>Cancel</Button>
-                            <Button onClick={handleUpdateCompany} variant="contained">
-                                Save Company Details
+                            <Button variant="outlined" onClick={() => setIsEditing(false)} sx={{mr: 1}} disabled={loading}>Cancel</Button>
+                            <Button onClick={handleUpdateCompany} variant="contained" disabled={loading}>
+                                {loading ? <CircularProgress size={24}/> : 'Save Company Details'}
                             </Button>
                         </Box>
                     </>
@@ -195,6 +200,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 </Box>
                                 <IconButton
                                     aria-label="edit agent"
+                                    disabled={loading}
                                     onClick={() => {
                                         setIsEditing(true);
                                         setLogo(null);
@@ -214,7 +220,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                             <Button variant="contained" onClick={() => {
                                 setIsEditing(true);
                                 setLogo(null);
-                            }}>Add Company Details</Button>
+                            }} disabled={loading}>Add Company Details</Button>
                         </Box>
                     )
                 )}

@@ -17,6 +17,7 @@ interface RightPanelProps {
     onSelectVoice: (voiceId: string) => void;
     onSelectMusic: (musicId: number) => void;
     onScriptUpdate: () => void;
+    isUpdatingTrack: boolean;
 }
 
 export const RightPanel: React.FC<RightPanelProps> = ({
@@ -28,7 +29,8 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                                                           availableMusic,
                                                           onSelectVoice,
                                                           onSelectMusic,
-                                                          onScriptUpdate
+                                                          onScriptUpdate,
+                                                          isUpdatingTrack
                                                       }) => {
     if (view === 'voices') {
         return (
@@ -38,6 +40,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                 selectedId={video?.voice!.id || null}
                 onSelect={(id) => onSelectVoice(id as string)}
                 onClose={onClose}
+                isLoading={isUpdatingTrack}
             />
         );
     }
@@ -50,6 +53,7 @@ export const RightPanel: React.FC<RightPanelProps> = ({
                 selectedId={video?.background_music!.id || null}
                 onSelect={(id) => onSelectMusic(id as number)}
                 onClose={onClose}
+                isLoading={isUpdatingTrack}
             />
         );
     }

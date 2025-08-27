@@ -9,9 +9,10 @@ interface TrackSelectionPanelProps {
     onClose: () => void;
     selectedId: string | number | null;
     title: string;
+    isLoading: boolean;
 }
 
-export const TrackSelectionPanel: React.FC<TrackSelectionPanelProps> = ({ tracks, onSelect, onClose, selectedId, title }) => {
+export const TrackSelectionPanel: React.FC<TrackSelectionPanelProps> = ({ tracks, onSelect, onClose, selectedId, title, isLoading }) => {
     const [playing, setPlaying] = useState<string | null>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const [audioProgress, setAudioProgress] = useState(0);
@@ -55,10 +56,15 @@ export const TrackSelectionPanel: React.FC<TrackSelectionPanelProps> = ({ tracks
     }, []);
 
     return (
-        <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
+        <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', position: 'relative' }}>
+            {isLoading && (
+                <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.7)', zIndex: 1 }}>
+                    <CircularProgress />
+                </Box>
+            )}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">{title}</Typography>
-                <IconButton onClick={onClose}>
+                <IconButton onClick={onClose} disabled={isLoading}>
                     <Close />
                 </IconButton>
             </Box>
@@ -74,6 +80,7 @@ export const TrackSelectionPanel: React.FC<TrackSelectionPanelProps> = ({ tracks
                             button
                             selected={isSelected}
                             onClick={() => onSelect(track.id)}
+                            disabled={isLoading}
                             sx={{
                                 backgroundColor: isSelected ? 'primary.light' : 'transparent',
                                 '&:hover': {
@@ -94,7 +101,7 @@ export const TrackSelectionPanel: React.FC<TrackSelectionPanelProps> = ({ tracks
                                             position: 'absolute',
                                         }}
                                     />
-                                    <IconButton onClick={(e) => { e.stopPropagation(); togglePlay(track.src); }}>
+                                    <IconButton onClick={(e) => { e.stopPropagation(); togglePlay(track.src); }} disabled={isLoading}>
                                         {playing === track.src ? <Pause /> : <PlayArrow />}
                                     </IconButton>
                                 </Box>

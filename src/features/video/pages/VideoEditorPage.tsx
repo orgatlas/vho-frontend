@@ -31,6 +31,8 @@ export const VideoEditorPage: React.FC = () => {
     const [selectedScene, setSelectedScene] = useState<Scene | null>(null);
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isReordering, setIsReordering] = useState(false);
+    const [isUpdatingTrack, setIsUpdatingTrack] = useState(false);
     const [rightPanelView, setRightPanelView] = useState<'preview' | 'voices' | 'music'>('preview');
     const [availableVoices, setAvailableVoices] = useState<Voice[]>([]);
     const [availableMusic, setAvailableMusic] = useState<MusicTrack[]>([]);
@@ -77,6 +79,7 @@ export const VideoEditorPage: React.FC = () => {
 
     const handleReorderScenes = async (reorderedScenes: Scene[]) => {
         setScenes(reorderedScenes);
+        setIsReordering(true);
         try {
             const updatePromises = reorderedScenes.map((scene, index) =>
                 updateSceneOrder(scene.id, index + 1)
@@ -85,6 +88,8 @@ export const VideoEditorPage: React.FC = () => {
         } catch (error) {
             console.error("Failed to update scene order", error);
             toast.error("Could not save new scene order.");
+        } finally {
+            setIsReordering(false);
         }
     };
 
@@ -123,6 +128,7 @@ export const VideoEditorPage: React.FC = () => {
 
     const handleSelectVoice = async (voiceId: string) => {
         if (!video?.id) return;
+        setIsUpdatingTrack(true);
         try {
             await setVoiceTrack(video.id, voiceId);
             const selectedVoice = availableVoices.find(v => v.id === voiceId);
@@ -133,11 +139,14 @@ export const VideoEditorPage: React.FC = () => {
         } catch (error) {
             console.error("Failed to set voice track", error);
             toast.error("Failed to update voice.");
+        } finally {
+            setIsUpdatingTrack(false);
         }
     };
 
     const handleSelectMusic = async (musicId: number) => {
         if (!video?.id) return;
+        setIsUpdatingTrack(true);
         try {
             await setMusicTrack(video.id, musicId);
             const selectedMusic = availableMusic.find(m => m.id === musicId);
@@ -148,6 +157,8 @@ export const VideoEditorPage: React.FC = () => {
         } catch (error) {
             console.error("Failed to set music track", error);
             toast.error("Failed to update music.");
+        } finally {
+            setIsUpdatingTrack(false);
         }
     };
 
@@ -176,6 +187,7 @@ export const VideoEditorPage: React.FC = () => {
                             musicTracks={availableMusic}
                             onEditVoice={() => setRightPanelView('voices')}
                             onEditMusic={() => setRightPanelView('music')}
+                            isReordering={isReordering}
                         />
                     </Panel>
                     <ResizeHandle orientation="vertical" />
@@ -190,6 +202,7 @@ export const VideoEditorPage: React.FC = () => {
                             onSelectVoice={handleSelectVoice}
                             onSelectMusic={handleSelectMusic}
                             onScriptUpdate={handleScriptUpdate}
+                            isUpdatingTrack={isUpdatingTrack}
                         />
                     </Panel>
                 </PanelGroup>

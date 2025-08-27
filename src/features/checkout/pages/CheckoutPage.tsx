@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {
     Box,
     Button,
@@ -33,7 +33,7 @@ import {PriceDisplay} from "src/components/PriceDisplay";
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: string]: unknown }>((
-    props, ref) => {
+        props, ref) => {
         const {component: Component, ...other} = props;
         const elementRef = React.useRef<any>();
 
@@ -53,13 +53,17 @@ const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: 
 );
 
 
-const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], agents: Agent[], currency: string }> = ({
-                                                                                                         plan,
-                                                                                                         videoId,
-                                                                                                         images,
-                                                                                                         agents,
-                                                                                                         currency
-                                                                                                     }) => {
+const CheckoutForm: React.FC<{
+    plan: Package,
+    videoId: string,
+    currency: string,
+    onPackageChange?: () => void  // Add callback for when package changes
+}> = ({
+          plan,
+          videoId,
+          currency,
+          onPackageChange
+      }) => {
     const stripe = useStripe();
     const elements = useElements();
     const navigate = useNavigate();
@@ -75,6 +79,22 @@ const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], a
     const [paymentSuccess, setPaymentSuccess] = useState(false);
     const [confirmationStep, setConfirmationStep] = useState(false);
     const [costBreakdown, setCostBreakdown] = useState<any>(null);
+    const [currentPlanId, setCurrentPlanId] = useState(plan.id);
+
+    // Reset checkout state when package changes
+    useEffect(() => {
+        if (plan.id !== currentPlanId) {
+            setClientSecret(null);
+            setConfirmationStep(false);
+            setPaymentError(null);
+            setPaymentSuccess(false);
+            setCostBreakdown(null);
+            setCurrentPlanId(plan.id);
+            if (onPackageChange) {
+                onPackageChange();
+            }
+        }
+    }, [plan.id, currentPlanId, onPackageChange]);
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -118,8 +138,8 @@ const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], a
                 setConfirmationStep(true);
             } else {
                 setPaymentSuccess(true);
-                const nextPath = plan.name.toLowerCase() === 'premium' ? '/premium-features' : '/generating-video';
-                navigate(nextPath, {state: {videoId, images, agents}});
+                const nextPath = plan.name.toLowerCase() === 'premium' ? `/premium-features/${videoId}` : `/generating-video/${videoId}`;
+                navigate(nextPath);
             }
         } catch (error: any) {
             setPaymentError(error.message || 'An unexpected error occurred.');
@@ -153,8 +173,8 @@ const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], a
                     setPaymentError(error.message || 'An unexpected error occurred.');
                 } else {
                     setPaymentSuccess(true);
-                    const nextPath = plan.name.toLowerCase() === 'premium' ? '/premium-features' : '/generating-video';
-                    navigate(nextPath, {state: {videoId, images, agents}});
+                    const nextPath = plan.name.toLowerCase() === 'premium' ? `/premium-features/${videoId}` : `/generating-video/${videoId}`;
+                    navigate(nextPath);
                 }
             }
         } catch (error: any) {
@@ -182,15 +202,18 @@ const CheckoutForm: React.FC<{ plan: Package, videoId: string, images: File[], a
                 <Typography>Full Name: {firstName} {lastName}</Typography>
                 <Typography>Email: {email}</Typography>
                 <Typography>Package: {plan.name}</Typography>
-                {(costBreakdown && costBreakdown.discount === 0) &&(
+                {(costBreakdown && costBreakdown.discount === 0) && (
                     <Box>
-                        <Typography variant="h6" component="div">Total: <PriceDisplay cost={costBreakdown.total_cost} currency={currency} /></Typography>
+                        <Typography variant="h6" component="div">Total: <PriceDisplay cost={costBreakdown.total_cost}
+                                                                                      currency={currency}/></Typography>
                     </Box>
                 )}
-                {(costBreakdown && costBreakdown.discount > 0) &&(
+                {(costBreakdown && costBreakdown.discount > 0) && (
                     <Box>
-                        <Typography component="div">Discount: <PriceDisplay cost={costBreakdown.discount} currency={currency} /></Typography>
-                        <Typography variant="h6" component="div">Total: <PriceDisplay cost={costBreakdown.total_cost} currency={currency} /></Typography>
+                        <Typography component="div">Discount: <PriceDisplay cost={costBreakdown.discount}
+                                                                            currency={currency}/></Typography>
+                        <Typography variant="h6" component="div">Total: <PriceDisplay cost={costBreakdown.total_cost}
+                                                                                      currency={currency}/></Typography>
                     </Box>
                 )}
                 <Divider sx={{my: 2}}/>
@@ -363,12 +386,12 @@ const getDefaultCurrency = (): string => {
 };
 
 export const CheckoutPage: React.FC = () => {
-    const location = useLocation();
     const [packages, setPackages] = useState<Package[]>([]);
     const [selectedPlan, setSelectedPlan] = useState<Package | null>(null);
-    const {videoId, images, agents} = location.state as { videoId: string, images: File[], agents: Agent[] };
+    const {videoId} = useParams<{ videoId: string }>();
     const navigate = useNavigate();
     const [currency, setCurrency] = useState('AUD');
+    const [checkoutKey, setCheckoutKey] = useState(0); // Force re-render of checkout form
 
     useEffect(() => {
         setCurrency(getDefaultCurrency());
@@ -379,9 +402,9 @@ export const CheckoutPage: React.FC = () => {
             getVideoDetails(videoId).then(video => {
                 if (video.locked) {
                     navigate('/video-generated');
-                } else if (video.package) {
-                    if (video.package.is_premium) {
-                        navigate('/premium-features', {state: {videoId, images}});
+                } else if (video.is_paid && video.package) {
+                    if (video.package.is_premium && video.is_paid) {
+                        navigate(`/premium-features/${video.id}`);
                     } else {
                         navigate('/');
                     }
@@ -390,13 +413,23 @@ export const CheckoutPage: React.FC = () => {
                 }
             });
         }
-    }, [videoId, navigate, images]);
+    }, [videoId, navigate]);
+
+    const handlePackageSelection = (plan: Package) => {
+        setSelectedPlan(plan);
+        setCheckoutKey(prev => prev + 1); // Force re-render to reset checkout form
+    };
+
+    const handlePackageChange = () => {
+        // Additional cleanup if needed when package changes
+        console.log('Package changed, checkout form reset');
+    };
 
     return (
         <Box sx={{width: '100vw', p: 5}}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2}}>
                 <Typography variant="h4" gutterBottom>Select your creation kit</Typography>
-                <CurrencySelector selectedCurrency={currency} onCurrencyChange={setCurrency} />
+                <CurrencySelector selectedCurrency={currency} onCurrencyChange={setCurrency}/>
             </Box>
 
             <Grid container alignItems="top">
@@ -406,7 +439,7 @@ export const CheckoutPage: React.FC = () => {
                         {packages.map((plan) => (
                             <Grid item xs={12} sm={4} key={plan.id}>
                                 <Card
-                                    onClick={() => setSelectedPlan(plan)}
+                                    onClick={() => handlePackageSelection(plan)}
                                     variant={'outlined'}
                                     sx={{
                                         cursor: 'pointer',
@@ -425,7 +458,7 @@ export const CheckoutPage: React.FC = () => {
                                     />
                                     <CardContent>
                                         <Typography variant="h4" sx={{mb: 2}} component="div">
-                                            <PriceDisplay cost={plan.price} currency={currency} />
+                                            <PriceDisplay cost={plan.price} currency={currency}/>
                                         </Typography>
                                         <List dense>
                                             {plan.features.map((feature) => (
@@ -451,7 +484,13 @@ export const CheckoutPage: React.FC = () => {
                             <Typography variant="h5" gutterBottom>Order Summary</Typography>
                             <Divider sx={{my: 2}}/>
                             <Elements stripe={stripePromise}>
-                                <CheckoutForm plan={selectedPlan} videoId={videoId} images={images} agents={agents} currency={currency} />
+                                <CheckoutForm
+                                    key={checkoutKey} // Force re-render when key changes
+                                    plan={selectedPlan}
+                                    videoId={videoId}
+                                    currency={currency}
+                                    onPackageChange={handlePackageChange}
+                                />
                             </Elements>
                         </Box>
                     </Grid>

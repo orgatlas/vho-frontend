@@ -6,18 +6,18 @@ import { motion } from 'framer-motion';
 const steps = [
     {
         icon: <Link sx={{ fontSize: 48 }} color="primary" />,
-        title: '1. Paste Your Property Link',
-        description: 'Enter your listing URL from your real estate site to get started.',
+        title: '1. Enter the property address',
+        description: 'Lookup the listing address to get started.',
     },
     {
         icon: <FindInPage sx={{ fontSize: 48 }} color="primary" />,
-        title: '2. We Extract the Details',
-        description: 'Our system automatically pulls property photos, descriptions, and key details.',
+        title: '2. Enter the Details',
+        description: 'Upload photos and describe the property listing.',
     },
     {
         icon: <MovieCreation sx={{ fontSize: 48 }} color="primary" />,
         title: '3. Get Your Video',
-        description: 'Download, share, or edit your professional video instantly.',
+        description: 'Download, share, or edit your professional video within minutes.',
     },
 ];
 

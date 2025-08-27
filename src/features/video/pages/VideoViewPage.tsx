@@ -11,6 +11,7 @@ export const VideoViewPage: React.FC = () => {
     const navigate = useNavigate();
     const [video, setVideo] = useState<Video | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDownloading, setIsDownloading] = useState(false);
 
     useEffect(() => {
         if (!videoId) {
@@ -41,15 +42,26 @@ export const VideoViewPage: React.FC = () => {
         toast.success("Link copied to clipboard!");
     };
 
-    const handleDownload = () => {
+    const handleDownload = async () => {
         if (!video?.file) return;
-        // Create a temporary link to trigger the download
-        const link = document.createElement('a');
-        link.href = video.file;
-        link.setAttribute('download', video.title || 'video.mp4');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        setIsDownloading(true);
+        try {
+            const response = await fetch(video.file);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', video.title || 'video.mp4');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Download failed", error);
+            toast.error("Failed to download video.");
+        } finally {
+            setIsDownloading(false);
+        }
     };
 
     if (isLoading) {
@@ -87,11 +99,11 @@ export const VideoViewPage: React.FC = () => {
                         >
                             Edit
                         </Button>
-                        <Button variant="outlined" startIcon={<Share />} onClick={handleShare}>
+                        <Button variant="outlined" startIcon={<Share />} onClick={handleShare} disabled={isDownloading}>
                             Share
                         </Button>
-                        <Button variant="outlined" startIcon={<Download />} onClick={handleDownload}>
-                            Download
+                        <Button variant="outlined" startIcon={isDownloading ? <CircularProgress size={20} /> : <Download />} onClick={handleDownload} disabled={isDownloading}>
+                            {isDownloading ? 'Downloading...' : 'Download'}
                         </Button>
                     </Stack>
                 </Box>

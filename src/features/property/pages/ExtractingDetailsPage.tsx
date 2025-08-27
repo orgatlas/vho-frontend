@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Container, Typography, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { extractVideoDetailsFromUrl } from 'src/services/api';
+import { extractVideoDetailsFromAddress } from 'src/services/api';
 import { toast } from 'react-toastify';
 
 const loadingPhrases = [
@@ -23,9 +23,9 @@ export const ExtractingDetailsPage: React.FC = () => {
     const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
 
     useEffect(() => {
-        const url = location.state?.url;
-        if (!url) {
-            toast.error("No URL provided.");
+        const address = location.state?.address;
+        if (!address) {
+            toast.error("No address provided.");
             navigate('/');
             return;
         }
@@ -36,12 +36,11 @@ export const ExtractingDetailsPage: React.FC = () => {
 
         const extract = async () => {
             try {
-                const videoDetails = await extractVideoDetailsFromUrl(url);
-                toast.success("Details extracted successfully!");
-                navigate('/property-details', { state: { video: videoDetails } });
+                const videoDetails = await extractVideoDetailsFromAddress(address);
+                navigate(`/property-details/${videoDetails.id}`, { state: { video: videoDetails } });
             } catch (err) {
-                console.error("Failed to extract property details", err);
-                setError("We couldn't extract details from that URL. Please check the link and try again.");
+                console.error("Failed to get property details", err);
+                setError("Something went wrong with that address. Please try again.");
             }
         };
 
@@ -56,7 +55,7 @@ export const ExtractingDetailsPage: React.FC = () => {
                 {error ? (
                     <>
                         <Typography variant="h5" component="h1" color="error" gutterBottom>
-                            Extraction Failed
+                            Something went wrong :(
                         </Typography>
                         <Typography color="text.secondary" sx={{ mb: 3 }}>
                             {error}

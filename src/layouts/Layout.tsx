@@ -23,7 +23,7 @@ import {Apartment, HelpOutline, Logout, Support} from "@mui/icons-material";
 
 export const Layout: React.FC<{children: React.ReactNode, contained?: boolean}> = ({children, contained = true}) => {
     const location = useLocation();
-    const isCheckoutPage = location.pathname === '/checkout';
+    const isCheckoutPage = location.pathname.startsWith('/checkout');
     const { user, isAuthenticated, logout } = useAuth();
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

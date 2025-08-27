@@ -39,10 +39,10 @@ function App() {
                         <Route path="/" element={<Layout contained={false}><LandingPage/></Layout>}/>
 
                         {/* All other pages with contained layout */}
-                        <Route path="/property-details" element={<Layout><PropertyDetailsPage/></Layout>}/>
-                        <Route path="/checkout" element={<Layout><CheckoutPage/></Layout>}/>
-                        <Route path="/premium-features" element={<Layout><PremiumFeaturesPage/></Layout>}/>
-                        <Route path="/generating-video" element={<Layout><GeneratingVideoPage/></Layout>}/>
+                        <Route path="/property-details/:videoId" element={<Layout><PropertyDetailsPage/></Layout>}/>
+                        <Route path="/checkout/:videoId" element={<Layout><CheckoutPage/></Layout>}/>
+                        <Route path="/premium-features/:videoId" element={<Layout><PremiumFeaturesPage/></Layout>}/>
+                        <Route path="/generating-video/:videoId" element={<Layout><GeneratingVideoPage/></Layout>}/>
                         <Route path="/video-generated" element={<Layout><VideoGeneratedPage/></Layout>}/>
                         <Route path="/register" element={<Layout><RegisterPage/></Layout>}/>
                         <Route path="/login" element={<Layout><LoginPage/></Layout>}/>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Grid } from '@mui/material';
+import { Box, TextField, Button, Typography, Grid, CircularProgress } from '@mui/material';
 
 interface ContactFormProps {
     onSend: (details: { firstName: string; lastName: string; email: string; message: string }) => void;
+    loading: boolean;
 }
 
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({ icon, label }) => (
@@ -21,7 +22,7 @@ const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: 
 );
 
 
-export const ContactForm: React.FC<ContactFormProps> = ({ onSend }) => {
+export const ContactForm: React.FC<ContactFormProps> = ({ onSend, loading }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -42,6 +43,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSend }) => {
                         required
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -51,6 +53,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSend }) => {
                         placeholder="Last Name"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -61,6 +64,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSend }) => {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -72,11 +76,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSend }) => {
                         required
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        disabled={loading}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="primary" size="large">
-                        Send Message
+                    <Button type="submit" variant="contained" color="primary" size="large" disabled={loading}>
+                        {loading ? <CircularProgress size={24} /> : 'Send Message'}
                     </Button>
                 </Grid>
             </Grid>

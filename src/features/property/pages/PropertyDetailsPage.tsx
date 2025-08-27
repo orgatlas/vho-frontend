@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {
     Box,
     Button,
@@ -48,11 +48,13 @@ export const PropertyDetailsPage: React.FC = () => {
     const location = useLocation();
     const theme = useTheme();
     const [isDescriptionFocussed, setIsDescriptionFocussed] = useState<boolean>(false);
+    const {videoId} = useParams<{ videoId: string }>();
     const [video, setVideo] = useState<Video | null>(location.state?.video || null);
-    const [images, setImages] = useState<ImageType[]>(video?.property.images || []);
+    const [images, setImages] = useState<ImageType[]>([]);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState(false);
 
     const handleAgentsChange = (updatedAgents: Agent[]) => {
         setVideo(prevVideo => prevVideo ? { ...prevVideo, property: { ...prevVideo.property, agents: updatedAgents } } : null);
@@ -63,27 +65,31 @@ export const PropertyDetailsPage: React.FC = () => {
     };
 
     useEffect(() => {
-        if (video?.id) {
-            getVideoDetails(video.id).then((refreshedVideo) => {
-                if (refreshedVideo.locked) {
-                    navigate('/video-generated');
-                }
-                setVideo(refreshedVideo);
-            });
-        }
-
-        const fetchImages = async () => {
-            if (video?.id) {
+        const loadData = async () => {
+            if (videoId) {
+                setLoading(true);
                 try {
-                    const imageList = await getImageList(video.id);
+                    const [refreshedVideo, imageList] = await Promise.all([
+                        getVideoDetails(videoId),
+                        getImageList(videoId)
+                    ]);
+
+                    if (refreshedVideo.locked) {
+                        navigate('/video-generated');
+                        return;
+                    }
+                    setVideo(refreshedVideo);
                     setImages(imageList);
                 } catch (error) {
-                    console.error('Error fetching images:', error);
+                    console.error('Error fetching data:', error);
+                    toast.error('Failed to load property details.');
+                } finally {
+                    setLoading(false);
                 }
             }
         };
 
-        fetchImages();
+        loadData();
     }, [video?.id, navigate]);
 
     const onDrop = async (acceptedFiles: File[]) => {
@@ -92,38 +98,36 @@ export const PropertyDetailsPage: React.FC = () => {
             return;
         }
 
-        setImages(prevImages => {
-            if (prevImages.length >= 20) {
-                toast.error("You can only upload a maximum of 20 images.");
-                return prevImages; // don't process new files
-            }
+        if (images.length + acceptedFiles.length > 20) {
+            toast.error("You can only upload a maximum of 20 images.");
+            return;
+        }
 
-            // Calculate how many files we can still add
-            const remainingSlots = 20 - prevImages.length;
-            const filesToUpload = acceptedFiles.slice(0, remainingSlots);
+        setActionLoading(true);
+        try {
+            const uploadPromises = acceptedFiles.map(file => uploadImage(video.id, file));
+            const responses = await Promise.all(uploadPromises);
 
-            (async () => {
-                for (const file of filesToUpload) {
-                    try {
-                        const response = await uploadImage(video.id, file);
-                        if (response.warnings && response.warnings.length > 0) {
-                            toast.warn(response.warnings.join('\n'));
-                        }
-                        const newImage: ImageType = {
-                            id: response.id,
-                            file: response.file_url,
-                            description: '',
-                            preview: URL.createObjectURL(file)
-                        };
-                        setImages(prev => [...prev, newImage]);
-                    } catch (error) {
-                        console.error('Error uploading image:', error);
-                    }
+            const newImages: ImageType[] = responses.map((response, index) => ({
+                id: response.id,
+                file: response.file_url,
+                description: '',
+                preview: URL.createObjectURL(acceptedFiles[index])
+            }));
+
+            setImages(prev => [...prev, ...newImages]);
+
+            responses.forEach(response => {
+                if (response.warnings && response.warnings.length > 0) {
+                    toast.warn(response.warnings.join('\n'));
                 }
-            })();
-
-            return prevImages; // Keep state unchanged here; uploads will update later
-        });
+            });
+        } catch (error) {
+            console.error('Error uploading images:', error);
+            toast.error('An error occurred during upload. Please try again.');
+        } finally {
+            setActionLoading(false);
+        }
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -151,12 +155,15 @@ export const PropertyDetailsPage: React.FC = () => {
         const imageToRemove = images[index];
         if (!imageToRemove) return;
 
+        setActionLoading(true);
         try {
             await removeImage(video.id, imageToRemove.id);
             toast.success("Image removed.");
             setImages(images.filter((_, i) => i !== index));
         } catch (error) {
             console.error('Error removing image:', error);
+        } finally {
+            setActionLoading(false);
         }
     }
 
@@ -182,7 +189,7 @@ export const PropertyDetailsPage: React.FC = () => {
                 video.property.description,
                 video.property.price,
             );
-            navigate('/checkout', { state: { videoId: video.id } });
+            navigate(`/checkout/${video.id}`);
         } catch (error) {
             toast.error("Failed to update property details. Try again later.");
             console.error("Failed to update property details:", error);
@@ -291,18 +298,30 @@ export const PropertyDetailsPage: React.FC = () => {
                         <Box>
                             <SectionHeader icon={<Image color="primary" />} title="Image Uploader" tooltip="Upload images for your video. Drag and drop or click to select." />
                             <Divider sx={{ mb: 2 }} />
-                            <Box {...getRootProps()} sx={{ p: 4, border: '2px dashed', borderColor: 'primary.main', borderRadius: 2, textAlign: 'center', background: (theme) => theme.palette.action.hover, cursor: 'pointer' }}>
-                                <input {...getInputProps()} />
-                                <Image sx={{ fontSize: 48, color: 'primary.main' }} />
-                                <Typography>Drag & Drop Property Images Here, or Click to Select</Typography>
+                            <Box {...getRootProps()} sx={{ p: 4, border: '2px dashed', borderColor: 'primary.main', borderRadius: 2, textAlign: 'center', background: (theme) => theme.palette.action.hover, cursor: actionLoading ? 'not-allowed' : 'pointer' }}>
+                                <input {...getInputProps()} disabled={actionLoading} />
+                                {actionLoading ? (
+                                    <CircularProgress />
+                                ) : (
+                                    <>
+                                        <Image sx={{ fontSize: 48, color: 'primary.main' }} />
+                                        <Typography>Drag & Drop Property Images Here, or Click to Select</Typography>
+                                    </>
+                                )}
                             </Box>
                             <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap' }}>
                                 {images.map((image, index) => (
                                     <Box key={index} sx={{ mr: 2, mb: 2, position: 'relative', cursor: 'pointer' }} onClick={() => handleOpenLightbox(index)}>
                                         <img src={image.preview} alt={`property image ${index}`} style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 8 }} />
-                                        <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleRemoveImage(index) }} sx={{ position: 'absolute', top: -5, right: -5, background: 'white', '&:hover': { background: 'white' } }}>
-                                            <Close fontSize="small" />
-                                        </IconButton>
+                                        {actionLoading === image.id ? (
+                                            <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8 }}>
+                                                <CircularProgress size={24} color="inherit" />
+                                            </Box>
+                                        ) : (
+                                            <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleRemoveImage(index) }} sx={{ position: 'absolute', top: -5, right: -5, background: 'white', '&:hover': { background: 'white' } }} disabled={actionLoading}>
+                                                <Close fontSize="small" />
+                                            </IconButton>
+                                        )}
                                     </Box>
                                 ))}
                             </Box>

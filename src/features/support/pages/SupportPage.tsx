@@ -36,20 +36,8 @@ export const SupportPage: React.FC = () => {
                         </Typography>
                     </Box>
                 ) : (
-
-                    loading ? (
-                            <>
-                                <Typography variant="h4" component="h2" gutterBottom>
-                                    Sending...
-                                </Typography>
-                                <CircularProgress/>
-                            </>
-                        ) :
-                        (
-                            <ContactForm onSend={handleSend}/>
-
-                        ))
-                }
+                    <ContactForm onSend={handleSend} loading={loading} />
+                )}
 
             </Container>
             <FaqSection/>

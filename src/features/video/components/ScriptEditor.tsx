@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Typography, TextField} from '@mui/material';
+import {Box, Typography, TextField, CircularProgress} from '@mui/material';
 import {Scene} from 'src/types';
 import {updateSceneScript} from 'src/services/api';
 import {useDebounce} from 'src/hooks/useDebounce';
@@ -73,7 +73,7 @@ export const ScriptEditor: React.FC<ScriptEditorProps> = ({scene, onScriptUpdate
                 }}
             />
             <Typography variant="body1" sx={{textAlign: 'right', width: '100%', pr: 4}} gutterBottom>
-                {status === 'Saving' ? 'Saving...' : status === 'Saved' ? 'Saved' : ''}
+                {status === 'Saving' ? <CircularProgress size={20} /> : status === 'Saved' ? 'Saved' : ''}
             </Typography>
         </Box>
     );
