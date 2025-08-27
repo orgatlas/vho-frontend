@@ -6,33 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/components/AgentsEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/AgentsEditor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/ExtractingDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/ExtractingDetailsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/support/components/ContactForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/support/components/ContactForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/support/pages/SupportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/support/pages/SupportPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/ScriptEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/ScriptEditor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/LeftPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/LeftPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/RightPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/RightPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/editor/TrackSelectionPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/editor/TrackSelectionPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/pages/GeneratingVideoPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/GeneratingVideoPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/pages/VideoGeneratedPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoGeneratedPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/pages/VideoViewPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoViewPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/mockApi.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,6 +139,7 @@
       <workItem from="1756113298865" duration="8045000" />
       <workItem from="1756243074226" duration="15682000" />
       <workItem from="1756307276010" duration="2395000" />
+      <workItem from="1756329570987" duration="616000" />
     </task>
     <servers />
   </component>

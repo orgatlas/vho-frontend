@@ -1,21 +1,21 @@
 import React from 'react';
 import { Box, Typography, Container, Grid, Paper } from '@mui/material';
-import { Link, FindInPage, MovieCreation } from '@mui/icons-material';
+import {FindInPage, MovieCreation, Home, LocationOn, CameraIndoor} from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
 const steps = [
     {
-        icon: <Link sx={{ fontSize: 48 }} color="primary" />,
-        title: '1. Enter the property address',
+        icon: <LocationOn sx={{ fontSize: 48 }} color="primary" />,
+        title: '1. Lookup the property address',
         description: 'Lookup the listing address to get started.',
     },
     {
-        icon: <FindInPage sx={{ fontSize: 48 }} color="primary" />,
-        title: '2. Enter the Details',
-        description: 'Upload photos and describe the property listing.',
+        icon: <Home sx={{ fontSize: 48 }} color="primary" />,
+        title: '2. Confirm the Details',
+        description: 'Confirm the property information and upload photos.',
     },
     {
-        icon: <MovieCreation sx={{ fontSize: 48 }} color="primary" />,
+        icon: <CameraIndoor sx={{ fontSize: 48 }} color="primary" />,
         title: '3. Get Your Video',
         description: 'Download, share, or edit your professional video within minutes.',
     },

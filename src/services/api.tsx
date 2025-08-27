@@ -164,37 +164,14 @@ export const extractVideoDetailsFromAddress = async (address: string): Promise<V
 
 export const getProperty = async (propertyId: string): Promise<Property> => {
     const response = await api.post('property/details', {property: propertyId});
-
     return response.data.property;
-    // const images = response.data.images;
-    // const video = response.data.video;
-    //
-    // return {
-    //     id: property.id,
-    //     title: property.title,
-    //     address: property.address,
-    //     bedrooms: property.beds,
-    //     bathrooms: property.bathrooms,
-    //     car_spaces: property.car_spaces,
-    //     property_area: property.area,
-    //     price: property.price,
-    //     description: property.description,
-    //     company: property.company,
-    //     agents: property.agents,
-    //     video: video,
-    //     images: images.map((img: any) => ({
-    //         id: img.id,
-    //         file: img.file,
-    //         description: img.description,
-    //     }))
-    // };
 };
 
-export const updatePropertyDetails = async (property: number, address: string, beds: string, bathrooms: string, car_spaces: string, property_area: string, description: string | undefined, price: string | undefined): Promise<Property> => {
+export const updatePropertyDetails = async (property: number, address: string, bedrooms: string, bathrooms: string, car_spaces: string, property_area: string, description: string | undefined, price: string | undefined): Promise<Property> => {
     const response = await api.post('property/update', {
         property: property,
         address: address,
-        beds: beds,
+        bedrooms: bedrooms,
         bathrooms: bathrooms,
         car_spaces: car_spaces,
         property_area: property_area,
