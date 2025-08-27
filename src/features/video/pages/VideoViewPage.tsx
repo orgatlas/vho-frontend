@@ -36,16 +36,16 @@ export const VideoViewPage: React.FC = () => {
     }, [videoId, navigate]);
 
     const handleShare = () => {
-        if (!video?.video_url) return;
+        if (!video?.file) return;
         navigator.clipboard.writeText(window.location.href);
         toast.success("Link copied to clipboard!");
     };
 
     const handleDownload = () => {
-        if (!video?.video_url) return;
+        if (!video?.file) return;
         // Create a temporary link to trigger the download
         const link = document.createElement('a');
-        link.href = video.video_url;
+        link.href = video.file;
         link.setAttribute('download', video.title || 'video.mp4');
         document.body.appendChild(link);
         link.click();
@@ -65,7 +65,7 @@ export const VideoViewPage: React.FC = () => {
             <Paper elevation={3}>
                 <Box sx={{ position: 'relative', paddingTop: '56.25%' /* 16:9 Aspect Ratio */ }}>
                     <video
-                        src={video.video_url}
+                        src={video.file}
                         controls
                         style={{
                             position: 'absolute',
