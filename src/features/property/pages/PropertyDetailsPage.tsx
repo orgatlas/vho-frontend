@@ -178,6 +178,12 @@ export const PropertyDetailsPage: React.FC = () => {
             return;
         }
 
+        if (images.length === 0) {
+            toast.error("Please upload at least one image before continuing.");
+            setLoading(false);
+            return;
+        }
+
         try {
             const updatedProperty = await updatePropertyDetails(
                 video.property.id,

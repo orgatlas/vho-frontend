@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Container, Grid, Paper } from '@mui/material';
-import {FindInPage, MovieCreation, Home, LocationOn, CameraIndoor} from '@mui/icons-material';
+import {Home, LocationOn, CameraIndoor} from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
 const steps = [

@@ -75,10 +75,12 @@ export const logout = async () => {
     return response.data;
 };
 
-export const getUser = async (token:string) => {
-    const response = await api.get('auth/user', {withCredentials:true, headers: {
+export const getUser = async (token: string) => {
+    const response = await api.get('auth/user', {
+        withCredentials: true, headers: {
             Authorization: `Bearer ${token}`,
-        }});
+        }
+    });
     return response.data.user;
 };
 
@@ -88,12 +90,17 @@ export const resetPasswordRequest = async (email: string) => {
 };
 
 export const resetPassword = async (email: string, password: string, token: string) => {
-    const response = await api.post('auth/password/reset', {email:email, password:password, token:token});
+    const response = await api.post('auth/password/reset', {email: email, password: password, token: token});
     return response.data;
 };
 
-export const submitContactForm = async (first_name:string, last_name: string ,email: string, message:string) => {
-    const response = await api.post('mail/contact/submit', {first_name: first_name, last_name: last_name, email: email, message:message});
+export const submitContactForm = async (first_name: string, last_name: string, email: string, message: string) => {
+    const response = await api.post('mail/contact/submit', {
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        message: message
+    });
     return response.data;
 };
 
@@ -119,7 +126,7 @@ export const removeImage = async (videoId: number, imageId: string): Promise<{ m
     return response.data;
 };
 
-export const getImageList = async (videoId: number): Promise<Image[]> => {
+export const getImageList = async (videoId: number | string): Promise<Image[]> => {
     const response = await api.post('image/list', {video: videoId});
     const images = response.data.images.map((image: any) => {
         return {
@@ -147,7 +154,7 @@ export const getPackages = async (videoId: number | string, scenes?: number, cur
 }
 
 export const getPricing = async (scenes: number): Promise<any> => {
-    const response = await api.post('billing/pricing', {scenes:scenes});
+    const response = await api.post('billing/pricing', {scenes: scenes});
     return response.data;
 }
 
@@ -182,7 +189,7 @@ export const updatePropertyDetails = async (property: number, address: string, b
 };
 
 
-export const processPayment = async (videoId: number|string, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
+export const processPayment = async (videoId: number | string, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
     client_secret: string,
     total_cost: number
 }> => {
