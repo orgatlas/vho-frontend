@@ -5,10 +5,12 @@ import { Edit, Share, Download } from '@mui/icons-material';
 import { getVideoDetails } from 'src/services/api';
 import { Video } from 'src/types';
 import { toast } from 'react-toastify';
+import { useAuth } from 'src/contexts/AuthContext';
 
 export const VideoViewPage: React.FC = () => {
     const { videoId } = useParams<{ videoId: string }>();
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
     const [video, setVideo] = useState<Video | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isDownloading, setIsDownloading] = useState(false);
@@ -35,6 +37,14 @@ export const VideoViewPage: React.FC = () => {
 
         fetchVideo();
     }, [videoId, navigate]);
+
+    const handleEdit = () => {
+        if (isAuthenticated) {
+            navigate(`/video/${videoId}/edit`);
+        } else {
+            navigate('/login');
+        }
+    };
 
     const handleShare = () => {
         if (!video?.file) return;
@@ -95,14 +105,14 @@ export const VideoViewPage: React.FC = () => {
                         <Button
                             variant="contained"
                             startIcon={<Edit />}
-                            onClick={() => navigate(`/video/${videoId}/edit`)}
+                            onClick={handleEdit}
                         >
                             Edit
                         </Button>
-                        <Button variant="outlined" startIcon={<Share />} onClick={handleShare} disabled={isDownloading}>
+                        <Button variant="contained" startIcon={<Share />} onClick={handleShare} disabled={isDownloading}>
                             Share
                         </Button>
-                        <Button variant="outlined" startIcon={isDownloading ? <CircularProgress size={20} /> : <Download />} onClick={handleDownload} disabled={isDownloading}>
+                        <Button variant="contained" startIcon={isDownloading ? <CircularProgress size={20} /> : <Download />} onClick={handleDownload} disabled={isDownloading}>
                             {isDownloading ? 'Downloading...' : 'Download'}
                         </Button>
                     </Stack>

@@ -9,10 +9,10 @@ import {
     CardActions,
     IconButton,
     Menu,
-    MenuItem, CircularProgress
+    MenuItem, CircularProgress, Tooltip
 } from '@mui/material';
 import { Video } from 'src/types';
-import {VideocamOutlined, Download, Edit, Share, PlayArrow, Pause} from "@mui/icons-material";
+import {VideocamOutlined, Download, Edit, Share, PlayArrow, Pause, Visibility} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import {
     EmailShareButton,
@@ -59,6 +59,10 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
         navigate(`/video/${video.id}/edit`);
     };
 
+    const handleView = () => {
+        navigate(`/video/${video.id}/view`);
+    };
+
     const handleDownload = async () => {
         try {
             const response = await fetch(`${video.file}`);
@@ -80,7 +84,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
         setIsPlaying(!isPlaying);
     };
 
-    const shareUrl = window.location.href;
+    const shareUrl = `${window.location.origin}/video/${video.id}`;
 
     return (
         <Card sx={{
@@ -165,15 +169,26 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
                 </Box>
             ) : (
                 <CardActions sx={{ justifyContent: 'flex-end', paddingTop: 0 }}>
-                    <IconButton onClick={handleDownload} aria-label="download">
-                        <Download />
-                    </IconButton>
-                    <IconButton onClick={handleEdit} aria-label="edit">
-                        <Edit />
-                    </IconButton>
-                    <IconButton onClick={handleShareClick} aria-label="share">
-                        <Share />
-                    </IconButton>
+                    <Tooltip title="View">
+                        <IconButton onClick={handleView} aria-label="view">
+                            <Visibility />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Download">
+                        <IconButton onClick={handleDownload} aria-label="download">
+                            <Download />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                        <IconButton onClick={handleEdit} aria-label="edit">
+                            <Edit />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share">
+                        <IconButton onClick={handleShareClick} aria-label="share">
+                            <Share />
+                        </IconButton>
+                    </Tooltip>
                     <Menu
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
