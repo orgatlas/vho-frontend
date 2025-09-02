@@ -7,20 +7,24 @@ import {
     CardContent,
     CardHeader,
     Chip,
-    Container,
     Divider,
     Grid,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
-    Paper,
     TextField,
     Typography,
     CircularProgress,
 } from '@mui/material';
-import {getPackages, processPayment, getVideoDetails} from 'src/services/api';
-import {Package, Agent} from "src/types";
+import {
+    getPackages,
+    processPayment,
+    getVideoDetails,
+    marketingPurchaseComplete,
+    marketingViewCheckout
+} from 'src/services/api';
+import {Package} from "src/types";
 import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
@@ -96,6 +100,11 @@ const CheckoutForm: React.FC<{
         }
     }, [plan.id, currentPlanId, onPackageChange]);
 
+    // Marketing
+    useEffect(() => {
+        marketingViewCheckout()
+    }, []);
+
     const validateEmail = (email: string) => {
         const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
         if (!emailRegex.test(email)) {
@@ -138,6 +147,10 @@ const CheckoutForm: React.FC<{
                 setConfirmationStep(true);
             } else {
                 setPaymentSuccess(true);
+
+                // Marketing
+                await marketingPurchaseComplete(response.invoice.id)
+
                 const nextPath = plan.name.toLowerCase() === 'premium' ? `/premium-features/${videoId}` : `/generating-video/${videoId}`;
                 navigate(nextPath);
             }

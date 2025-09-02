@@ -3,6 +3,7 @@ import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Agent, Property, MusicTrack, Voice, Package, Video, Company, Scene, Image} from "src/types";
 
+
 // Create an Axios instance
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
@@ -150,6 +151,13 @@ export const getPackages = async (videoId: number | string, scenes?: number, cur
     if (scenes) payload.scenes = scenes;
     if (currency) payload.currency = currency;
     const response = await api.post('billing/packages', payload);
+
+    // Marketing
+    response.data.packages.map((pkg: Package) => {
+        marketingViewPackage(pkg.id)
+        return null
+    });
+
     return response.data.packages;
 }
 
@@ -390,4 +398,42 @@ export const convertCurrency = async (cost: number, code: string): Promise<numbe
     return response.data.converted_price;
 };
 
+export const marketingPurchaseComplete = async (invoice_id: number | string): Promise<string> => {
+    const identifier = localStorage.getItem('identifier');
+    if (!identifier) {
+        localStorage.setItem('identifier', crypto.randomUUID());
+    }
+    const response = await api.post('marketing/meta/purchase/complete', {
+        invoice_id: invoice_id,
+        identifier: identifier
+    });
+    return response.data.message;
+};
+
+export const marketingViewHomepage = async (): Promise<string> => {
+    const identifier = localStorage.getItem('identifier');
+    if (!identifier) {
+        localStorage.setItem('identifier', crypto.randomUUID());
+    }
+    const response = await api.post('marketing/meta/view/homepage', {identifier: identifier});
+    return response.data.message;
+};
+
+export const marketingViewPackage = async (package_id: number | string): Promise<string> => {
+    const identifier = localStorage.getItem('identifier');
+    if (!identifier) {
+        localStorage.setItem('identifier', crypto.randomUUID());
+    }
+    const response = await api.post('marketing/meta/view/package', {identifier: identifier});
+    return response.data.message;
+};
+
+export const marketingViewCheckout = async (): Promise<string> => {
+    const identifier = localStorage.getItem('identifier');
+    if (!identifier) {
+        localStorage.setItem('identifier', crypto.randomUUID());
+    }
+    const response = await api.post('marketing/meta/view/checkout', {identifier: identifier});
+    return response.data.message;
+};
 
