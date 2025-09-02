@@ -27,6 +27,7 @@ import {SupportPage} from 'src/features/support/pages/SupportPage';
 import {TermsOfServicePage} from 'src/features/legal/pages/TermsOfServicePage';
 import {AcceptableUsePolicyPage} from 'src/features/legal/pages/AcceptableUsePage';
 import {PrivacyPolicyPage} from 'src/features/legal/pages/PrivacyPolicyPage';
+import PixelRouteChange from "src/marketing/pixel_route_change";
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
             <CssBaseline/>
             <Router>
                 <AuthProvider>
+                    <PixelRouteChange/>
                     <Routes>
                         {/* Landing page with full-width layout */}
                         <Route path="/" element={<Layout contained={false}><LandingPage/></Layout>}/>

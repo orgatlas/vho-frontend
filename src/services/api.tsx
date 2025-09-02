@@ -2,7 +2,7 @@ import axios from 'axios';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Agent, Property, MusicTrack, Voice, Package, Video, Company, Scene, Image} from "src/types";
-
+import {marketingViewPackage} from 'src/marketing/marketing_api'
 
 // Create an Axios instance
 const api = axios.create({
@@ -398,42 +398,5 @@ export const convertCurrency = async (cost: number, code: string): Promise<numbe
     return response.data.converted_price;
 };
 
-export const marketingPurchaseComplete = async (invoice_id: number | string): Promise<string> => {
-    const identifier = localStorage.getItem('identifier');
-    if (!identifier) {
-        localStorage.setItem('identifier', crypto.randomUUID());
-    }
-    const response = await api.post('marketing/meta/purchase/complete', {
-        invoice_id: invoice_id,
-        identifier: identifier
-    });
-    return response.data.message;
-};
 
-export const marketingViewHomepage = async (): Promise<string> => {
-    const identifier = localStorage.getItem('identifier');
-    if (!identifier) {
-        localStorage.setItem('identifier', crypto.randomUUID());
-    }
-    const response = await api.post('marketing/meta/view/homepage', {identifier: identifier});
-    return response.data.message;
-};
-
-export const marketingViewPackage = async (package_id: number | string): Promise<string> => {
-    const identifier = localStorage.getItem('identifier');
-    if (!identifier) {
-        localStorage.setItem('identifier', crypto.randomUUID());
-    }
-    const response = await api.post('marketing/meta/view/package', {identifier: identifier});
-    return response.data.message;
-};
-
-export const marketingViewCheckout = async (): Promise<string> => {
-    const identifier = localStorage.getItem('identifier');
-    if (!identifier) {
-        localStorage.setItem('identifier', crypto.randomUUID());
-    }
-    const response = await api.post('marketing/meta/view/checkout', {identifier: identifier});
-    return response.data.message;
-};
-
+export default api;

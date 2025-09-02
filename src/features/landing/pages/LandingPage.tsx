@@ -6,7 +6,7 @@ import { DemoSection } from '../components/DemoSection';
 import { FaqSection } from '../components/FaqSection';
 import { Footer } from '../components/Footer';
 import { PricingCalculator } from '../components/PricingCalculator';
-import {marketingViewHomepage} from "src/services/api";
+import {marketingViewHomepage} from "src/marketing/marketing_api";
 
 export const LandingPage: React.FC = () => {
     useEffect(() => {

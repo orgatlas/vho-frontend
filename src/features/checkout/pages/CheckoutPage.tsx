@@ -21,9 +21,11 @@ import {
     getPackages,
     processPayment,
     getVideoDetails,
+} from 'src/services/api';
+import {
     marketingPurchaseComplete,
     marketingViewCheckout
-} from 'src/services/api';
+} from 'src/marketing/marketing_api';
 import {Package} from "src/types";
 import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
