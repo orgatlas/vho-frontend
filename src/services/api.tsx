@@ -154,7 +154,9 @@ export const getPackages = async (videoId: number | string, scenes?: number, cur
 
     // Marketing
     response.data.packages.map((pkg: Package) => {
-        marketingViewPackage(pkg.id)
+        if (process.env.REACT_APP_MARKETING === 'on') {
+            marketingViewPackage(pkg.id)
+        }
         return null
     });
 

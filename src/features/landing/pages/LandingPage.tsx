@@ -1,26 +1,28 @@
 import React, {useEffect} from 'react';
-import { Box } from '@mui/material';
-import { HeroSection } from '../components/HeroSection';
-import { HowItWorksSection } from '../components/HowItWorksSection';
-import { DemoSection } from '../components/DemoSection';
-import { FaqSection } from '../components/FaqSection';
-import { Footer } from '../components/Footer';
-import { PricingCalculator } from '../components/PricingCalculator';
+import {Box} from '@mui/material';
+import {HeroSection} from '../components/HeroSection';
+import {HowItWorksSection} from '../components/HowItWorksSection';
+import {DemoSection} from '../components/DemoSection';
+import {FaqSection} from '../components/FaqSection';
+import {Footer} from '../components/Footer';
+import {PricingCalculator} from '../components/PricingCalculator';
 import {marketingViewHomepage} from "src/marketing/marketing_api";
 
 export const LandingPage: React.FC = () => {
     useEffect(() => {
-        marketingViewHomepage()
+        if (process.env.REACT_APP_MARKETING === 'on') {
+            marketingViewHomepage()
+        }
     }, []);
 
     return (
         <Box>
-            <HeroSection />
-            <HowItWorksSection />
-            <DemoSection />
-            <PricingCalculator />
-            <FaqSection />
-            <Footer />
+            <HeroSection/>
+            <HowItWorksSection/>
+            <DemoSection/>
+            <PricingCalculator/>
+            <FaqSection/>
+            <Footer/>
         </Box>
     );
 };

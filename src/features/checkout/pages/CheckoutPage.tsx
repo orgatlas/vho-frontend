@@ -104,7 +104,9 @@ const CheckoutForm: React.FC<{
 
     // Marketing
     useEffect(() => {
-        marketingViewCheckout()
+        if (process.env.REACT_APP_MARKETING === 'on') {
+            marketingViewCheckout()
+        }
     }, []);
 
     const validateEmail = (email: string) => {
@@ -151,7 +153,9 @@ const CheckoutForm: React.FC<{
                 setPaymentSuccess(true);
 
                 // Marketing
-                await marketingPurchaseComplete(response.invoice.id)
+                if (process.env.REACT_APP_MARKETING === 'on') {
+                    await marketingPurchaseComplete(response.invoice.id)
+                }
 
                 const nextPath = plan.name.toLowerCase() === 'premium' ? `/premium-features/${videoId}` : `/generating-video/${videoId}`;
                 navigate(nextPath);
