@@ -38,7 +38,7 @@ function App() {
                     <PixelRouteChange/>
                     <Routes>
                         {/* Landing page with full-width layout */}
-                        <Route path="/" element={<Layout contained={false}><LandingPage/></Layout>}/>
+                        <Route path="/" element={<Layout><LandingPage/></Layout>}/>
 
                         {/* All other pages with contained layout */}
                         <Route path="/property-details/:videoId" element={<Layout><PropertyDetailsPage/></Layout>}/>

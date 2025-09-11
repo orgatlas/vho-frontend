@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import ProblemSolution from "../components/ProblemSolution";
@@ -14,27 +14,32 @@ import FinalCTA from "../components/FinalCTA";
 import Footer from "../components/Footer";
 import StickyCTA from "../components/StickyCTA";
 import FAQSection from "../components/FaqSection"
+import {marketingViewHomepage} from "src/marketing/marketing_api";
+import {Box} from '@mui/material';
 
 export default function LandingPage() {
+    useEffect(() => {
+        if (process.env.REACT_APP_MARKETING === 'on') {
+            marketingViewHomepage()
+        }
+    }, []);
+
     return (
-        <div>
-            <Navbar />
-            <Hero />
-            <main>
-                <ProblemSolution />
-                <BeforeAfterSlider />
-                <Features />
-                <GalleryComparison />
-                <Stats />
-                <Testimonials />
-                <ROICalculator />
-                <CaseStudies />
-                <Pricing />
-                <FAQSection />
-                <FinalCTA />
-            </main>
-            <Footer />
-            <StickyCTA />
-        </div>
+        <Box>
+            <Hero/>
+            <ProblemSolution/>
+            <BeforeAfterSlider/>
+            <Features/>
+            <GalleryComparison/>
+            <Stats/>
+            {/*<Testimonials/>*/}
+            {/*<ROICalculator/>*/}
+            {/*<CaseStudies/>*/}
+            {/*<Pricing/>*/}
+            {/*<FAQSection/>*/}
+            <FinalCTA/>
+            <Footer/>
+            {/*<StickyCTA/>*/}
+        </Box>
     );
 }
