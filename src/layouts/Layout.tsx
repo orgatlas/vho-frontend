@@ -14,7 +14,7 @@ export const Layout: React.FC<{children: React.ReactNode}> = ({children}) => {
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default'}}>
-            <Header />
+            <Header isLandingPage={isLandingPage} />
             <Box component="main" sx={{flexGrow: 1}}>
                 {isLandingPage ? (
                     children

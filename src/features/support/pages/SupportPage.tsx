@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, CircularProgress, Container, Typography} from '@mui/material';
-import FAQSection from 'src/features/landing/components/FaqSection';
+import {FaqSection} from 'src/features/landing/components/FaqSection';
 import {ContactForm} from '../components/ContactForm';
 import {submitContactForm} from "src/services/api";
 import {toast} from "react-toastify";
@@ -40,7 +40,7 @@ export const SupportPage: React.FC = () => {
                 )}
 
             </Container>
-            <FAQSection/>
+            <FaqSection/>
         </Box>
     );
 };
