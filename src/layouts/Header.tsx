@@ -215,9 +215,9 @@ export const Header: React.FC<{ isLandingPage?: boolean }> = ({isLandingPage}) =
                                         sx={{
                                             color: textColor,
                                             mr: isTransparent ? 0 : 1,
-                                            backgroundColor: isTransparent ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0)',
                                         }}>Sign In</Button>
-                                <Button variant="contained" component={Link} to="/#examples">Demo</Button>
+
+                                <Button variant="contained" component="a" href="/#demo">View Showcase</Button>
                             </Box>
                         )}
                     </motion.div>

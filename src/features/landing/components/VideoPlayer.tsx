@@ -1,35 +1,27 @@
-import React, {useEffect, useRef} from "react";
-import {Box} from "@mui/material";
+import React from 'react';
+import { Box } from '@mui/material';
 
 interface VideoPlayerProps {
-    inView: boolean;
+  videoUrl: string;
+  onPlay?: () => void;
+  onPause?: () => void;
+  onEnded?: () => void;
 }
 
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ inView }) => {
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        if (videoRef.current) {
-            if (inView) {
-                videoRef.current.play().catch(error => console.error("Video play failed:", error));
-            } else {
-                videoRef.current.pause();
-            }
-        }
-    }, [inView]);
-
-    return (
-        <Box sx={{width: '100%', height: '100%', backgroundColor: 'black', borderRadius: '12px', overflow: 'hidden'}}>
-            <video
-                ref={videoRef}
-                src={'https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/demo.mp4'}
-                width="100%"
-                height="100%"
-                controls
-                loop
-                playsInline
-                style={{objectFit: 'cover'}}
-            />
-        </Box>
-    );
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, onPlay, onPause, onEnded }) => {
+  return (
+    <Box sx={{ width: '100%', height: '100%', backgroundColor: 'black', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)' }}>
+      <video
+        src={videoUrl}
+        width="100%"
+        height="100%"
+        controls
+        playsInline
+        onPlay={onPlay}
+        onPause={onPause}
+        onEnded={onEnded}
+        style={{ display: 'block', objectFit: 'cover' }}
+      />
+    </Box>
+  );
 };

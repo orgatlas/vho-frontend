@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {Box, Typography, Button, Container, Grid, Stack} from '@mui/material';
 import {motion} from 'framer-motion';
 import {toast} from 'react-toastify';
+import AddressAutocomplete from "src/features/landing/components/AddressAutocomplete";
 
 export const HeroSection: React.FC = () => {
     const navigate = useNavigate();
@@ -16,7 +17,8 @@ export const HeroSection: React.FC = () => {
                 playPromise.catch((err) => {
                     console.warn('Autoplay prevented, muting & retrying…', err);
                     videoRef.current!.muted = true;
-                    videoRef.current!.play().catch(() => {});
+                    videoRef.current!.play().catch(() => {
+                    });
                 });
             }
         }
@@ -74,7 +76,7 @@ export const HeroSection: React.FC = () => {
                 />
             </Box>
 
-            <Container maxWidth="lg" sx={{position: 'relative', zIndex: 2,}}>
+            <Container maxWidth="lg" sx={{position: 'relative', zIndex: 2, mt:'100px'}}>
                 <motion.div initial="hidden" animate="visible" variants={containerVariants}>
                     <Grid container spacing={{xs: 6, md: 10}} alignItems="center">
                         {/* Left Column */}
@@ -114,19 +116,50 @@ export const HeroSection: React.FC = () => {
                                             images.
                                         </Typography>
                                     </motion.div>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleCreateVideo}
-                                        sx={{
-                                            borderRadius: '50px',
-                                            px: 5,
-                                            py: 1.5,
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        Get Started
-                                    </Button>
+                                    <motion.div variants={itemVariants}>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            bgcolor: 'white',
+                                            borderRadius: 50,
+                                            p: '6px',
+                                            width: '100%',
+                                            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
+                                            }
+                                        }}>
+                                            <Box sx={{flexGrow: 1, pl: 3}}>
+                                                <AddressAutocomplete
+                                                    onAddressSelect={setAddress}
+                                                    fullWidth
+                                                    placeholder="Enter an address..."
+                                                />
+                                            </Box>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                size="large"
+                                                onClick={handleCreateVideo}
+                                                sx={{
+                                                    borderRadius: 50,
+                                                    whiteSpace: 'nowrap',
+                                                    py: 1.5,
+                                                    px: 4,
+                                                    fontSize: '1rem',
+                                                    fontWeight: 600,
+                                                    boxShadow: 'none',
+                                                    '&:hover': {
+                                                        boxShadow: 'none',
+                                                    }
+                                                }}
+                                            >
+                                                Create Video
+                                            </Button>
+                                        </Box>
+                                    </motion.div>
+
                                 </Stack>
                             </motion.div>
                         </Grid>

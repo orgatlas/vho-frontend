@@ -247,6 +247,17 @@ img, video { max-width: 100%; display: block; }
   gap: var(--space-lg);
   text-align: center;
 }
+.stat {
+  aspect-ratio: 1 / 1; /* Makes the stat square */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-lg);
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+}
 .stat .num { font-size: 48px; font-weight: 700; color: var(--accent); }
 .stat .label { margin-top: var(--space-sm); color: var(--text-secondary); }
 

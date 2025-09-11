@@ -9,17 +9,17 @@ const steps = [
     {
         icon: <LocationOn sx={{ fontSize: 48 }} color="primary" />,
         title: '1. Provide Address',
-        description: 'Simply enter the property address to get started. We will find the listing for you.',
+        description: 'Simply enter the property address to get started.',
     },
     {
         icon: <Home sx={{ fontSize: 48 }} color="primary" />,
         title: '2. Confirm Details',
-        description: 'Review the property information and photos we have extracted. You can make changes if needed.',
+        description: 'Validate the property information and upload photos.',
     },
     {
         icon: <CameraIndoor sx={{ fontSize: 48 }} color="primary" />,
         title: '3. Generate Video',
-        description: 'With one click, your professional video is created and ready to be shared or edited.',
+        description: 'Your professional video will be created within minutes!',
     },
 ];
 
@@ -39,11 +39,12 @@ const itemVariants = {
 export const HowItWorksSection: React.FC = () => {
     const theme = useTheme();
     return (
-        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: theme.palette.secondary.light }} id={'howitworks'}>
+        <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: theme.palette.primary.main }} id={'howitworks'}>
             <Container maxWidth="lg">
                 <SectionHeader
                     title="How It Works"
                     subtitle="A seamless three-step process from listing to video."
+                    color={"text.secondary"}
                 />
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={containerVariants}>
                     <Grid container spacing={4} sx={{ mt: 4 }}>
@@ -62,10 +63,10 @@ export const HowItWorksSection: React.FC = () => {
                                         }}
                                     >
                                         <Box sx={{ mb: 2, color: theme.palette.primary.main }}>{step.icon}</Box>
-                                        <Typography variant="h6" component="h3" fontWeight="bold" gutterBottom>
+                                        <Typography variant="h6" component="h3" fontWeight="bold" color="text.primary" gutterBottom>
                                             {step.title}
                                         </Typography>
-                                        <Typography color="text.secondary">
+                                        <Typography color="text.primary">
                                             {step.description}
                                         </Typography>
                                     </Paper>

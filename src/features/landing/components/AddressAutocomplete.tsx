@@ -1,13 +1,15 @@
 import React from 'react';
 import {Autocomplete, useLoadScript} from '@react-google-maps/api';
-import {TextField, Box} from '@mui/material';
+import {TextField, SxProps, Theme} from '@mui/material';
 
 interface AddressAutocompleteProps {
     onAddressSelect: (address: string) => void;
     fullWidth?: boolean;
+    sx?: SxProps<Theme>;
+    placeholder?: string;
 }
 
-const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({onAddressSelect, fullWidth}) => {
+const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({onAddressSelect, fullWidth, sx, placeholder}) => {
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_KEY || '',
         libraries: ['places'],
@@ -29,22 +31,31 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({onAddressSelec
     };
 
     if (!isLoaded) {
-        return <TextField fullWidth placeholder="Loading..." disabled/>;
+        return <TextField fullWidth={fullWidth} placeholder="Loading..." disabled sx={sx}/>;
     }
 
     return (
-        <Box sx={{ flex: 1 }}>
-            <Autocomplete
-                onLoad={onLoad}
-                onPlaceChanged={onPlaceChanged}
-            >
-                <TextField
-                    fullWidth
-                    placeholder="Enter a location"
-                    sx={{background: 'white'}}
-                />
-            </Autocomplete>
-        </Box>
+        <Autocomplete
+            onLoad={onLoad}
+            onPlaceChanged={onPlaceChanged}
+        >
+            <TextField
+                fullWidth={fullWidth}
+                placeholder={placeholder || "Enter Your Property Address To Begin"}
+                variant="standard"
+                sx={{
+                    ...sx,
+                    '& .MuiInputBase-input': {
+                        fontSize: '1.2rem',
+                        lineHeight: '1.5',
+                        padding: '12px 12px 12px 0'
+                    }
+                }}
+                InputProps={{
+                    disableUnderline: true,
+                }}
+            />
+        </Autocomplete>
     );
 };
 

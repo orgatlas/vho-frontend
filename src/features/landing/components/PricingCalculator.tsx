@@ -94,12 +94,12 @@ export const PricingCalculator: React.FC = () => {
                         valueLabelDisplay="auto"
                         step={1}
                         min={1}
-                        max={30}
+                        max={20}
                         sx={{mt: 2}}
                     />
 
                     <Box sx={{mt: 4, textAlign: 'center'}}>
-                        <Typography variant="h6" color={'text.secondary'} gutterBottom>Starting from</Typography>
+                        <Typography variant="h6" color={'text.primary'} gutterBottom>Starting from</Typography>
                         {loading ? (
                             <CircularProgress/>
                         ) : (
