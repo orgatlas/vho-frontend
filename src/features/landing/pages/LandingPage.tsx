@@ -1,28 +1,40 @@
-import React, {useEffect} from 'react';
-import {Box} from '@mui/material';
-import {HeroSection} from '../components/HeroSection';
-import {HowItWorksSection} from '../components/HowItWorksSection';
-import {DemoSection} from '../components/DemoSection';
-import {FaqSection} from '../components/FaqSection';
-import {Footer} from '../components/Footer';
-import {PricingCalculator} from '../components/PricingCalculator';
-import {marketingViewHomepage} from "src/marketing/marketing_api";
+import React from "react";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import ProblemSolution from "../components/ProblemSolution";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
+import Features from "../components/Features";
+import GalleryComparison from "../components/GalleryComparison";
+import Stats from "../components/Stats";
+import Testimonials from "../components/Testimonials";
+import ROICalculator from "../components/ROICalculator";
+import CaseStudies from "../components/CaseStudies";
+import Pricing from "../components/Pricing";
+import FinalCTA from "../components/FinalCTA";
+import Footer from "../components/Footer";
+import StickyCTA from "../components/StickyCTA";
+import FAQSection from "../components/FaqSection"
 
-export const LandingPage: React.FC = () => {
-    useEffect(() => {
-        if (process.env.REACT_APP_MARKETING === 'on') {
-            marketingViewHomepage()
-        }
-    }, []);
-
+export default function LandingPage() {
     return (
-        <Box>
-            <HeroSection/>
-            <HowItWorksSection/>
-            <DemoSection/>
-            <PricingCalculator/>
-            <FaqSection/>
-            <Footer/>
-        </Box>
+        <div>
+            <Navbar />
+            <Hero />
+            <main>
+                <ProblemSolution />
+                <BeforeAfterSlider />
+                <Features />
+                <GalleryComparison />
+                <Stats />
+                <Testimonials />
+                <ROICalculator />
+                <CaseStudies />
+                <Pricing />
+                <FAQSection />
+                <FinalCTA />
+            </main>
+            <Footer />
+            <StickyCTA />
+        </div>
     );
-};
+}

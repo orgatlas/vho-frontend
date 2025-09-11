@@ -4,6 +4,9 @@ import './index.css';
 import './styles/googleAutocomplete.css';
 import App from './App';
 import { initPixel } from 'src/marketing/pixel';
+import "src/theme/style.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Initialize Meta Pixel (use env variable or fallback)
 if (process.env.NODE_ENV === 'production') {

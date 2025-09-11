@@ -5,10 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inspiration_images/167b46960d30382fd3babb7912591a5a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inspiration_images/411a989d238ab0eb60f5c9d94b1a77f7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/inspiration_images/ea4857b96258da016722eeb354a14d0e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/BeforeAfterSlider.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/CaseStudies.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/CaseStudyCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/FeatureCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/Features.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/FinalCTA.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/GalleryComparison.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/Hero.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/Navbar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/Pricing.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/PricingCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/ProblemSolution.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/ROICalculator.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/ScrollReveal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/SimpleCarousel.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/Stats.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/StickyCTA.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/Testimonials.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/VideoMockup.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/theme/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/DemoSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/FaqSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/FaqSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/PricingCalculator.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/homepage-spec.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/support/pages/SupportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/support/pages/SupportPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/components/SectionHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/components/SectionHeader.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +56,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="CSS File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -37,36 +76,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/inspiration_images",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/inspiration_images" />
       <recent name="$PROJECT_DIR$/src/assets/images/demo" />
       <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/features/legal/pages" />
-      <recent name="$PROJECT_DIR$/src/layouts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/features/landing/pages" />
+      <recent name="$PROJECT_DIR$/src/theme" />
       <recent name="$PROJECT_DIR$/src/assets/images/demo" />
       <recent name="$PROJECT_DIR$/src/assets/images" />
       <recent name="$PROJECT_DIR$/src/features/property/components" />
-      <recent name="$PROJECT_DIR$/src/theme/pages" />
-      <recent name="$PROJECT_DIR$/src/theme/components" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -148,6 +188,7 @@
       <workItem from="1757181551529" duration="599000" />
       <workItem from="1757271031606" duration="2352000" />
       <workItem from="1757353646836" duration="1471000" />
+      <workItem from="1757580005468" duration="4303000" />
     </task>
     <servers />
   </component>

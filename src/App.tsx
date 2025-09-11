@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {CssBaseline, ThemeProvider} from '@mui/material';
 import {theme} from 'src/theme/theme';
-import {LandingPage} from 'src/features/landing/pages/LandingPage';
+import LandingPage from 'src/features/landing/pages/LandingPage';
 import {PropertyDetailsPage} from 'src/features/property/pages/PropertyDetailsPage';
 import {CheckoutPage} from 'src/features/checkout/pages/CheckoutPage';
 import {PremiumFeaturesPage} from 'src/features/checkout/pages/PremiumFeaturesPage';

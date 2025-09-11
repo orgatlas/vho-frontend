@@ -9,33 +9,15 @@ import img3 from 'src/assets/images/demo/3.jpg';
 import img4 from 'src/assets/images/demo/4.jpg';
 import img5 from 'src/assets/images/demo/5.jpg';
 import img6 from 'src/assets/images/demo/6.jpg';
+import {SectionHeader} from "src/theme/components/SectionHeader";
 
 const images = [
-    {
-        label: 'Exterior',
-        imgPath: img1,
-    },
-    {
-        label: 'Kitchen',
-        imgPath: img2,
-    },
-    {
-        label: 'Living Room',
-        imgPath: img3,
-    },
-    {
-        label: 'Living Room',
-        imgPath: img4,
-    },
-    {
-        label: 'Living Room',
-        imgPath: img5,
-    },
-    {
-        label: 'Living Room',
-        imgPath: img6,
-    },
-
+    { label: 'Exterior', imgPath: img1 },
+    { label: 'Kitchen', imgPath: img2 },
+    { label: 'Living Room', imgPath: img3 },
+    { label: 'Bedroom', imgPath: img4 },
+    { label: 'Bathroom', imgPath: img5 },
+    { label: 'Garden', imgPath: img6 },
 ];
 
 const VideoPlayer = ({ inView }: { inView: boolean }) => {
@@ -52,7 +34,7 @@ const VideoPlayer = ({ inView }: { inView: boolean }) => {
     }, [inView]);
 
     return (
-        <Box sx={{ width: '100%', height: '100%', backgroundColor: 'black', borderRadius: 2, overflow: 'hidden' }}>
+        <Box sx={{ width: '100%', height: '100%', backgroundColor: 'black', borderRadius: '12px', overflow: 'hidden' }}>
             <video
                 ref={videoRef}
                 src={'https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/demo.mp4'}
@@ -81,11 +63,11 @@ const ImageCarousel = () => {
     };
 
     return (
-        <Box sx={{ flexGrow: 1, borderRadius: 2, overflow: 'hidden' }}>
+        <Box sx={{ flexGrow: 1, borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
             <Box
                 component="img"
                 sx={{
-                    height: 398, // Adjusted height to match video player better
+                    height: 450,
                     display: 'block',
                     width: '100%',
                     objectFit: 'cover',
@@ -97,6 +79,7 @@ const ImageCarousel = () => {
                 steps={maxSteps}
                 position="static"
                 activeStep={activeStep}
+                sx={{ bgcolor: 'transparent', borderTop: `1px solid ${theme.palette.divider}` }}
                 nextButton={
                     <Button size="small" onClick={handleNext}>
                         Next
@@ -119,28 +102,23 @@ export const DemoSection: React.FC = () => {
     const isInView = useInView(ref, { once: false, amount: 0.5 });
 
     return (
-        <Box sx={{ py: { xs: 6, md: 10 } }} ref={ref}>
+        <Box sx={{ py: { xs: 8, md: 12 } }} ref={ref}>
             <Container maxWidth="lg">
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.5 }}>
-                    <Typography variant="h3" component="h2" textAlign="center" fontWeight="bold" gutterBottom>
-                        From Static to Dynamic
-                    </Typography>
-                </motion.div>
+                <SectionHeader
+                    title="From Static to Dynamic"
+                    subtitle="See how we transform your property photos into a captivating video tour."
+                />
                 <Grid container spacing={4} alignItems="center" sx={{ mt: 4 }}>
                     <Grid item xs={12} md={6}>
                         <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.7 }}>
-                            <Typography variant="h5" textAlign="center" sx={{ mb: 2 }}>Before</Typography>
-                            <motion.div whileHover={{ y: -5 }}>
-                                <Paper elevation={4} sx={{ borderRadius: 2 }}><ImageCarousel /></Paper>
-                            </motion.div>
+                            <Typography variant="h5" textAlign="center" sx={{ mb: 2, fontWeight: 'bold' }}>Before</Typography>
+                            <Paper elevation={0} variant={'outlined'} sx={{ borderRadius: '12px' }}><ImageCarousel /></Paper>
                         </motion.div>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.7 }}>
-                            <Typography variant="h5" textAlign="center" sx={{ mb: 2 }}>After</Typography>
-                            <motion.div whileHover={{ y: -5 }}>
-                                <Paper elevation={4} sx={{ height: 450, borderRadius: 2 }}><VideoPlayer inView={isInView} /></Paper>
-                            </motion.div>
+                            <Typography variant="h5" textAlign="center" sx={{ mb: 2, fontWeight: 'bold' }}>After</Typography>
+                            <Paper elevation={4} sx={{ height: 500, borderRadius: '12px', boxShadow: '0px 10px 30px rgba(0,0,0,0.1)' }}><VideoPlayer inView={isInView} /></Paper>
                         </motion.div>
                     </Grid>
                 </Grid>

@@ -117,11 +117,6 @@ export const PropertyDetailsPage: React.FC = () => {
 
             setImages(prev => [...prev, ...newImages]);
 
-            responses.forEach(response => {
-                if (response.warnings && response.warnings.length > 0) {
-                    toast.warn(response.warnings.join('\n'));
-                }
-            });
         } catch (error) {
             console.error('Error uploading images:', error);
             toast.error('An error occurred during upload. Please try again.');
