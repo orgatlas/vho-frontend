@@ -12,6 +12,7 @@ import image4 from 'src/assets/images/demo/4.jpg';
 import image5 from 'src/assets/images/demo/5.jpg';
 import image6 from 'src/assets/images/demo/6.jpg';
 import video from 'src/assets/images/demo/video.mp4';
+import {SectionHeader} from "src/theme/components/SectionHeader";
 
 const images = [image1, image2, image3, image4, image5, image6];
 
@@ -42,19 +43,16 @@ const BeforeAfterSection: React.FC = () => {
   };
 
   return (
-    <Box sx={{ padding: { xs: '2rem 1rem', md: '6rem 2rem' }, overflow: 'hidden' }}>
+    <Box id={'beforeafter'} sx={{ padding: { xs: '2rem 1rem', md: '6rem 2rem' }, overflow: 'hidden' }}>
       <motion.div
         ref={ref}
         initial="hidden"
         animate={controls}
         variants={sectionVariants}
       >
-        <Typography variant="h2" component="h2" sx={{ textAlign: 'center', marginBottom: '1rem', fontWeight: 'bold' }}>
-          Turn static photos into virtual property tours
-        </Typography>
-        <Typography variant="h6" sx={{ textAlign: 'center', marginBottom: '4rem', color: 'text.secondary' }}>
-          Our AI-powered video generator transforms your property images into captivating video tours in minutes.
-        </Typography>
+
+
+        <SectionHeader title={"Turn static photos into virtual property tours"} subtitle={""}/>
 
         <Grid container spacing={4} alignItems="center" justifyContent="center">
           {/* Before Section */}

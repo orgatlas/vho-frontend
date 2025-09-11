@@ -145,6 +145,7 @@ export const DemoSection: React.FC = () => {
         <Box id={'demo'}
              sx={{
                  height: '100vh',
+                 overflow: 'hidden',
                  py: {xs: 4, md: 6},
                  display: 'flex',
                  flexDirection: 'column'

@@ -45,11 +45,6 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({onAddressSelec
                 variant="standard"
                 sx={{
                     ...sx,
-                    '& .MuiInputBase-input': {
-                        fontSize: '1.2rem',
-                        lineHeight: '1.5',
-                        padding: '12px 12px 12px 0'
-                    }
                 }}
                 InputProps={{
                     disableUnderline: true,

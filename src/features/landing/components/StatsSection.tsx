@@ -28,7 +28,7 @@ export const StatsSection: React.FC = () => {
         <SectionHeader title="The Facts" subtitle="How Virtual Home Open can make you stand out" color="text.primary" />
         <Grid container spacing={4} justifyContent="center" ref={ref}>
           {stats.map((stat, index) => (
-            <Grid item xs={6} sm={6} md={6} key={index}>
+            <Grid item xs={12} sm={6} md={6} key={index}>
               <motion.div
                 variants={itemVariants}
                 initial="hidden"
