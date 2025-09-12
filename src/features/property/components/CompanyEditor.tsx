@@ -7,16 +7,13 @@ import {
     Typography,
     Avatar,
     Grid,
-    Select,
-    MenuItem,
-    FormControl
 } from '@mui/material';
 import {useDropzone} from 'react-dropzone';
 import {Company} from 'src/types';
 import {updateCompany} from 'src/services/api';
 import {toast} from 'react-toastify';
 import {Business, AddAPhoto, Phone, Email, Language, Edit} from '@mui/icons-material';
-import {SectionHeader} from "src/theme/components/SectionHeader";
+import {SectionHeader} from "src/features/property/components/SectionHeader";
 import {CircularProgress} from "@mui/material";
 
 const getFullImageUrl = (path?: string) => {
@@ -181,7 +178,8 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                         </Grid>
 
                         <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 3}}>
-                            <Button variant="outlined" onClick={() => setIsEditing(false)} sx={{mr: 1}} disabled={loading}>Cancel</Button>
+                            <Button variant="outlined" onClick={() => setIsEditing(false)} sx={{mr: 1}}
+                                    disabled={loading}>Cancel</Button>
                             <Button onClick={handleUpdateCompany} variant="contained" disabled={loading}>
                                 {loading ? <CircularProgress size={24}/> : 'Save Company Details'}
                             </Button>
@@ -189,30 +187,30 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                     </>
                 ) : (
                     company ? (
-                            <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
-                                <Avatar src={getFullImageUrl(company.logo)} sx={{width: 60, height: 60}} variant="rounded"/>
-                                <Box>
-                                    <Typography variant="h6">{company.name || ''}</Typography>
-                                    <Typography variant="body2" color="text.primary">{company.email || ''}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.primary">{company.phone || ''}
-                                    </Typography>
-                                </Box>
-                                <IconButton
-                                    aria-label="edit agent"
-                                    disabled={loading}
-                                    onClick={() => {
-                                        setIsEditing(true);
-                                        setLogo(null);
-                                    }}
-                                >
-                                    <Edit />
-                                </IconButton>
+                        <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
+                            <Avatar src={getFullImageUrl(company.logo)} sx={{width: 60, height: 60}} variant="rounded"/>
+                            <Box>
+                                <Typography variant="h6">{company.name || ''}</Typography>
+                                <Typography variant="body2" color="text.primary">{company.email || ''}
+                                </Typography>
+                                <Typography variant="body2" color="text.primary">{company.phone || ''}
+                                </Typography>
                             </Box>
-                            // <Button variant="contained" onClick={() => {
-                            //     setIsEditing(true);
-                            //     setLogo(null);
-                            // }} sx={{ml: 'auto'}}>Edit</Button>
+                            <IconButton
+                                aria-label="edit agent"
+                                disabled={loading}
+                                onClick={() => {
+                                    setIsEditing(true);
+                                    setLogo(null);
+                                }}
+                            >
+                                <Edit/>
+                            </IconButton>
+                        </Box>
+                        // <Button variant="contained" onClick={() => {
+                        //     setIsEditing(true);
+                        //     setLogo(null);
+                        // }} sx={{ml: 'auto'}}>Edit</Button>
                     ) : (
                         <Box sx={{textAlign: 'center', py: 2}}>
                             <Typography variant="body2" color="text.primary" sx={{mb: 2}}>No company details added

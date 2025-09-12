@@ -29,12 +29,13 @@ import {
     ArrowForwardIos,
     ArrowBackIos
 } from '@mui/icons-material';
-import {SectionHeader} from "src/theme/components/SectionHeader";
+import {SectionHeader} from "src/features/property/components/SectionHeader";
 import {getImageList, removeImage, uploadImage, getVideoDetails, updatePropertyDetails} from "src/services/api";
 import {toast} from "react-toastify";
 import {AgentsEditor} from "src/features/property/components/AgentsEditor";
 import {CompanyEditor} from "src/features/property/components/CompanyEditor";
 import {alpha, useTheme} from "@mui/material/styles";
+import heic2any from "heic2any";
 
 const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip: string }> = ({icon, label, tooltip}) => (
     <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
@@ -101,55 +102,65 @@ export const PropertyDetailsPage: React.FC = () => {
     }, [video?.id, navigate]);
 
 
+
     const onDrop = async (acceptedFiles: File[]) => {
         if (!video?.id) {
             toast.error("Cannot upload image until property has been created");
             return;
         }
 
-        // filter only image files
-        const imageFiles = acceptedFiles.filter(file => file.type.startsWith("image/"));
-        if (imageFiles.length !== acceptedFiles.length) {
-            toast.warning("Some non-image files were ignored.");
-        }
-
-        // enforce max file count
-        if (images.length + imageFiles.length > MAX_FILES) {
-            toast.error(`You can only upload a maximum of ${MAX_FILES} images.`);
+        if (images.length + acceptedFiles.length > 20) {
+            toast.error("You can only upload a maximum of 20 images.");
             return;
         }
 
-        // enforce max file size
-        const oversizedFiles = imageFiles.filter(file => file.size > MAX_FILE_SIZE_MB * 1024 * 1024);
-        if (oversizedFiles.length > 0) {
-            toast.error(`Some files exceeded the ${MAX_FILE_SIZE_MB}MB limit and were ignored.`);
-        }
-
-        // Only keep valid images
-        const validImages = imageFiles.filter(file => file.size <= MAX_FILE_SIZE_MB * 1024 * 1024);
-        if (validImages.length === 0) return;
-
         setActionLoading(true);
         try {
-            const uploadPromises = validImages.map(file => uploadImage(video.id, file));
+            const processedFiles = await Promise.all(
+                acceptedFiles.map(async (file) => {
+                    // Only allow image types
+                    if (!file.type.startsWith("image/") && !file.name.match(/\.(heic|HEIC)$/)) {
+                        toast.error("You can only upload a maximum of 20 images.");
+                        throw new Error(`${file.name} is not a supported image file`);
+                    }
+
+                    let uploadFile = file;
+
+                    // Convert HEIC/HEIF to JPEG
+                    if (file.type === "image/heic" || file.name.match(/\.(heic|HEIC)$/)) {
+                        const blob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.95 });
+                        uploadFile = new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
+                    }
+
+                    // Check file size (20 MB max)
+                    if (uploadFile.size > 20 * 1024 * 1024) {
+                        throw new Error(`${uploadFile.name} exceeds 20 MB limit`);
+                    }
+
+                    return uploadFile;
+                })
+            );
+
+            const uploadPromises = processedFiles.map(file => uploadImage(video.id, file));
             const responses = await Promise.all(uploadPromises);
 
             const newImages: ImageType[] = responses.map((response, index) => ({
                 id: response.id,
                 file: response.file_url,
                 description: '',
-                preview: URL.createObjectURL(validImages[index])
+                preview: URL.createObjectURL(processedFiles[index])
             }));
 
             setImages(prev => [...prev, ...newImages]);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error uploading images:', error);
-            toast.error('An error occurred during upload. Please try again.');
+            toast.error(error.message || 'An error occurred during upload. Please try again.');
         } finally {
             setActionLoading(false);
         }
     };
+
     const {getRootProps, getInputProps} = useDropzone({onDrop, accept: {"image/*": []}, maxFiles: MAX_FILES});
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
