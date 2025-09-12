@@ -48,7 +48,7 @@ export const marketingViewPackage = async (
 ): Promise<string> => {
     const identifier = getOrCreateIdentifier();
 
-    const response = await api.post('marketing/meta/view/package', {
+    const response = await api.post('marketing/meta/view/product', {
         identifier,
     });
 
