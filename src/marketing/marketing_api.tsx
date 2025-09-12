@@ -50,6 +50,7 @@ export const marketingViewPackage = async (
 
     const response = await api.post('marketing/meta/view/product', {
         identifier,
+        package_id
     });
 
     trackEvent('ViewContent', {
