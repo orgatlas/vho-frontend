@@ -105,7 +105,7 @@ export const submitContactForm = async (first_name: string, last_name: string, e
     return response.data;
 };
 
-export const uploadImage = async (videoId: number, file: File): Promise<{
+export const uploadImage = async (videoId: number|string, file: File): Promise<{
     id: string,
     file_url: string,
     warnings: string[]

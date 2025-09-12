@@ -28,7 +28,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, c
                 color={color}
                 gutterBottom
                 sx={{
-                    fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" }, // smaller on mobile
+                    fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
                     lineHeight: 1.2,
                 }}
             >
@@ -40,7 +40,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, c
                 sx={{
                     mb: 6,
                     opacity: 0.8,
-                    fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" }, // responsive sizes
+                    fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
                 }}
             >
                 {subtitle}

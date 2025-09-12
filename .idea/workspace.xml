@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSectionMobile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/BeforeAfterSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/BeforeAfterSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/DemoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/DemoSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/StatsSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/StatsSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/theme/components/SectionHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/components/SectionHeader.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,23 +38,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/src/features/landing/components",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/src/features/landing/components&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/features/landing/components" />
@@ -158,6 +153,7 @@
       <workItem from="1757580005468" duration="6706000" />
       <workItem from="1757597466722" duration="5648000" />
       <workItem from="1757606149721" duration="12329000" />
+      <workItem from="1757668669075" duration="1018000" />
     </task>
     <servers />
   </component>
