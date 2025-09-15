@@ -11,7 +11,6 @@ import image3 from 'src/assets/images/demo/3.jpg';
 import image4 from 'src/assets/images/demo/4.jpg';
 import image5 from 'src/assets/images/demo/5.jpg';
 import image6 from 'src/assets/images/demo/6.jpg';
-import video from 'src/assets/images/demo/video.mp4';
 import {SectionHeader} from "src/theme/components/SectionHeader";
 
 const images = [image1, image2, image3, image4, image5, image6];
@@ -123,7 +122,7 @@ const BeforeAfterSection: React.FC = () => {
             </Box>
             <Box sx={{ aspectRatio: '16 / 9', borderRadius: '12px', overflow: 'hidden' }}>
               <VideoPlayer
-                videoUrl={video}
+                videoUrl={'https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/hero.mp4'}
                 onPlay={() => setIsVideoPlaying(true)}
                 onPause={() => setIsVideoPlaying(false)}
                 onEnded={() => setIsVideoPlaying(false)}

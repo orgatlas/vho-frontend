@@ -4,27 +4,19 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden;
-  /* Prevent mobile bounce scroll */
-  overscroll-behavior: none;
-  /* Prevent address bar issues on mobile */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  overflow-x: hidden;
 }
 
 #root {
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 .App {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {

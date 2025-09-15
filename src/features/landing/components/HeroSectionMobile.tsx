@@ -75,7 +75,7 @@ export const HeroSectionMobile: React.FC = () => {
                     >
                         <Box
                             component="video"
-                            src="https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/demo.mp4"
+                            src="https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/hero.mp4"
                             autoPlay
                             muted
                             loop

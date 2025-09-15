@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {Box, Container, CircularProgress} from '@mui/material';
+import {Box, Container, CircularProgress, useMediaQuery} from '@mui/material';
 import {useTheme} from "@mui/material/styles";
 import {
     PanelGroup,
@@ -175,7 +175,7 @@ export const VideoEditorPage: React.FC = () => {
             <VideoEditorHeader video={video} onSave={handleSave} isSaving={isSaving} onBack={() => navigate(-1)}/>
 
             <Box sx={{flex: 1}}>
-                <PanelGroup direction="horizontal">
+                <PanelGroup direction={isMobile ? 'vertical' : 'horizontal'}>
                     <Panel defaultSize={40} minSize={20}>
                         <LeftPanel
                             scenes={scenes}

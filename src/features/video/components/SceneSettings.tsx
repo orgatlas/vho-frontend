@@ -65,10 +65,10 @@ export const SceneSettings: React.FC<SceneSettingsProps> = ({ scene }) => {
             <Panel defaultSize={editingMode ? 50 : 100} minSize={30}>
                 <Box sx={{ p: 2 }}>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <SettingsTile icon={<TextFields fontSize="large" />} title="Script" onClick={() => setEditingMode('script')} />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <SettingsTile icon={<Movie fontSize="large" />} title="Animation" onClick={() => setEditingMode('animation')} />
                         </Grid>
                     </Grid>

@@ -70,7 +70,7 @@ const LoginPage = () => {
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </Button>
-          <Box display="flex" justifyContent="space-between">
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1, flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center' }}>
             <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
               Forgot password?
             </Link>

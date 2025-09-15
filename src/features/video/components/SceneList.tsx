@@ -75,7 +75,7 @@ export const SceneList: React.FC<SceneListProps> = ({ scenes, selectedScene, onS
                                             <Box
                                                 component="img"
                                                 src={scene.image.file}
-                                                sx={{ width: 160, height: 90, borderRadius: 1, objectFit: 'cover', mr: 2 }}
+                                                sx={{ width: { xs: 100, md: 160 }, height: { xs: 56, md: 90 }, borderRadius: 1, objectFit: 'cover', mr: 2 }}
                                             />
                                             <Typography variant="subtitle1">{`Scene ${index + 1}`}</Typography>
                                         </Paper>

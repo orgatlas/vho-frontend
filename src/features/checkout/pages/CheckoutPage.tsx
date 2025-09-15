@@ -31,7 +31,7 @@ import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 
-import {SectionHeader} from "src/theme/components/SectionHeader";
+import {SectionHeader} from "src/features/property/components/SectionHeader";
 import {CreditCard} from "@mui/icons-material";
 import {CurrencySelector} from "src/components/CurrencySelector";
 import {PriceDisplay} from "src/components/PriceDisplay";
@@ -206,8 +206,8 @@ const CheckoutForm: React.FC<{
     if (paymentSuccess) {
         return (
             <Box>
-                <Typography variant="h6" color="primary">Payment Successful!</Typography>
-                <Typography>Your video is being generated. You will receive an email shortly.</Typography>
+                <Typography variant="h6" color="primary">Processing Payment...</Typography>
+                <Typography>Please do not close this window</Typography>
             </Box>
         );
     }
@@ -278,7 +278,7 @@ const CheckoutForm: React.FC<{
                            tooltip="Enter your payment details below."/>
             <Divider sx={{my: 2}}/>
 
-            <Box sx={{display: 'flex', gap: 2, mb: 2}}>
+            <Box sx={{display: 'flex', gap: 2, mb: 2, flexDirection: { xs: 'column', sm: 'row' }}}>
                 <TextField
                     fullWidth
                     placeholder="First Name"
@@ -445,18 +445,18 @@ export const CheckoutPage: React.FC = () => {
     };
 
     return (
-        <Box sx={{width: '100vw', p: 5}}>
-            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2}}>
-                <Typography variant="h4" gutterBottom>Select your creation kit</Typography>
+        <Box sx={{width: '100%', p: { xs: 2, md: 5 }}}>
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, flexDirection: { xs: 'column', md: 'row' }, mb: 4, gap: 2}}>
+                <Typography variant="h4">Select your creation kit</Typography>
                 <CurrencySelector selectedCurrency={currency} onCurrencyChange={setCurrency}/>
             </Box>
 
-            <Grid container alignItems="top">
+            <Grid container alignItems="flex-start">
                 {/* Left Panel - Plans */}
-                <Grid item xs={12} md={selectedPlan ? 7 : 12} sx={{pr: 5}}>
+                <Grid item xs={12} md={selectedPlan ? 7 : 12} sx={{ pr: { md: 5 }, mb: { xs: 4, md: 0 } }}>
                     <Grid container spacing={3}>
                         {packages.map((plan) => (
-                            <Grid item xs={12} sm={4} key={plan.id}>
+                            <Grid item xs={12} sm={6} md={4} key={plan.id}>
                                 <Card
                                     onClick={() => handlePackageSelection(plan)}
                                     variant={'outlined'}
@@ -468,6 +468,7 @@ export const CheckoutPage: React.FC = () => {
                                         boxShadow: selectedPlan?.id === plan.id ? 3 : 0,
                                         transition: 'all 0.2s ease-in-out',
                                         '&:hover': {boxShadow: 3},
+                                        height: '100%'
                                     }}
                                 >
                                     <CardHeader
@@ -498,8 +499,8 @@ export const CheckoutPage: React.FC = () => {
 
                 {/* Right Panel - Summary */}
                 {selectedPlan && (
-                    <Grid item xs={12} md={5} sx={{bgcolor: 'grey.50', p: 5}}>
-                        <Box sx={{position: 'sticky', top: 20}}>
+                    <Grid item xs={12} md={5} sx={{bgcolor: 'grey.50', p: { xs: 3, md: 5 }, borderRadius: 2 }}>
+                        <Box sx={{position: { md: 'sticky' }, top: 20}}>
                             <Typography variant="h5" gutterBottom>Order Summary</Typography>
                             <Divider sx={{my: 2}}/>
                             <Elements stripe={stripePromise}>

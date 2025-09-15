@@ -67,7 +67,7 @@ export const HeroSection: React.FC = () => {
             }}>
                 <video
                     ref={videoRef}
-                    src="https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/demo.mp4"
+                    src="https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/hero.mp4"
                     autoPlay
                     muted
                     loop

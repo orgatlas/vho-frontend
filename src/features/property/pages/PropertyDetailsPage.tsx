@@ -267,17 +267,17 @@ export const PropertyDetailsPage: React.FC = () => {
                                            value={video.property.address} onChange={handleInputChange}/>
                             </Box>
                             <Grid container spacing={2}>
-                                <Grid item xs={4}>
+                                <Grid item xs={12} sm={4}>
                                     <FieldLabel icon={<Bed/>} label="Beds" tooltip="Number of bedrooms."/>
                                     <TextField fullWidth placeholder="E.g. 3" name="bedrooms"
                                                value={video.property.bedrooms} onChange={handleInputChange}/>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={12} sm={4}>
                                     <FieldLabel icon={<Bathtub/>} label="Baths" tooltip="Number of bathrooms."/>
                                     <TextField fullWidth placeholder="E.g. 2" name="bathrooms"
                                                value={video.property.bathrooms} onChange={handleInputChange}/>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={12} sm={4}>
                                     <FieldLabel icon={<TimeToLeave/>} label="Cars" tooltip="Number of car spaces."/>
                                     <TextField fullWidth placeholder="E.g. 1" name="car_spaces"
                                                value={video.property.car_spaces} onChange={handleInputChange}/>

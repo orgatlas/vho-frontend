@@ -135,7 +135,7 @@ export const PropertyManagementPage: React.FC = () => {
                     <Typography variant="h4" component="h1" color={'text.primary'} gutterBottom>{property.address}</Typography>
                     <Typography variant="h5" color="primary"
                                 gutterBottom>{property.price}</Typography>
-                    <Box sx={{display: 'flex', alignItems: 'center', color: 'text.primary', mt: 1, gap: 2}}>
+                    <Box sx={{display: 'flex', alignItems: 'center', color: 'text.primary', mt: 1, gap: 2, flexWrap: 'wrap'}}>
                         <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <BedOutlined sx={{mr: 1}}/>
                             <Typography variant="body1">{property.bedrooms} Beds</Typography>
