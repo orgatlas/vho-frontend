@@ -143,7 +143,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <TextField
                                     fullWidth
                                     placeholder="E.g. Virtual Home Open"
-                                    value={editingCompany?.name || ''}
+                                    value={editingCompany?.name || null}
                                     onChange={(e) => setEditingCompanyPartial({name: e.target.value})}
                                 />
                             </Grid>
@@ -152,7 +152,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <TextField
                                     fullWidth
                                     placeholder="E.g. +1 555 123 4567"
-                                    value={editingCompany?.phone || ''}
+                                    value={editingCompany?.phone || null}
                                     onChange={(e) => setEditingCompanyPartial({phone: e.target.value})}
                                 />
                             </Grid>
@@ -161,7 +161,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <TextField
                                     fullWidth
                                     placeholder="E.g. contact@VirtualHomeOpen.com"
-                                    value={editingCompany?.email || ''}
+                                    value={editingCompany?.email || null}
                                     onChange={(e) => setEditingCompanyPartial({email: e.target.value})}
                                 />
                             </Grid>
@@ -170,7 +170,7 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                                 <TextField
                                     fullWidth
                                     placeholder="E.g. www.VirtualHomeOpen.com"
-                                    value={editingCompany?.website || ''}
+                                    value={editingCompany?.website || null}
                                     onChange={(e) => setEditingCompanyPartial({website: e.target.value})}
                                 />
                             </Grid>
@@ -190,10 +190,10 @@ export const CompanyEditor: React.FC<CompanyEditorProps> = ({propertyId, company
                         <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
                             <Avatar src={getFullImageUrl(company.logo)} sx={{width: 60, height: 60}} variant="rounded"/>
                             <Box>
-                                <Typography variant="h6">{company.name || ''}</Typography>
-                                <Typography variant="body2" color="text.primary">{company.email || ''}
+                                <Typography variant="h6">{company.name || null}</Typography>
+                                <Typography variant="body2" color="text.primary">{company.email || null}
                                 </Typography>
-                                <Typography variant="body2" color="text.primary">{company.phone || ''}
+                                <Typography variant="body2" color="text.primary">{company.phone || null}
                                 </Typography>
                             </Box>
                             <IconButton

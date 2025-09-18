@@ -6,21 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspiration_images/167b46960d30382fd3babb7912591a5a.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspiration_images/411a989d238ab0eb60f5c9d94b1a77f7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspiration_images/ea4857b96258da016722eeb354a14d0e.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/auth/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/pages/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/BeforeAfterSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/BeforeAfterSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSectionMobile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSectionMobile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/MobileAddressInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/MobileAddressInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyManagementPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/SceneList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/components/SceneSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/components/SceneSettings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/video/pages/VideoEditorPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/components/CompanyEditor.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/googleAutocomplete.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/googleAutocomplete.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +159,9 @@
       <workItem from="1757707789624" duration="3464000" />
       <workItem from="1757769023471" duration="6657000" />
       <workItem from="1757957452099" duration="638000" />
-      <workItem from="1757958186160" duration="1795000" />
+      <workItem from="1757958186160" duration="4118000" />
+      <workItem from="1758174221370" duration="1639000" />
+      <workItem from="1758183531117" duration="3021000" />
     </task>
     <servers />
   </component>

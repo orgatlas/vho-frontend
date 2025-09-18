@@ -1,6 +1,15 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Typography} from '@mui/material';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Typography
+} from '@mui/material';
 import {toast} from 'react-toastify';
 import AddressAutocomplete from "src/features/landing/components/AddressAutocomplete";
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,13 +25,6 @@ export const MobileAddressInput: React.FC = () => {
             return;
         }
         navigate('/extracting-details', {state: {address}});
-    };
-
-    const handleSelectAddress = (selectedAddress: string) => {
-        if (selectedAddress) {
-            setAddress(selectedAddress);
-        }
-        setDialogOpen(false);
     };
 
     return (
@@ -50,15 +52,14 @@ export const MobileAddressInput: React.FC = () => {
                     }}
                     onClick={() => setDialogOpen(true)}
                 >
-                    <Typography noWrap color={address ? 'text.primary' : 'text.secondary'}>
-                        {address || "Enter an address..."}
+                    <Typography noWrap color="text.secondary">
+                        Enter an address...
                     </Typography>
                 </Box>
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleCreateVideo}
-                    disabled={!address}
+                    onClick={() => setDialogOpen(true)}
                     sx={{
                         borderRadius: 50,
                         whiteSpace: 'nowrap',
@@ -88,13 +89,37 @@ export const MobileAddressInput: React.FC = () => {
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent dividers sx={{ p: 2, bgcolor: 'background.paper' }}>
+                <DialogContent dividers sx={{ p: 2, bgcolor: 'background.default' }}>
                     <AddressAutocomplete
-                        onAddressSelect={handleSelectAddress}
+                        onAddressSelect={setAddress}
                         fullWidth
                         placeholder="Start typing your address..."
                     />
                 </DialogContent>
+                <DialogActions sx={{p: 2, backgroundColor: 'background.paper'}}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        onClick={handleCreateVideo}
+                        disabled={!address}
+                        fullWidth
+                        sx={{
+                            borderRadius: 50,
+                            whiteSpace: 'nowrap',
+                            py: 1.5,
+                            px: 4,
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            boxShadow: 'none',
+                            '&:hover': {
+                                boxShadow: 'none',
+                            }
+                        }}
+                    >
+                        Create Video
+                    </Button>
+                </DialogActions>
             </Dialog>
         </>
     );
