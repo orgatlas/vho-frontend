@@ -21,7 +21,7 @@ const demoProperties: Property[] = [
         bedrooms: 4,
         bathrooms: 3,
         car_spaces: 2,
-        images: [{id: 1, file: '/src/assets/images/demo/1.jpg'}],
+        images: [{id: 1, file: '/src/assets/images/demo/1.png'}],
         user_id: 1
     },
     {
@@ -30,7 +30,7 @@ const demoProperties: Property[] = [
         bedrooms: 5,
         bathrooms: 6,
         car_spaces: 4,
-        images: [{id: 2, file: '/src/assets/images/demo/2.jpg'}],
+        images: [{id: 2, file: '/src/assets/images/demo/2.png'}],
         user_id: 1
     },
     {
@@ -39,7 +39,7 @@ const demoProperties: Property[] = [
         bedrooms: 3,
         bathrooms: 4,
         car_spaces: 2,
-        images: [{id: 3, file: '/src/assets/images/demo/3.jpg'}],
+        images: [{id: 3, file: '/src/assets/images/demo/3.png'}],
         user_id: 1
     },
     {
@@ -48,7 +48,7 @@ const demoProperties: Property[] = [
         bedrooms: 4,
         bathrooms: 3,
         car_spaces: 2,
-        images: [{id: 4, file: '/src/assets/images/demo/4.jpg'}],
+        images: [{id: 4, file: '/src/assets/images/demo/4.png'}],
         user_id: 1
     },
     {
@@ -57,7 +57,7 @@ const demoProperties: Property[] = [
         bedrooms: 2,
         bathrooms: 2,
         car_spaces: 1,
-        images: [{id: 5, file: '/src/assets/images/demo/5.jpg'}],
+        images: [{id: 5, file: '/src/assets/images/demo/5.png'}],
         user_id: 1
     },
 ];

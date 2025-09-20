@@ -5,18 +5,36 @@ import { useInView } from 'react-intersection-observer';
 import { VideoPlayer } from './VideoPlayer';
 
 // Import demo assets
-import image1 from 'src/assets/images/demo/1.jpg';
-import image2 from 'src/assets/images/demo/2.jpg';
-import image3 from 'src/assets/images/demo/3.jpg';
-import image4 from 'src/assets/images/demo/4.jpg';
-import image5 from 'src/assets/images/demo/5.jpg';
-import image6 from 'src/assets/images/demo/6.jpg';
+import image1 from 'src/assets/images/demo/1.png';
+import image2 from 'src/assets/images/demo/2.png';
+import image3 from 'src/assets/images/demo/3.png';
+import image4 from 'src/assets/images/demo/4.png';
+import image5 from 'src/assets/images/demo/5.png';
+import image6 from 'src/assets/images/demo/6.png';
+import image7 from 'src/assets/images/demo/7.png';
+import image8 from 'src/assets/images/demo/8.png';
 import {SectionHeader} from "src/theme/components/SectionHeader";
 
-const images = [image1, image2, image3, image4, image5, image6];
+const images = [image1, image2, image3, image4, image5, image6, image7, image8];
+const imageDurations = [
+  1.5,
+  1.65,
+  1.6,
+  1.65,
+  1.7,
+  1.7,
+  1.65,
+  1.7,
+];
+const cumulativeDurations = imageDurations.reduce((acc, duration, i) => {
+  acc.push((acc[i - 1] || 0) + duration);
+  return acc;
+}, [] as number[]);
+const totalDuration = cumulativeDurations[cumulativeDurations.length - 1];
+
 
 const BeforeAfterSection: React.FC = () => {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const controls = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -28,6 +46,22 @@ const BeforeAfterSection: React.FC = () => {
       controls.start('visible');
     }
   }, [controls, inView]);
+
+  const handleTimeUpdate = (currentTime: number) => {
+    const loopedTime = currentTime % totalDuration;
+
+    let imageIndex = 0;
+    for (let i = 0; i < cumulativeDurations.length; i++) {
+      if (loopedTime < cumulativeDurations[i]) {
+        imageIndex = i;
+        break;
+      }
+    }
+
+    if (imageIndex !== currentImageIndex) {
+      setCurrentImageIndex(imageIndex);
+    }
+  };
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -73,35 +107,15 @@ const BeforeAfterSection: React.FC = () => {
                 borderRadius: '12px',
               }}
             >
-              <style>
-                {`
-                  @keyframes scroll {
-                    0% { transform: translateY(0); }
-                    100% { transform: translateY(-50%); }
-                  }
-                `}
-              </style>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  animation: 'scroll 30s linear infinite',
-                  animationPlayState: isVideoPlaying ? 'running' : 'paused',
+              <img
+                src={images[currentImageIndex]}
+                alt={`Property image ${currentImageIndex + 1}`}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
                 }}
-              >
-                {[...images, ...images].map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Property image ${index + 1}`}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      display: 'block',
-                    }}
-                  />
-                ))}
-              </Box>
+              />
             </Paper>
           </Grid>
 
@@ -122,10 +136,8 @@ const BeforeAfterSection: React.FC = () => {
             </Box>
             <Box sx={{ aspectRatio: '16 / 9', borderRadius: '12px', overflow: 'hidden' }}>
               <VideoPlayer
-                videoUrl={'https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/hero.mp4'}
-                onPlay={() => setIsVideoPlaying(true)}
-                onPause={() => setIsVideoPlaying(false)}
-                onEnded={() => setIsVideoPlaying(false)}
+                videoUrl={'https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/examples.mp4'}
+                onTimeUpdate={handleTimeUpdate}
               />
             </Box>
           </Grid>

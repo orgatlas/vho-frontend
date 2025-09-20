@@ -5,7 +5,7 @@ import {SectionHeader} from "src/theme/components/SectionHeader";
 import {useTheme} from "@mui/material/styles";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import FaqBgImage from 'src/assets/images/demo/3.jpg'; // Using one of the demo images for the background
+import FaqBgImage from 'src/assets/images/demo/3.png'; // Using one of the demo images for the background
 
 const faqs = [
     {

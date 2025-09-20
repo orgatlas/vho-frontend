@@ -4,12 +4,12 @@ import { useTheme } from "@mui/material/styles";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Importing images
-import img1 from 'src/assets/images/demo/1.jpg';
-import img2 from 'src/assets/images/demo/2.jpg';
-import img3 from 'src/assets/images/demo/3.jpg';
-import img4 from 'src/assets/images/demo/4.jpg';
-import img5 from 'src/assets/images/demo/5.jpg';
-import img6 from 'src/assets/images/demo/6.jpg';
+import img1 from 'src/assets/images/demo/1.png';
+import img2 from 'src/assets/images/demo/2.png';
+import img3 from 'src/assets/images/demo/3.png';
+import img4 from 'src/assets/images/demo/4.png';
+import img5 from 'src/assets/images/demo/5.png';
+import img6 from 'src/assets/images/demo/6.png';
 
 const images = [
     { label: 'Exterior', imgPath: img1 },

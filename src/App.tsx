@@ -27,6 +27,7 @@ import {SupportPage} from 'src/features/support/pages/SupportPage';
 import {TermsOfServicePage} from 'src/features/legal/pages/TermsOfServicePage';
 import {AcceptableUsePolicyPage} from 'src/features/legal/pages/AcceptableUsePage';
 import {PrivacyPolicyPage} from 'src/features/legal/pages/PrivacyPolicyPage';
+import {HowToUpload} from 'src/features/howto/pages/Upload';
 import PixelRouteChange from "src/marketing/pixel_route_change";
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
                         <Route path="/extracting-details" element={<Layout><ExtractingDetailsPage/></Layout>}/>
                         <Route path="/support" element={<Layout><SupportPage/></Layout>}/>
                         <Route path="/terms-of-service" element={<Layout><TermsOfServicePage/></Layout>}/>
+                        <Route path="/howto/share-video" element={<Layout><HowToUpload/></Layout>}/>
                         <Route path="/acceptable-use" element={<Layout><AcceptableUsePolicyPage/></Layout>}/>
                         <Route path="/privacy" element={<Layout><PrivacyPolicyPage/></Layout>}/>
                     </Routes>
