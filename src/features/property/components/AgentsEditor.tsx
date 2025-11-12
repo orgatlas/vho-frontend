@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Box,
     Button,
@@ -13,20 +13,20 @@ import {
     Divider,
     Grid
 } from '@mui/material';
-import { useDropzone } from 'react-dropzone';
-import { Agent } from 'src/types';
-import { createAgent, updateAgent, deleteAgent } from 'src/services/api';
-import { toast } from 'react-toastify';
-import { Delete, Edit, Person, Email, Phone, AddAPhoto } from '@mui/icons-material';
-import { CircularProgress } from '@mui/material';
+import {useDropzone} from 'react-dropzone';
+import {Agent} from 'src/types';
+import {createAgent, updateAgent, deleteAgent} from 'src/services/api';
+import {toast} from 'react-toastify';
+import {Delete, Edit, Person, Email, Phone, AddAPhoto} from '@mui/icons-material';
+import {CircularProgress} from '@mui/material';
 
 const getFullImageUrl = (path?: string) => {
     if (!path) return '';
     return `${path}`;
 };
 
-const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({ icon, label }) => (
-    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: string }> = ({icon, label}) => (
+    <Box sx={{display: 'flex', alignItems: 'center', mb: 1}}>
         {React.cloneElement(icon, {
             sx: {
                 mr: 1,
@@ -34,19 +34,19 @@ const FieldLabel: React.FC<{ icon: React.ReactElement; label: string; tooltip?: 
                 color: 'text.primary',
             },
         })}
-        <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+        <Typography variant="body2" sx={{fontWeight: 'medium', color: 'text.primary'}}>
             {label}
         </Typography>
     </Box>
 );
 
 interface AgentsEditorProps {
-    videoId: string;
-    agents: Agent[];
+    propertyId: number;
+    agents: Agent[] | undefined;
     onAgentsChange: (agents: Agent[]) => void;
 }
 
-export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onAgentsChange }) => {
+export const AgentsEditor: React.FC<AgentsEditorProps> = ({propertyId, agents, onAgentsChange}) => {
     // Form state
     const [newAgent, setNewAgent] = useState<Partial<Agent>>({});
     const [editingAgent, setEditingAgent] = useState<Agent | null>(null);
@@ -68,14 +68,14 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
     }, [agents.length]);
 
     // Dropzone for profile picture
-    const { getRootProps, getInputProps } = useDropzone({
+    const {getRootProps, getInputProps} = useDropzone({
         onDrop: (acceptedFiles) => {
             if (acceptedFiles && acceptedFiles.length > 0) {
                 setProfilePicture(acceptedFiles[0]);
             }
         },
         multiple: false,
-        accept: { 'image/*': [] },
+        accept: {'image/*': []},
     });
 
     // Manage preview URL and revoke on change
@@ -95,13 +95,13 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
 
     // Add agent
     const handleAddAgent = async () => {
-        if (!videoId) {
+        if (!propertyId) {
             toast.error('Cannot add agent until property has been created');
             return;
         }
         setLoading(true);
         try {
-            const createdAgent = await createAgent(videoId, newAgent as Agent, profilePicture || undefined);
+            const createdAgent = await createAgent(propertyId, newAgent as Agent, profilePicture || undefined);
             onAgentsChange([...agents, createdAgent]);
             setNewAgent({});
             setProfilePicture(null);
@@ -117,11 +117,11 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
 
     // Update agent
     const handleUpdateAgent = async () => {
-        if (!videoId || !editingAgent) return;
+        if (!propertyId || !editingAgent) return;
         setLoading(true);
         try {
             const updatedAgent = await updateAgent(
-                videoId,
+                propertyId,
                 editingAgent.id,
                 editingAgent,
                 profilePicture || undefined
@@ -140,10 +140,10 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
 
     // Delete agent
     const handleDeleteAgent = async (agentId: number) => {
-        if (!videoId) return;
+        if (!propertyId) return;
         setLoading(true);
         try {
-            await deleteAgent(videoId, agentId);
+            await deleteAgent(propertyId, agentId);
             onAgentsChange(agents.filter((a) => a.id !== agentId));
             toast.success('Agent deleted successfully');
         } catch (error) {
@@ -157,7 +157,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
     // Helper to patch editingAgent (partial updates)
     const setEditingAgentPartial = (patch: Partial<Agent>) => {
         if (!editingAgent) return;
-        setEditingAgent({ ...editingAgent, ...patch });
+        setEditingAgent({...editingAgent, ...patch});
     };
 
     // Render form used for both add & edit
@@ -171,15 +171,15 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
         const imageUrl = previewUrl || getFullImageUrl((agent as any).profile_picture);
 
         return (
-            <Box sx={{ my: 2, p: 3, border: '1px solid', borderColor: 'grey.300', borderRadius: 2 }}>
+            <Box sx={{my: 2, p: 3, border: '1px solid', borderColor: 'grey.300', borderRadius: 2}}>
                 <Typography variant="h6" gutterBottom>
                     {title}
                 </Typography>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
-                    <Box {...getRootProps()} sx={{ cursor: 'pointer', position: 'relative' }}>
+                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3}}>
+                    <Box {...getRootProps()} sx={{cursor: 'pointer', position: 'relative'}}>
                         <input {...getInputProps()} />
-                        <Avatar src={imageUrl} sx={{ width: 100, height: 100, mb: 1 }} />
+                        <Avatar src={imageUrl} sx={{width: 100, height: 100, mb: 1}}/>
                         <IconButton
                             sx={{
                                 position: 'absolute',
@@ -187,12 +187,12 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                                 right: 0,
                                 backgroundColor: 'rgba(0,0,0,0.6)',
                                 color: 'white',
-                                '&:hover': { backgroundColor: 'rgba(0,0,0,0.8)' },
+                                '&:hover': {backgroundColor: 'rgba(0,0,0,0.8)'},
                             }}
                             size="small"
                             aria-label="upload picture"
                         >
-                            <AddAPhoto />
+                            <AddAPhoto/>
                         </IconButton>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
@@ -202,47 +202,47 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
 
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                        <FieldLabel icon={<Person />} label="First Name" />
+                        <FieldLabel icon={<Person/>} label="First Name"/>
                         <TextField
                             fullWidth
                             placeholder="E.g. John"
                             value={agent.first_name || ''}
-                            onChange={(e) => setAgent({ ...agent, first_name: e.target.value })}
+                            onChange={(e) => setAgent({...agent, first_name: e.target.value})}
                         />
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                        <FieldLabel icon={<Person />} label="Last Name" />
+                        <FieldLabel icon={<Person/>} label="Last Name"/>
                         <TextField
                             fullWidth
                             placeholder="E.g. Doe"
                             value={agent.last_name || ''}
-                            onChange={(e) => setAgent({ ...agent, last_name: e.target.value })}
+                            onChange={(e) => setAgent({...agent, last_name: e.target.value})}
                         />
                     </Grid>
 
                     <Grid item xs={12}>
-                        <FieldLabel icon={<Email />} label="Email" />
+                        <FieldLabel icon={<Email/>} label="Email"/>
                         <TextField
                             fullWidth
                             placeholder="E.g. john.doe@example.com"
                             value={agent.email || ''}
-                            onChange={(e) => setAgent({ ...agent, email: e.target.value })}
+                            onChange={(e) => setAgent({...agent, email: e.target.value})}
                         />
                     </Grid>
 
                     <Grid item xs={12}>
-                        <FieldLabel icon={<Phone />} label="Phone" />
+                        <FieldLabel icon={<Phone/>} label="Phone"/>
                         <TextField
                             fullWidth
                             placeholder="E.g. +1 555 123 4567"
                             value={agent.phone || ''}
-                            onChange={(e) => setAgent({ ...agent, phone: e.target.value })}
+                            onChange={(e) => setAgent({...agent, phone: e.target.value})}
                         />
                     </Grid>
                 </Grid>
 
-                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 3 }}>
+                <Box sx={{display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 3}}>
                     <Button
                         variant="outlined"
                         disabled={loading}
@@ -260,7 +260,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                         Cancel
                     </Button>
                     <Button onClick={onSave} variant="contained" disabled={loading}>
-                        {loading ? <CircularProgress size={24} /> : 'Save'}
+                        {loading ? <CircularProgress size={24}/> : 'Save'}
                     </Button>
                 </Box>
             </Box>
@@ -284,26 +284,27 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                                         setProfilePicture(null); // clear uploaded picture so avatar shows existing one
                                     }}
                                 >
-                                    <Edit />
+                                    <Edit/>
                                 </IconButton>
                                 <IconButton
                                     aria-label="delete agent"
                                     disabled={loading}
                                     onClick={() => handleDeleteAgent(agent.id)}
                                 >
-                                    <Delete />
+                                    <Delete/>
                                 </IconButton>
                             </Box>
                         }>
                             <ListItemAvatar>
-                                <Avatar src={getFullImageUrl((agent as any).profile_picture)} />
+                                <Avatar src={getFullImageUrl((agent as any).profile_picture)}/>
                             </ListItemAvatar>
-                            <ListItemText primary={`${agent.first_name || ''} ${agent.last_name || ''}`} secondary={agent.email} />
+                            <ListItemText primary={`${agent.first_name || ''} ${agent.last_name || ''}`}
+                                          secondary={agent.email}/>
                         </ListItem>
                     ))}
                 </List>
             ) : (
-                <Box sx={{ py: 1, textAlign: 'center' }}>
+                <Box sx={{py: 1, textAlign: 'center'}}>
                     <Typography variant="body1" color="text.secondary">
                         No agents added yet.
                     </Typography>
@@ -317,7 +318,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
             ) : userClickedAddAgent ? (
                 renderAgentForm(newAgent, setNewAgent, handleAddAgent, 'Add New Agent')
             ) : (
-                <Box sx={{ textAlign: 'right' }}>
+                <Box sx={{textAlign: 'right'}}>
                     <Button
                         variant="contained"
                         onClick={() => {
@@ -325,7 +326,7 @@ export const AgentsEditor: React.FC<AgentsEditorProps> = ({ videoId, agents, onA
                             setNewAgent({});
                             setProfilePicture(null);
                         }}
-                        sx={{ mt: 2 }}
+                        sx={{mt: 2}}
                     >
                         Add New Agent
                     </Button>

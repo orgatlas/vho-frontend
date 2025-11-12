@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Container, Typography, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { extractVideoDetailsFromAddress } from 'src/services/api';
+import { extractPropertyDetailsFromAddress } from 'src/services/api';
 import { toast } from 'react-toastify';
 
 const loadingPhrases = [
@@ -36,8 +36,8 @@ export const ExtractingDetailsPage: React.FC = () => {
 
         const extract = async () => {
             try {
-                const videoDetails = await extractVideoDetailsFromAddress(address);
-                navigate(`/property-details/${videoDetails.id}`, { state: { video: videoDetails } });
+                const propertyDetails = await extractPropertyDetailsFromAddress(address);
+                navigate(`/property-details/${propertyDetails.id}`, { state: { property: propertyDetails } });
             } catch (err) {
                 console.error("Failed to get property details", err);
                 setError("Something went wrong with that address. Please try again.");

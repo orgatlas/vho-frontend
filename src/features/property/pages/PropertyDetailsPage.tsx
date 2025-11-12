@@ -14,7 +14,7 @@ import {
     Modal,
 } from '@mui/material';
 import {useDropzone} from 'react-dropzone';
-import {Property, Image as ImageType, Agent, Video, Company} from "src/types";
+import {Property, Image as ImageType, Agent, Company} from "src/types";
 import {
     Bed,
     Bathtub,
@@ -30,7 +30,7 @@ import {
     ArrowBackIos
 } from '@mui/icons-material';
 import {SectionHeader} from "src/features/property/components/SectionHeader";
-import {getImageList, removeImage, uploadImage, getVideoDetails, updatePropertyDetails} from "src/services/api";
+import {getImageList, removeImage, uploadImage, updatePropertyDetails} from "src/services/api";
 import {toast} from "react-toastify";
 import {AgentsEditor} from "src/features/property/components/AgentsEditor";
 import {CompanyEditor} from "src/features/property/components/CompanyEditor";
@@ -49,8 +49,8 @@ export const PropertyDetailsPage: React.FC = () => {
     const location = useLocation();
     const theme = useTheme();
     const [isDescriptionFocussed, setIsDescriptionFocussed] = useState<boolean>(false);
-    const {videoId} = useParams<{ videoId: string }>();
-    const [video, setVideo] = useState<Video | null>(location.state?.video || null);
+    const {propertyId} = useParams<{ propertyId: string }>();
+    const [property, setProperty] = useState<Property | null>(location.state?.property || null);
     const [images, setImages] = useState<ImageType[]>([]);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -60,34 +60,25 @@ export const PropertyDetailsPage: React.FC = () => {
     const MAX_FILE_SIZE_MB = 20;
 
     const handleAgentsChange = (updatedAgents: Agent[]) => {
-        setVideo(prevVideo => prevVideo ? {
-            ...prevVideo,
-            property: {...prevVideo.property, agents: updatedAgents}
+        setProperty(prevProperty => prevProperty ? {
+            ...prevProperty,
+            property: {...prevProperty, agents: updatedAgents}
         } : null);
     };
 
     const handleCompanyChange = (updatedCompany: Company) => {
-        setVideo(prevVideo => prevVideo ? {
-            ...prevVideo,
-            property: {...prevVideo.property, company: updatedCompany}
+        setProperty(prevProperty => prevProperty ? {
+            ...prevProperty,
+            property: {...prevProperty, company: updatedCompany}
         } : null);
     };
 
     useEffect(() => {
         const loadData = async () => {
-            if (videoId) {
+            if (property?.id) {
                 setLoading(true);
                 try {
-                    const [refreshedVideo, imageList] = await Promise.all([
-                        getVideoDetails(videoId),
-                        getImageList(videoId)
-                    ]);
-
-                    if (refreshedVideo.locked) {
-                        navigate('/video-generated');
-                        return;
-                    }
-                    setVideo(refreshedVideo);
+                    const imageList = await getImageList(property?.id);
                     setImages(imageList);
                 } catch (error) {
                     console.error('Error fetching data:', error);
@@ -99,12 +90,12 @@ export const PropertyDetailsPage: React.FC = () => {
         };
 
         loadData();
-    }, [video?.id, navigate]);
+    }, [property?.id, navigate]);
 
 
 
     const onDrop = async (acceptedFiles: File[]) => {
-        if (!video?.id) {
+        if (!property?.id) {
             toast.error("Cannot upload image until property has been created");
             return;
         }
@@ -141,7 +132,7 @@ export const PropertyDetailsPage: React.FC = () => {
                 })
             );
 
-            const uploadPromises = processedFiles.map(file => uploadImage(video.id, file));
+            const uploadPromises = processedFiles.map(file => uploadImage(property.id, file));
             const responses = await Promise.all(uploadPromises);
 
             const newImages: ImageType[] = responses.map((response, index) => ({
@@ -165,12 +156,12 @@ export const PropertyDetailsPage: React.FC = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
-        setVideo(prevVideo => {
-            if (!prevVideo) return null;
+        setProperty(prevProperty => {
+            if (!prevProperty) return null;
             return {
-                ...prevVideo,
+                ...prevProperty,
                 property: {
-                    ...prevVideo.property,
+                    ...prevProperty,
                     [name]: value,
                 },
             };
@@ -178,7 +169,7 @@ export const PropertyDetailsPage: React.FC = () => {
     };
 
     const handleRemoveImage = async (index: number) => {
-        if (!video?.id) {
+        if (!property?.id) {
             toast.error("Cannot remove image until property has been created");
             return;
         }
@@ -188,7 +179,7 @@ export const PropertyDetailsPage: React.FC = () => {
 
         setActionLoading(true);
         try {
-            await removeImage(video.id, imageToRemove.id);
+            await removeImage(property.id, imageToRemove.id);
             toast.success("Image removed.");
             setImages(images.filter((_, i) => i !== index));
         } catch (error) {
@@ -199,7 +190,7 @@ export const PropertyDetailsPage: React.FC = () => {
     }
 
     const handleContinue = async () => {
-        if (!video?.id || !video.property) return;
+        if (!property?.id) return;
 
         setLoading(true);
         // Check if image count exceeds the limit
@@ -217,16 +208,16 @@ export const PropertyDetailsPage: React.FC = () => {
 
         try {
             const updatedProperty = await updatePropertyDetails(
-                video.property.id,
-                video.property.address,
-                video.property.bedrooms,
-                video.property.bathrooms,
-                video.property.car_spaces,
-                video.property.property_area,
-                video.property.description,
-                video.property.price,
+                property.id,
+                property.address,
+                property.bedrooms,
+                property.bathrooms,
+                property.car_spaces,
+                property.property_area,
+                property.description,
+                property.price,
             );
-            navigate(`/checkout/${video.id}`);
+            navigate(`/checkout/${property.id}`);
         } catch (error) {
             toast.error("Failed to update property details. Try again later.");
             console.error("Failed to update property details:", error);
@@ -246,7 +237,7 @@ export const PropertyDetailsPage: React.FC = () => {
 
     const handleNextImage = () => setLightboxIndex((prevIndex) => (prevIndex + 1) % images.length);
 
-    if (!video || !video.property) {
+    if (!property) {
         return <Container><CircularProgress/></Container>;
     }
 
@@ -264,37 +255,37 @@ export const PropertyDetailsPage: React.FC = () => {
                                 <FieldLabel icon={<LocationOn/>} label="Property Address"
                                             tooltip="Enter the full property address."/>
                                 <TextField fullWidth placeholder="E.g. 123 Example St, Sydney NSW 2000" name="address"
-                                           value={video.property.address} onChange={handleInputChange}/>
+                                           value={property.address} onChange={handleInputChange}/>
                             </Box>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={4}>
                                     <FieldLabel icon={<Bed/>} label="Beds" tooltip="Number of bedrooms."/>
                                     <TextField fullWidth placeholder="E.g. 3" name="bedrooms"
-                                               value={video.property.bedrooms} onChange={handleInputChange}/>
+                                               value={property.bedrooms} onChange={handleInputChange}/>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <FieldLabel icon={<Bathtub/>} label="Baths" tooltip="Number of bathrooms."/>
                                     <TextField fullWidth placeholder="E.g. 2" name="bathrooms"
-                                               value={video.property.bathrooms} onChange={handleInputChange}/>
+                                               value={property.bathrooms} onChange={handleInputChange}/>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <FieldLabel icon={<TimeToLeave/>} label="Cars" tooltip="Number of car spaces."/>
                                     <TextField fullWidth placeholder="E.g. 1" name="car_spaces"
-                                               value={video.property.car_spaces} onChange={handleInputChange}/>
+                                               value={property.car_spaces} onChange={handleInputChange}/>
                                 </Grid>
                             </Grid>
                             <Box sx={{mt: 2}}>
                                 <FieldLabel icon={<SquareFoot/>} label="Property Area"
                                             tooltip="Total property area in square meters."/>
                                 <TextField fullWidth placeholder="E.g. 500 sqm" name="property_area"
-                                           value={video.property.property_area} onChange={handleInputChange}/>
+                                           value={property.property_area} onChange={handleInputChange}/>
                             </Box>
                             <Box sx={{mt: 2}}>
                                 <FieldLabel icon={<Home/>} label="Description"
                                             tooltip="Listing description of the properties features."/>
                                 <textarea
                                     name="description"
-                                    value={video.property.description}
+                                    value={property.description}
                                     onChange={handleInputChange}
                                     style={{
                                         background: alpha(theme.palette.secondary.main, 0.1),
@@ -327,7 +318,7 @@ export const PropertyDetailsPage: React.FC = () => {
                                 <FieldLabel icon={<PriceChange/>} label="Asking Price"
                                             tooltip="The asking price for the property."/>
                                 <TextField fullWidth placeholder="E.g. $1,000,000" name="price"
-                                           value={video.property.price} onChange={handleInputChange}/>
+                                           value={property.price} onChange={handleInputChange}/>
                             </Box>
                         </Box>
                     </Grid>
@@ -337,11 +328,11 @@ export const PropertyDetailsPage: React.FC = () => {
                             <SectionHeader icon={<Person color="primary"/>} title="Agents"
                                            tooltip="Manage the agents for this property."/>
                             <Divider sx={{mb: 2}}/>
-                            <AgentsEditor videoId={video.id} agents={video.property.agents}
+                            <AgentsEditor propertyId={property.id} agents={property.agents}
                                           onAgentsChange={handleAgentsChange}/>
                         </Box>
                         <Box sx={{mb: 3}}>
-                            <CompanyEditor videoId={video.id} company={video.property.company}
+                            <CompanyEditor propertyId={property.id} company={property.company}
                                            onCompanyChange={handleCompanyChange}/>
                         </Box>
                     </Grid>
@@ -376,7 +367,7 @@ export const PropertyDetailsPage: React.FC = () => {
                                          onClick={() => handleOpenLightbox(index)}>
                                         <img src={image.preview} alt={`property image ${index}`}
                                              style={{width: 100, height: 100, objectFit: 'cover', borderRadius: 8}}/>
-                                        {actionLoading === image.id ? (
+                                        {actionLoading ? (
                                             <Box sx={{
                                                 position: 'absolute',
                                                 top: 0,

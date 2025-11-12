@@ -105,13 +105,13 @@ export const submitContactForm = async (first_name: string, last_name: string, e
     return response.data;
 };
 
-export const uploadImage = async (videoId: number|string, file: File): Promise<{
+export const uploadImage = async (propertyId: number | string, file: File): Promise<{
     id: string,
     file_url: string,
     warnings: string[]
 }> => {
     const formData = new FormData();
-    formData.append('video', videoId);
+    formData.append('property', propertyId);
     formData.append('file', file);
 
     const response = await api.post('image/upload', formData, {
@@ -122,13 +122,13 @@ export const uploadImage = async (videoId: number|string, file: File): Promise<{
     return response.data;
 };
 
-export const removeImage = async (videoId: number, imageId: string): Promise<{ message: string }> => {
+export const removeImage = async (propertyId: number, imageId: string): Promise<{ message: string }> => {
     const response = await api.post('image/remove', {video: videoId, image: imageId});
     return response.data;
 };
 
-export const getImageList = async (videoId: number | string): Promise<Image[]> => {
-    const response = await api.post('image/list', {video: videoId});
+export const getImageList = async (propertyId: number | string): Promise<Image[]> => {
+    const response = await api.post('image/list', {property: propertyId});
     const images = response.data.images.map((image: any) => {
         return {
             id: image.id,
@@ -163,21 +163,15 @@ export const getPackages = async (videoId: number | string, scenes?: number, cur
     return response.data.packages;
 }
 
-export const getPricing = async (scenes: number): Promise<any> => {
-    const response = await api.post('billing/pricing', {scenes: scenes});
-    return response.data;
-}
+// export const getPricing = async (scenes: number): Promise<any> => {
+//     const response = await api.post('billing/pricing', {scenes: scenes});
+//     return response.data;
+// }
 
-export const extractVideoDetailsFromAddress = async (address: string): Promise<Video> => {
+export const extractPropertyDetailsFromAddress = async (address: string): Promise<Property> => {
     const response = await api.post('property/retrieve', {address});
-    return response.data.video;
+    return response.data.property;
 };
-
-// Not used at the moment
-// export const extractVideoDetailsFromUrl = async (url: string): Promise<Video> => {
-//     const response = await api.post('property/retrieve', {url});
-//     return response.data.video;
-// };
 
 export const getProperty = async (propertyId: string): Promise<Property> => {
     const response = await api.post('property/details', {property: propertyId});

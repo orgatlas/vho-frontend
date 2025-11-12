@@ -27,7 +27,7 @@ export const LandingPage: React.FC = () => {
     return (
         <Box>
             {isMobile ? <HeroSectionMobile/> : <HeroSection/>}
-            <TrustSection/>
+            {/*<TrustSection/>*/}
             <Testimonials/>
             <BeforeAfterSection/>
             <HowItWorksSection/>

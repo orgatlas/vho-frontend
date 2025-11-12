@@ -38,11 +38,12 @@ export interface Image {
 export interface Package {
     id: number;
     name: string;
+    description: string;
     features: string[];
     price: string;
-    min_scenes: string;
-    max_scenes: string;
-    is_premium: boolean;
+    resolution: string;
+    includes_video: boolean;
+    includes_staging: boolean;
 }
 
 export interface Scene {
@@ -118,7 +119,8 @@ export interface Agent {
 export interface Invoice {
     id: number;
     payment: Payment;
-    video: Video;
+    property: Property;
+    package: Package;
     customer: Customer;
 }
 
