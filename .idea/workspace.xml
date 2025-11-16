@@ -5,31 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/AnimationSettings.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/ResizeHandle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/SceneList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/ScenePreview.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/SceneSettings.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/ScriptEditor.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/VideoCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/VideoControls.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/VideoSettings.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/editor/LeftPanel.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/editor/RightPanel.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/editor/TrackSelectionPanel.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/components/editor/VideoEditorHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/pages/StagingPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/staging/pages/StagingProgressPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/CheckoutPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/checkout/pages/PremiumFeaturesPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +166,7 @@
       <workItem from="1762914111432" duration="7022000" />
       <workItem from="1762934437274" duration="19355000" />
       <workItem from="1763016636849" duration="8199000" />
-      <workItem from="1763194488807" duration="356000" />
+      <workItem from="1763194488807" duration="3961000" />
     </task>
     <servers />
   </component>

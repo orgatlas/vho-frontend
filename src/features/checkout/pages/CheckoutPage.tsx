@@ -160,7 +160,6 @@ const CheckoutForm: React.FC<{
             }
         } catch (error: any) {
             setPaymentError(error.message || 'An unexpected error occurred.');
-        } finally {
             setLoading(false);
         }
     };
@@ -194,7 +193,6 @@ const CheckoutForm: React.FC<{
             }
         } catch (error: any) {
             setPaymentError(error.message || 'An unexpected error occurred.');
-        } finally {
             setLoading(false);
         }
     };
