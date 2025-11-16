@@ -31,6 +31,9 @@ export interface Property {
 export interface Image {
     id: string;
     file: string;
+    property: Property;
+    location_name: string;
+    upscaled: string;
     description: string;
     preview: string;
 }
@@ -44,6 +47,33 @@ export interface Package {
     resolution: string;
     includes_video: boolean;
     includes_staging: boolean;
+}
+
+export interface Style {
+    id: number;
+    name: Property;
+    description: string;
+    guidelines: string;
+    custom: boolean;
+}
+
+export interface StagingPackage {
+    id: number;
+    property: Property;
+    style: Style;
+    is_paid: boolean;
+    locked: boolean;
+}
+
+export interface StagedImage {
+    id: number;
+    staging_package: StagingPackage;
+    original_image: Image;
+    staged_image: Image | null;
+    staging_prompt: string | null;
+    status: 'Waiting' | 'In Progress' | 'Complete' | 'Failed';
+    created_at: string;
+    updated_at: string;
 }
 
 export interface Scene {
@@ -132,6 +162,11 @@ export interface Payment {
     status: string;
     amount: any;
     paid_at: string;
+}
+
+export interface CostBreakdown {
+    total_cost: number;
+    discount: number;
 }
 
 export interface Customer {

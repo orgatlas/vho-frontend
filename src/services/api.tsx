@@ -1,7 +1,22 @@
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {Agent, Property, MusicTrack, Voice, Package, Video, Company, Scene, Image} from "src/types";
+import {
+    Agent,
+    Property,
+    MusicTrack,
+    Voice,
+    Package,
+    Video,
+    Company,
+    Scene,
+    Image,
+    StagingPackage,
+    StagedImage,
+    Payment,
+    CostBreakdown,
+    Invoice
+} from "src/types";
 import {marketingViewPackage} from 'src/marketing/marketing_api'
 
 // Create an Axios instance
@@ -145,6 +160,11 @@ export const getVideoDetails = async (videoId: number | string): Promise<Video> 
     return response.data.video;
 }
 
+export const getPropertyVideo = async (propertyId: number | string): Promise<Video> => {
+    const response = await api.post('property/video/get', {property: propertyId});
+    return response.data.video;
+}
+
 export const getPackages = async (videoId: number | string, scenes?: number, currency?: string): Promise<Package[]> => {
     const payload: any = {};
     if (videoId) payload.video = videoId;
@@ -193,12 +213,14 @@ export const updatePropertyDetails = async (property: number, address: string, b
 };
 
 
-export const processPayment = async (videoId: number | string, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
+export const processPayment = async (propertyId: number | string, packageId: number, firstName: string, lastName: string, email: string, referralCode?: string): Promise<{
     client_secret: string,
-    total_cost: number
+    cost_breakdown: CostBreakdown,
+    payment: Payment,
+    invoice: Invoice
 }> => {
     const response = await api.post('billing/payment/create', {
-        video: videoId,
+        property: propertyId,
         package: packageId,
         first_name: firstName,
         last_name: lastName,
@@ -208,8 +230,17 @@ export const processPayment = async (videoId: number | string, packageId: number
     return response.data;
 }
 
+export const getPayment = async (paymentId: number): Promise<{
+    payment: Payment,
+}> => {
+    const response = await api.post('billing/payment/details', {
+        payment: paymentId
+    });
+    return response.data.payment;
+}
+
 export const getMusicTracks = async (): Promise<MusicTrack[]> => {
-    const response = await api.get('video/music/list');
+    const response = await api.get('audio/music/list');
     return response.data.background_music.map((track: any) => ({
         id: track.id,
         name: track.name,
@@ -218,7 +249,7 @@ export const getMusicTracks = async (): Promise<MusicTrack[]> => {
 }
 
 export const getVoiceTracks = async (): Promise<Voice[]> => {
-    const response = await api.get('video/voice/list');
+    const response = await api.get('audio/voice/list');
     return response.data.voices.map((voice: any) => ({
         id: voice.id,
         name: voice.name,
@@ -300,12 +331,12 @@ export const setLogoPosition = async (videoId: number, logoPosition: string): Pr
 };
 
 export const setMusicTrack = async (videoId: number, track: string): Promise<{ message: string }> => {
-    const response = await api.post('video/music/set', {video: videoId, music: track});
+    const response = await api.post('audio/music/set', {video: videoId, music: track});
     return response.data;
 };
 
 export const setVoiceTrack = async (videoId: number, voiceId: string): Promise<{ message: string }> => {
-    const response = await api.post('video/voice/set', {video: videoId, voice: voiceId});
+    const response = await api.post('audio/voice/set', {video: videoId, voice: voiceId});
     return response.data;
 };
 
@@ -338,6 +369,38 @@ export const updateSceneAnimation = async (sceneId: string, animate: boolean): P
     const response = await api.post('video/scene/animation/update', {scene: sceneId, animate});
     return response.data.scene;
 };
+
+// Staging
+export const getStagingPackage = async (propertyId: string | number): Promise<StagingPackage> => {
+    const response = await api.post('staging/details', {property: propertyId});
+    return response.data.staging_package;
+}
+
+export const runStaging = async (stagingPackageId: string | number): Promise<{
+    success: boolean,
+    message: string,
+    staging_package: StagingPackage
+}> => {
+    const response = await api.post('staging/stage', {staging_package: stagingPackageId});
+    return response.data;
+}
+
+export const stagingProgress = async (stagingPackageId: string | number): Promise<{
+    total: number;
+    percentage_completed: number;
+    completed: number;
+    in_progress: number;
+    failed: number;
+    waiting: number;
+}> => {
+    const response = await api.post('staging/progress', {staging_package: stagingPackageId});
+    return response.data;
+}
+
+export const getStagedImages = async (stagingPackageId: string | number): Promise<StagedImage[]> => {
+    const response = await api.post('staging/images', {staging_package: stagingPackageId});
+    return response.data;
+}
 
 export const getPropertyList = async (
     page: number,

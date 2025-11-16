@@ -23,6 +23,9 @@ import {UserListingsPage} from 'src/features/property/pages/UserListingsPage';
 import {PropertyManagementPage} from 'src/features/property/pages/PropertyManagementPage';
 import {VideoViewPage} from 'src/features/video/pages/VideoViewPage';
 import {VideoEditorPage} from 'src/features/video/pages/VideoEditorPage';
+import {StagingPage} from 'src/features/staging/pages/StagingPage';
+import {StagingProgressPage} from 'src/features/staging/pages/StagingProgressPage';
+import { GalleryPage } from 'src/features/staging/pages/GalleryPage';
 import {SupportPage} from 'src/features/support/pages/SupportPage';
 import {TermsOfServicePage} from 'src/features/legal/pages/TermsOfServicePage';
 import {AcceptableUsePolicyPage} from 'src/features/legal/pages/AcceptableUsePage';
@@ -42,11 +45,14 @@ function App() {
                         <Route path="/" element={<Layout><LandingPage/></Layout>}/>
 
                         {/* All other pages with contained layout */}
-                        <Route path="/property-details/:videoId" element={<Layout><PropertyDetailsPage/></Layout>}/>
-                        <Route path="/checkout/:videoId" element={<Layout><CheckoutPage/></Layout>}/>
-                        <Route path="/premium-features/:videoId" element={<Layout><PremiumFeaturesPage/></Layout>}/>
+                        <Route path="/property-details/:propertyId" element={<Layout><PropertyDetailsPage/></Layout>}/>
+                        <Route path="/checkout/:propertyId" element={<Layout><CheckoutPage/></Layout>}/>
+                        <Route path="/video/settings/:videoId" element={<Layout><PremiumFeaturesPage/></Layout>}/>
                         <Route path="/generating-video/:videoId" element={<Layout><GeneratingVideoPage/></Layout>}/>
                         <Route path="/video-generated" element={<Layout><VideoGeneratedPage/></Layout>}/>
+                        <Route path="/staging/:propertyId" element={<Layout><StagingPage/></Layout>}/>
+                        <Route path="/staging-progress/:stagingPackageId" element={<Layout><StagingProgressPage/></Layout>}/>
+                        <Route path="/staging/gallery/:stagingPackageId" element={<Layout><GalleryPage/></Layout>}/>
                         <Route path="/register" element={<Layout><RegisterPage/></Layout>}/>
                         <Route path="/login" element={<Layout><LoginPage/></Layout>}/>
                         <Route path="/forgot-password" element={<Layout><ForgotPasswordPage/></Layout>}/>

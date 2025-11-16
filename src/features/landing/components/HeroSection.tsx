@@ -155,7 +155,7 @@ export const HeroSection: React.FC = () => {
                                                     }
                                                 }}
                                             >
-                                                Create Video
+                                                Go
                                             </Button>
                                         </Box>
                                     </motion.div>

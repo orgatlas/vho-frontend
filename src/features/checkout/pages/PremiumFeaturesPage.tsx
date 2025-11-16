@@ -4,7 +4,15 @@ import {
     Box, Button, Container, Grid, IconButton, Paper, Typography, Divider, CircularProgress,
     List, ListItem, ListItemText, ListItemSecondaryAction, Select, MenuItem, FormControl, InputLabel
 } from '@mui/material';
-import {getMusicTracks, getVoiceTracks, getVideoDetails, setLogoPosition, setMusicTrack, setVoiceTrack} from 'src/services/api';
+import {
+    getMusicTracks,
+    getVoiceTracks,
+    getVideoDetails,
+    setLogoPosition,
+    setMusicTrack,
+    setVoiceTrack,
+    getStagingPackage
+} from 'src/services/api';
 import {MusicTrack, Voice, Video} from "src/types";
 import {toast} from 'react-toastify';
 import {

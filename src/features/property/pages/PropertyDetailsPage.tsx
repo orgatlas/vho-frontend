@@ -30,7 +30,7 @@ import {
     ArrowBackIos
 } from '@mui/icons-material';
 import {SectionHeader} from "src/features/property/components/SectionHeader";
-import {getImageList, removeImage, uploadImage, updatePropertyDetails} from "src/services/api";
+import {getImageList, removeImage, uploadImage, updatePropertyDetails, getProperty} from "src/services/api";
 import {toast} from "react-toastify";
 import {AgentsEditor} from "src/features/property/components/AgentsEditor";
 import {CompanyEditor} from "src/features/property/components/CompanyEditor";
@@ -60,38 +60,36 @@ export const PropertyDetailsPage: React.FC = () => {
     const MAX_FILE_SIZE_MB = 20;
 
     const handleAgentsChange = (updatedAgents: Agent[]) => {
-        setProperty(prevProperty => prevProperty ? {
-            ...prevProperty,
-            property: {...prevProperty, agents: updatedAgents}
-        } : null);
+        setProperty(prev => prev ? {...prev, agents: updatedAgents} : null);
     };
 
     const handleCompanyChange = (updatedCompany: Company) => {
-        setProperty(prevProperty => prevProperty ? {
-            ...prevProperty,
-            property: {...prevProperty, company: updatedCompany}
-        } : null);
+        setProperty(prev => prev ? {...prev, company: updatedCompany} : null);
     };
 
     useEffect(() => {
-        const loadData = async () => {
-            if (property?.id) {
-                setLoading(true);
-                try {
-                    const imageList = await getImageList(property?.id);
-                    setImages(imageList);
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                    toast.error('Failed to load property details.');
-                } finally {
-                    setLoading(false);
-                }
+        const loadPropertyData = async () => {
+            if (!propertyId) return;
+
+            setLoading(true);
+            try {
+                // Fetch property details
+                const fetchedProperty = await getProperty(propertyId);
+                setProperty(fetchedProperty);
+
+                // Fetch images for this property
+                const imageList = await getImageList(propertyId);
+                setImages(imageList);
+            } catch (error) {
+                console.error('Error fetching property data:', error);
+                toast.error('Failed to load property details.');
+            } finally {
+                setLoading(false);
             }
         };
 
-        loadData();
-    }, [property?.id, navigate]);
-
+        loadPropertyData();
+    }, [propertyId]);
 
 
     const onDrop = async (acceptedFiles: File[]) => {
@@ -119,8 +117,8 @@ export const PropertyDetailsPage: React.FC = () => {
 
                     // Convert HEIC/HEIF to JPEG
                     if (file.type === "image/heic" || file.name.match(/\.(heic|HEIC)$/)) {
-                        const blob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.95 });
-                        uploadFile = new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
+                        const blob = await heic2any({blob: file, toType: "image/jpeg", quality: 0.95});
+                        uploadFile = new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), {type: "image/jpeg"});
                     }
 
                     // Check file size (20 MB max)
@@ -156,16 +154,7 @@ export const PropertyDetailsPage: React.FC = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
-        setProperty(prevProperty => {
-            if (!prevProperty) return null;
-            return {
-                ...prevProperty,
-                property: {
-                    ...prevProperty,
-                    [name]: value,
-                },
-            };
-        });
+        setProperty(prev => prev ? {...prev, [name]: value} : null);
     };
 
     const handleRemoveImage = async (index: number) => {
@@ -340,7 +329,7 @@ export const PropertyDetailsPage: React.FC = () => {
                     <Grid item xs={12} md={4}>
                         <Box>
                             <SectionHeader icon={<Image color="primary"/>} title="Image Uploader"
-                                           tooltip="Upload images for your video. Drag and drop or click to select."/>
+                                           tooltip="Upload images for your property. Drag and drop or click to select."/>
                             <Divider sx={{mb: 2}}/>
                             <Box {...getRootProps()} sx={{
                                 p: 4,

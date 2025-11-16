@@ -20,17 +20,18 @@ import {
 import {
     getPackages,
     processPayment,
-    getVideoDetails,
+    getProperty,
+    getPayment,
+    getPropertyVideo
 } from 'src/services/api';
 import {
     marketingPurchaseComplete,
     marketingViewCheckout
 } from 'src/marketing/marketing_api';
-import {Package} from "src/types";
+import {Package, Payment} from "src/types";
 import {CheckCircle} from "@mui/icons-material";
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-
 import {SectionHeader} from "src/features/property/components/SectionHeader";
 import {CreditCard} from "@mui/icons-material";
 import {CurrencySelector} from "src/components/CurrencySelector";
@@ -61,18 +62,20 @@ const StripeInput = React.forwardRef<any, { component: React.ElementType; [key: 
 
 const CheckoutForm: React.FC<{
     plan: Package,
-    videoId: string,
+    propertyId: string,
     currency: string,
     onPackageChange?: () => void  // Add callback for when package changes
 }> = ({
           plan,
-          videoId,
+          propertyId,
           currency,
           onPackageChange
       }) => {
     const stripe = useStripe();
     const elements = useElements();
     const navigate = useNavigate();
+    const [paymentId, setPaymentId] = useState<number | null>(null);
+    const [invoiceId, setInvoiceId] = useState<number | null>(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -137,7 +140,7 @@ const CheckoutForm: React.FC<{
 
         try {
             const response = await processPayment(
-                videoId,
+                propertyId,
                 plan.id,
                 firstName,
                 lastName,
@@ -145,20 +148,15 @@ const CheckoutForm: React.FC<{
                 referralCode
             );
 
+            setPaymentId(response.payment.id)
+            setInvoiceId(response.invoice.id)
+
             if (response.client_secret) {
                 setClientSecret(response.client_secret);
                 setCostBreakdown(response.cost_breakdown);
                 setConfirmationStep(true);
             } else {
-                setPaymentSuccess(true);
-
-                // Marketing
-                if (process.env.REACT_APP_MARKETING === 'on') {
-                    await marketingPurchaseComplete(response.invoice.id)
-                }
-
-                const nextPath = plan.name.toLowerCase() === 'premium' ? `/premium-features/${videoId}` : `/generating-video/${videoId}`;
-                navigate(nextPath);
+                await handleCheckPaymentSuccess(response.payment.id, response.invoice.id);
             }
         } catch (error: any) {
             setPaymentError(error.message || 'An unexpected error occurred.');
@@ -191,9 +189,7 @@ const CheckoutForm: React.FC<{
                 if (error) {
                     setPaymentError(error.message || 'An unexpected error occurred.');
                 } else {
-                    setPaymentSuccess(true);
-                    const nextPath = plan.name.toLowerCase() === 'premium' ? `/premium-features/${videoId}` : `/generating-video/${videoId}`;
-                    navigate(nextPath);
+                    await handleCheckPaymentSuccess(paymentId, invoiceId);
                 }
             }
         } catch (error: any) {
@@ -203,11 +199,54 @@ const CheckoutForm: React.FC<{
         }
     };
 
+    const handleCheckPaymentSuccess = async (paymentId?: number | null, invoiceId?: number | null) => {
+        let intervalId: NodeJS.Timeout; // declare before pollStatus
+
+        const pollStatus = async () => {
+            try {
+                if (paymentId) {
+                    const payment = await getPayment(paymentId);
+                    const status = payment.status;
+
+                    if (status === 'Paid') {
+                        clearInterval(intervalId);
+                        setPaymentSuccess(true);
+
+                        if (process.env.REACT_APP_MARKETING === 'on' && invoiceId) {
+                            await marketingPurchaseComplete(invoiceId);
+                        }
+
+                        let nextPath = `/`;
+                        if (plan.includes_staging) {
+                            nextPath = `/staging/${propertyId}`;
+                        } else if (plan.includes_video) {
+                            const video = await getPropertyVideo(propertyId)
+                            nextPath = `/video/settings/${video.id}`;
+                        }
+                        navigate(nextPath);
+
+                    } else if (status === 'Failed') {
+                        clearInterval(intervalId);
+                        setPaymentError('Payment failed. Please try again.');
+                        setConfirmationStep(false);
+                        setPaymentSuccess(false);
+                    }
+                }
+            } catch (err) {
+                console.error('Polling error:', err);
+            }
+        };
+
+        intervalId = setInterval(pollStatus, 1000);
+    };
+
+
     if (paymentSuccess) {
         return (
-            <Box>
+            <Box sx={{textAlign: 'center', py: 4}}>
+                <CircularProgress color="primary" sx={{mb: 2}}/>
                 <Typography variant="h6" color="primary">Processing Payment...</Typography>
-                <Typography>Please do not close this window</Typography>
+                <Typography>Please do not close this window.</Typography>
             </Box>
         );
     }
@@ -278,7 +317,7 @@ const CheckoutForm: React.FC<{
                            tooltip="Enter your payment details below."/>
             <Divider sx={{my: 2}}/>
 
-            <Box sx={{display: 'flex', gap: 2, mb: 2, flexDirection: { xs: 'column', sm: 'row' }}}>
+            <Box sx={{display: 'flex', gap: 2, mb: 2, flexDirection: {xs: 'column', sm: 'row'}}}>
                 <TextField
                     fullWidth
                     placeholder="First Name"
@@ -407,7 +446,7 @@ const getDefaultCurrency = (): string => {
 export const CheckoutPage: React.FC = () => {
     const [packages, setPackages] = useState<Package[]>([]);
     const [selectedPlan, setSelectedPlan] = useState<Package | null>(null);
-    const {videoId} = useParams<{ videoId: string }>();
+    const {propertyId} = useParams<{ propertyId: string }>();
     const navigate = useNavigate();
     const [currency, setCurrency] = useState('AUD');
     const [checkoutKey, setCheckoutKey] = useState(0); // Force re-render of checkout form
@@ -417,22 +456,12 @@ export const CheckoutPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (videoId) {
-            getVideoDetails(videoId).then(video => {
-                if (video.locked) {
-                    navigate('/video-generated');
-                } else if (video.is_paid && video.package) {
-                    if (video.package.is_premium && video.is_paid) {
-                        navigate(`/premium-features/${video.id}`);
-                    } else {
-                        navigate('/');
-                    }
-                } else {
-                    getPackages(videoId).then(setPackages);
-                }
+        if (propertyId) {
+            getProperty(propertyId).then(property => {
+                getPackages(propertyId).then(setPackages);
             });
         }
-    }, [videoId, navigate]);
+    }, [propertyId, navigate]);
 
     const handlePackageSelection = (plan: Package) => {
         setSelectedPlan(plan);
@@ -445,15 +474,22 @@ export const CheckoutPage: React.FC = () => {
     };
 
     return (
-        <Box sx={{width: '100%', p: { xs: 2, md: 5 }}}>
-            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, flexDirection: { xs: 'column', md: 'row' }, mb: 4, gap: 2}}>
+        <Box sx={{width: '100%', p: {xs: 2, md: 5}}}>
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: {xs: 'flex-start', md: 'center'},
+                flexDirection: {xs: 'column', md: 'row'},
+                mb: 4,
+                gap: 2
+            }}>
                 <Typography variant="h4">Select your creation kit</Typography>
                 <CurrencySelector selectedCurrency={currency} onCurrencyChange={setCurrency}/>
             </Box>
 
             <Grid container alignItems="flex-start">
                 {/* Left Panel - Plans */}
-                <Grid item xs={12} md={selectedPlan ? 7 : 12} sx={{ pr: { md: 5 }, mb: { xs: 4, md: 0 } }}>
+                <Grid item xs={12} md={selectedPlan ? 7 : 12} sx={{pr: {md: 5}, mb: {xs: 4, md: 0}}}>
                     <Grid container spacing={3}>
                         {packages.map((plan) => (
                             <Grid item xs={12} sm={6} md={4} key={plan.id}>
@@ -499,15 +535,15 @@ export const CheckoutPage: React.FC = () => {
 
                 {/* Right Panel - Summary */}
                 {selectedPlan && (
-                    <Grid item xs={12} md={5} sx={{bgcolor: 'grey.50', p: { xs: 3, md: 5 }, borderRadius: 2 }}>
-                        <Box sx={{position: { md: 'sticky' }, top: 20}}>
+                    <Grid item xs={12} md={5} sx={{bgcolor: 'grey.50', p: {xs: 3, md: 5}, borderRadius: 2}}>
+                        <Box sx={{position: {md: 'sticky'}, top: 20}}>
                             <Typography variant="h5" gutterBottom>Order Summary</Typography>
                             <Divider sx={{my: 2}}/>
                             <Elements stripe={stripePromise}>
                                 <CheckoutForm
                                     key={checkoutKey} // Force re-render when key changes
                                     plan={selectedPlan}
-                                    videoId={videoId}
+                                    propertyId={propertyId}
                                     currency={currency}
                                     onPackageChange={handlePackageChange}
                                 />
