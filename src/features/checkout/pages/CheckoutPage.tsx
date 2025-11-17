@@ -155,6 +155,7 @@ const CheckoutForm: React.FC<{
                 setClientSecret(response.client_secret);
                 setCostBreakdown(response.cost_breakdown);
                 setConfirmationStep(true);
+                setLoading(false);
             } else {
                 await handleCheckPaymentSuccess(response.payment.id, response.invoice.id);
             }
