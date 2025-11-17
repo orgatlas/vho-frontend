@@ -138,7 +138,7 @@ export const uploadImage = async (propertyId: number | string, file: File): Prom
 };
 
 export const removeImage = async (propertyId: number, imageId: string): Promise<{ message: string }> => {
-    const response = await api.post('image/remove', {video: videoId, image: imageId});
+    const response = await api.post('image/remove', {property: propertyId, image: imageId});
     return response.data;
 };
 

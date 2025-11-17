@@ -126,7 +126,11 @@ export const GalleryPage: React.FC = () => {
                 if (image.staged_image) {
                     const response = await fetch(image.staged_image.file);
                     const blob = await response.blob();
-                    const fileName = image.staged_image.file.split('/').pop() || `staged-image-${image.id}.jpg`;
+
+                    // Properly clean up filename
+                    let fileName = image.staged_image.file.split('/').pop() || `staged-image-${image.id}.jpg`;
+                    fileName = fileName.split('?')[0];
+
                     zip.file(fileName, blob);
                 }
             });
@@ -135,12 +139,15 @@ export const GalleryPage: React.FC = () => {
 
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             const url = window.URL.createObjectURL(zipBlob);
+
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `staged-images-${stagingPackageId}.zip`);
+            link.download = `staged-images-${stagingPackageId}.zip`;
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+
             window.URL.revokeObjectURL(url);
             toast.success('Download started!');
         } catch (error) {
@@ -150,7 +157,6 @@ export const GalleryPage: React.FC = () => {
             setIsDownloadingAll(false);
         }
     };
-
 
     if (loading) {
         return (

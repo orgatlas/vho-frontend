@@ -56,6 +56,7 @@ export const PropertyDetailsPage: React.FC = () => {
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(false);
+    const [removingIndex, setRemovingIndex] = useState<number | null>(null);
     const MAX_FILES = 20;
     const MAX_FILE_SIZE_MB = 20;
 
@@ -166,7 +167,8 @@ export const PropertyDetailsPage: React.FC = () => {
         const imageToRemove = images[index];
         if (!imageToRemove) return;
 
-        setActionLoading(true);
+        setRemovingIndex(index);
+
         try {
             await removeImage(property.id, imageToRemove.id);
             toast.success("Image removed.");
@@ -174,9 +176,9 @@ export const PropertyDetailsPage: React.FC = () => {
         } catch (error) {
             console.error('Error removing image:', error);
         } finally {
-            setActionLoading(false);
+            setRemovingIndex(null);
         }
-    }
+    };
 
     const handleContinue = async () => {
         if (!property?.id) return;
@@ -356,33 +358,37 @@ export const PropertyDetailsPage: React.FC = () => {
                                          onClick={() => handleOpenLightbox(index)}>
                                         <img src={image.preview} alt={`property image ${index}`}
                                              style={{width: 100, height: 100, objectFit: 'cover', borderRadius: 8}}/>
-                                        {actionLoading ? (
-                                            <Box sx={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                background: 'rgba(0,0,0,0.5)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                borderRadius: 8
-                                            }}>
-                                                <CircularProgress size={24} color="inherit"/>
+                                        {removingIndex === index ? (
+                                            <Box
+                                                sx={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                }}
+                                            >
+                                                <CircularProgress size={24} />
                                             </Box>
                                         ) : (
-                                            <IconButton size="small" onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleRemoveImage(index)
-                                            }} sx={{
-                                                position: 'absolute',
-                                                top: -5,
-                                                right: -5,
-                                                background: 'white',
-                                                '&:hover': {background: 'white'}
-                                            }} disabled={actionLoading}>
-                                                <Close fontSize="small"/>
+                                            <IconButton
+                                                size="small"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRemoveImage(index);
+                                                }}
+                                                sx={{
+                                                    position: 'absolute',
+                                                    top: -5,
+                                                    right: -5,
+                                                    background: 'white',
+                                                    '&:hover': { background: 'white' },
+                                                }}
+                                            >
+                                                <Close fontSize="small" />
                                             </IconButton>
                                         )}
                                     </Box>
