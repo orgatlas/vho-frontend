@@ -8,26 +8,26 @@ import {
     CircularProgress,
     Button,
     Paper,
-    Divider,
     SelectChangeEvent,
     useTheme
 } from '@mui/material';
-import {getProperty, getVideoList} from 'src/services/api';
-import {Property, Video} from 'src/types';
+import {getProperty, getPropertyMedia} from 'src/services/api';
+import {Property, Video, StagingPackage} from 'src/types';
 import {VideoCard} from '../../video/components/VideoCard';
 import {FilterSortToolbar} from 'src/components/FilterSortToolbar';
 import {toast} from 'react-toastify';
 import {useDebounce} from 'src/hooks/useDebounce';
 import {Add, BathtubOutlined, BedOutlined, DirectionsCarOutlined, VideocamOutlined} from "@mui/icons-material";
+import {StagingPackageCard} from "src/features/video/components/StagingPackageCard";
 
 export const PropertyManagementPage: React.FC = () => {
     const {propertyId} = useParams<{ propertyId: string }>();
     const navigate = useNavigate();
     const theme = useTheme();
     const [property, setProperty] = useState<Property | null>(null);
-    const [videos, setVideos] = useState<Video[]>([]);
+    const [media, setMedia] = useState<(Video|StagingPackage)[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isVideosLoading, setIsVideosLoading] = useState(false);
+    const [isMediaLoading, setIsMediaLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
@@ -60,7 +60,7 @@ export const PropertyManagementPage: React.FC = () => {
         fetchPropertyDetails();
     }, [propertyId, navigate]);
 
-    const fetchVideos = useCallback(async (
+    const fetchMedia = useCallback(async (
         pageNum: number,
         search: string,
         sortBy: string,
@@ -68,19 +68,19 @@ export const PropertyManagementPage: React.FC = () => {
         limit: number,
         append: boolean = false
     ) => {
-        setIsVideosLoading(true);
+        setIsMediaLoading(true);
         try {
 
-            const {videos: newVideos, total} = await getVideoList(propertyId!, pageNum, limit, search, sortBy, order);
+            const {media: newMedia, total} = await getPropertyMedia(propertyId!, pageNum, limit, search, sortBy, order);
 
-            setVideos(prev => append ? [...prev, ...newVideos] : newVideos);
+            setMedia(prev => append ? [...prev, ...newMedia] : newMedia);
             setHasMore(pageNum * limit < total);
 
         } catch (error) {
             toast.error("Failed to fetch videos.");
             console.error(error);
         } finally {
-            setIsVideosLoading(false);
+            setIsMediaLoading(false);
         }
     }, [propertyId]);
 
@@ -88,14 +88,14 @@ export const PropertyManagementPage: React.FC = () => {
     useEffect(() => {
         if (propertyId) {
             setPage(1);
-            fetchVideos(1, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, false);
+            fetchMedia(1, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, false);
         }
-    }, [propertyId, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, fetchVideos]);
+    }, [propertyId, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, fetchMedia]);
 
     const handleLoadMore = () => {
         const nextPage = page + 1;
         setPage(nextPage);
-        fetchVideos(nextPage, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, true);
+        fetchMedia(nextPage, debouncedSearchQuery, sortOption, sortOrder, resultsPerPage, true);
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,8 +114,8 @@ export const PropertyManagementPage: React.FC = () => {
         setResultsPerPage(event.target.value as number);
     };
 
-    const handleGenerateVideo = () => {
-        navigate(`/property/${propertyId}/video-editor`);
+    const handleAddMedia = () => {
+        navigate(`/checkout/${propertyId}`);
     };
 
     if (isLoading) {
@@ -153,35 +153,35 @@ export const PropertyManagementPage: React.FC = () => {
             )}
 
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2}}>
-                <Typography variant="h5" component="h2">Videos</Typography>
-                {/*<Button variant="contained" startIcon={<Add/>} onClick={handleGenerateVideo}>*/}
-                {/*    Generate New Video*/}
-                {/*</Button>*/}
+                <Typography variant="h5" component="h2">Media</Typography>
+                <Button variant="contained" startIcon={<Add/>} onClick={handleAddMedia}>
+                    Create
+                </Button>
             </Box>
 
-            <Paper sx={{
-                mb: 3,
-                borderRadius: '10px',
-                boxShadow: 'none',
-                backgroundColor: theme.palette.background.default,
-            }}>
-                <FilterSortToolbar
-                    searchQuery={searchQuery}
-                    onSearchChange={handleSearchChange}
-                    sortOption={sortOption}
-                    onSortChange={handleSortChange}
-                    sortOrder={sortOrder}
-                    onSortOrderChange={handleSortOrderChange}
-                    resultsPerPage={resultsPerPage}
-                    onResultsPerPageChange={handleResultsPerPageChange}
-                />
-            </Paper>
+            {/*<Paper sx={{*/}
+            {/*    mb: 3,*/}
+            {/*    borderRadius: '10px',*/}
+            {/*    boxShadow: 'none',*/}
+            {/*    backgroundColor: theme.palette.background.default,*/}
+            {/*}}>*/}
+            {/*    <FilterSortToolbar*/}
+            {/*        searchQuery={searchQuery}*/}
+            {/*        onSearchChange={handleSearchChange}*/}
+            {/*        sortOption={sortOption}*/}
+            {/*        onSortChange={handleSortChange}*/}
+            {/*        sortOrder={sortOrder}*/}
+            {/*        onSortOrderChange={handleSortOrderChange}*/}
+            {/*        resultsPerPage={resultsPerPage}*/}
+            {/*        onResultsPerPageChange={handleResultsPerPageChange}*/}
+            {/*    />*/}
+            {/*</Paper>*/}
 
-            {isVideosLoading && videos.length === 0 ? (
+            {isMediaLoading && media.length === 0 ? (
                 <Box sx={{display: 'flex', justifyContent: 'center', my: 4}}>
                     <CircularProgress/>
                 </Box>
-            ) : !isVideosLoading && videos.length === 0 ? (
+            ) : !isMediaLoading && media.length === 0 ? (
                 <Paper sx={{
                     textAlign: 'center',
                     p: 4,
@@ -192,29 +192,30 @@ export const PropertyManagementPage: React.FC = () => {
                 }}>
                     <VideocamOutlined sx={{fontSize: 60, color: theme.palette.secondary.light}}/>
                     <Typography variant="h5" component="p" gutterBottom sx={{mt: 2}}>
-                        No videos found for this property.
+                        No media found for this property.
                     </Typography>
-                    <Typography color="text.primary" sx={{mb: 3}}>
-                        Get started by making your first video.
-                    </Typography>
-                    <Button variant="contained" onClick={handleGenerateVideo}>
-                        Create Video
+                    <Button variant="contained" onClick={handleAddMedia()}>
+                        Start now
                     </Button>
                 </Paper>
             ) : (
                 <Grid container spacing={3}>
-                    {videos.map(video => (
-                        <Grid item key={video.id} xs={12} sm={6} md={4}>
-                            <VideoCard video={video}/>
+                    {media.map(item => (
+                        <Grid item key={item.id} xs={12} sm={6} md={4}>
+                            {'duration' in item ? ( /* Duration is unique to a video item */
+                                <VideoCard video={item} />
+                            ) : (
+                                <StagingPackageCard stagingPackage={item} />
+                            )}
                         </Grid>
                     ))}
                 </Grid>
             )}
 
-            {hasMore && !isVideosLoading && (
+            {hasMore && !isMediaLoading && (
                 <Box sx={{display: 'flex', justifyContent: 'center', my: 4}}>
-                    <Button variant="contained" onClick={handleLoadMore} disabled={isVideosLoading}>
-                        {isVideosLoading ? <CircularProgress size={24}/> : 'Load More'}
+                    <Button variant="contained" onClick={handleLoadMore} disabled={isMediaLoading}>
+                        {isMediaLoading ? <CircularProgress size={24}/> : 'Load More'}
                     </Button>
                 </Box>
             )}

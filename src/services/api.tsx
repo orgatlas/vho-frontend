@@ -451,6 +451,37 @@ export const getVideoList = async (
         total_pages: response.data.total_pages
     };
 };
+export const getPropertyMedia = async (
+    property_id: string | number,
+    page: number,
+    per_page: number,
+    search: string,
+    sort_by: string,
+    sort_order: string,
+): Promise<{
+    media: Array<Video | StagingPackage>;
+    total: number;
+    page: number;
+    per_page: number;
+    total_pages: number;
+}> => {
+    const response = await api.post('property/search/media', {
+        property: property_id,
+        page,
+        per_page,
+        search,
+        sort_by,
+        sort_order,
+    });
+
+    return {
+        media: response.data.results,
+        total: response.data.total,
+        page: response.data.page,
+        per_page: response.data.per_page,
+        total_pages: response.data.total_pages,
+    };
+};
 
 export const convertCurrency = async (cost: number, code: string): Promise<number> => {
     const response = await api.post('billing/currency/convert', {cost: cost, code: code});

@@ -59,21 +59,25 @@ export interface Style {
 
 export interface StagingPackage {
     id: number;
+    type: 'staging_package'
     property: Property;
     style: Style;
     is_paid: boolean;
     locked: boolean;
+    created: string;
+    last_updated: string;
 }
 
 export interface StagedImage {
     id: number;
+    type: 'staged_image'
     staging_package: StagingPackage;
     original_image: Image;
     staged_image: Image | null;
     staging_prompt: string | null;
     status: 'Waiting' | 'In Progress' | 'Complete' | 'Failed';
-    created_at: string;
-    updated_at: string;
+    created: string;
+    last_updated: string;
 }
 
 export interface Scene {
