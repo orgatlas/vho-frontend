@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
     Box,
     Container,
@@ -24,6 +24,7 @@ import JSZip from 'jszip';
 
 export const GalleryPage: React.FC = () => {
     const { stagingPackageId } = useParams<{ stagingPackageId: string }>();
+    const navigate = useNavigate();
     const [images, setImages] = useState<StagedImage[]>([]);
     const [selectedImage, setSelectedImage] = useState<StagedImage | null>(null);
     const [loading, setLoading] = useState(true);
@@ -158,6 +159,12 @@ export const GalleryPage: React.FC = () => {
         }
     };
 
+    const handleEdit = () => {
+        if (selectedImage && stagingPackageId) {
+            navigate(`/staging/${stagingPackageId}/editor/${selectedImage.id}`);
+        }
+    };
+
     if (loading) {
         return (
             <Container>
@@ -197,7 +204,7 @@ export const GalleryPage: React.FC = () => {
                                 <Button variant="outlined" startIcon={<Download />} onClick={handleDownloadAll} disabled={isDownloadingAll}>
                                     {isDownloadingAll ? <CircularProgress size={24} /> : 'Download All'}
                                 </Button>
-                                <Button variant="outlined" startIcon={<Edit />} disabled>
+                                <Button variant="outlined" startIcon={<Edit />} onClick={handleEdit} disabled={!selectedImage}>
                                     Edit
                                 </Button>
                             </Stack>

@@ -6,9 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/property/pages/PropertyDetailsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/AnimationSettings.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/SceneList.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/ScenePreview.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/SceneSettings.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/ScriptEditor.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/VideoCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/VideoControls.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/VideoSettings.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/LeftPanel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/RightPanel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/TrackSelectionPanel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/VideoEditorHeader.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/staging/pages/GalleryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/staging/pages/GalleryPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,11 +77,11 @@
       <recent name="$PROJECT_DIR$/src/features/landing/components" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/features/staging/pages" />
       <recent name="$PROJECT_DIR$/src/features/howto/pages" />
       <recent name="$PROJECT_DIR$/src/features/landing/components" />
       <recent name="$PROJECT_DIR$/src/features/landing/pages" />
       <recent name="$PROJECT_DIR$/src/theme" />
-      <recent name="$PROJECT_DIR$/src/assets/images/demo" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -169,6 +182,7 @@
       <workItem from="1762934437274" duration="19355000" />
       <workItem from="1763016636849" duration="8199000" />
       <workItem from="1763194488807" duration="3961000" />
+      <workItem from="1763989947411" duration="8206000" />
     </task>
     <servers />
   </component>

@@ -174,10 +174,31 @@ export interface CostBreakdown {
 }
 
 export interface Customer {
+
     id: number;
+
     first_name: string;
+
     last_name: string;
+
     email: string;
+
     phone: string;
+
     stripe_customer_id: string;
+
+}
+
+
+
+export interface ChangeCardData {
+
+    id: string;
+
+    type: 'Change' | 'Move' | 'Add' | 'Remove';
+
+    field1: string;
+
+    field2?: string;
+
 }

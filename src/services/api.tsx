@@ -402,6 +402,16 @@ export const getStagedImages = async (stagingPackageId: string | number): Promis
     return response.data;
 }
 
+export const getStagedImage = async (stagedImageId: string | number): Promise<StagedImage> => {
+    const response = await api.post('staging/image', {staged_image: stagedImageId});
+    return response.data;
+}
+
+export const editStagedImage = async (stagedImageId: string | number, prompt: string): Promise<StagedImage> => {
+    const response = await api.post('staging/edit', {staged_image: stagedImageId, prompt: prompt});
+    return response.data;
+}
+
 export const getPropertyList = async (
     page: number,
     per_page: number,

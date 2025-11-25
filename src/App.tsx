@@ -26,6 +26,7 @@ import {VideoEditorPage} from 'src/features/video/pages/VideoEditorPage';
 import {StagingPage} from 'src/features/staging/pages/StagingPage';
 import {StagingProgressPage} from 'src/features/staging/pages/StagingProgressPage';
 import { GalleryPage } from 'src/features/staging/pages/GalleryPage';
+import { StagingEditorPage } from 'src/features/staging/pages/StagingEditorPage';
 import {SupportPage} from 'src/features/support/pages/SupportPage';
 import {TermsOfServicePage} from 'src/features/legal/pages/TermsOfServicePage';
 import {AcceptableUsePolicyPage} from 'src/features/legal/pages/AcceptableUsePage';
@@ -53,6 +54,7 @@ function App() {
                         <Route path="/staging/:propertyId" element={<Layout><StagingPage/></Layout>}/>
                         <Route path="/staging-progress/:stagingPackageId" element={<Layout><StagingProgressPage/></Layout>}/>
                         <Route path="/staging/gallery/:stagingPackageId" element={<Layout><GalleryPage/></Layout>}/>
+                        <Route path="/staging/:stagingPackageId/editor/:stagedImageId" element={<Layout><StagingEditorPage/></Layout>}/>
                         <Route path="/register" element={<Layout><RegisterPage/></Layout>}/>
                         <Route path="/login" element={<Layout><LoginPage/></Layout>}/>
                         <Route path="/forgot-password" element={<Layout><ForgotPasswordPage/></Layout>}/>
