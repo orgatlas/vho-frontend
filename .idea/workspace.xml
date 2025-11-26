@@ -5,23 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/AddressAutocomplete.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/BeforeAfterSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/DemoSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/FaqSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/Footer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/HeroSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/HowItWorksSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/ImageCarousel.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/PricingCalculator.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/StatsSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/Testimonials.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/TrustSection.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/VideoPlayer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/AnimationSettings.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/SceneList.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/ScenePreview.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/SceneSettings.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/ScriptEditor.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/VideoCard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/VideoControls.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/VideoSettings.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/LeftPanel.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/RightPanel.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/TrackSelectionPanel.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/components/editor/VideoEditorHeader.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSectionMobile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components-old/HeroSectionMobile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/MobileAddressInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components-old/MobileAddressInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/staging/pages/GalleryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/staging/pages/GalleryPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,30 +55,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/src/features/staging/pages&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/src/features/landing/components",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Volumes/X9 Pro/Development/Projects/virtualhomeopen/frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/features/landing/components" />
+      <recent name="$PROJECT_DIR$/src/features/landing" />
       <recent name="$PROJECT_DIR$/src/features/staging/pages" />
       <recent name="$PROJECT_DIR$/src/features" />
       <recent name="$PROJECT_DIR$/src/assets/images/demo" />
-      <recent name="$PROJECT_DIR$/src/features/legal/pages" />
-      <recent name="$PROJECT_DIR$/src/features/landing/components" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/features/staging/pages" />
@@ -182,7 +186,8 @@
       <workItem from="1762934437274" duration="19355000" />
       <workItem from="1763016636849" duration="8199000" />
       <workItem from="1763194488807" duration="3961000" />
-      <workItem from="1763989947411" duration="8206000" />
+      <workItem from="1763989947411" duration="9408000" />
+      <workItem from="1764147085041" duration="5075000" />
     </task>
     <servers />
   </component>

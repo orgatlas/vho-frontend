@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {Box, useTheme, useMediaQuery} from '@mui/material';
 import {HeroSection} from '../components/HeroSection';
-import {HeroSectionMobile} from '../components/HeroSectionMobile';
 import {TrustSection} from '../components/TrustSection';
 import {StatsSection} from '../components/StatsSection';
 import {HowItWorksSection} from '../components/HowItWorksSection';
@@ -12,7 +11,6 @@ import {Footer} from '../components/Footer';
 import {PricingCalculator} from '../components/PricingCalculator';
 import {Testimonials} from '../components/Testimonials';
 import {marketingViewHomepage} from "src/marketing/marketing_api";
-import {MobileAddressInput} from '../components/MobileAddressInput';
 
 export const LandingPage: React.FC = () => {
     const theme = useTheme();
@@ -26,7 +24,7 @@ export const LandingPage: React.FC = () => {
 
     return (
         <Box>
-            {isMobile ? <HeroSectionMobile/> : <HeroSection/>}
+            <HeroSection/>
             {/*<TrustSection/>*/}
             <Testimonials/>
             <BeforeAfterSection/>
@@ -36,7 +34,6 @@ export const LandingPage: React.FC = () => {
             <FaqSection/>
             <PricingCalculator/>
             <Footer/>
-            {isMobile && <MobileAddressInput/>}
         </Box>
     );
 };

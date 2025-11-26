@@ -180,9 +180,9 @@ export const GalleryPage: React.FC = () => {
         <Container maxWidth="xl">
 
             <Grid container spacing={4} sx={{alignItems: 'flex-start'}}>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} lg={8}>
                     <Stack spacing={2} ref={leftSideRef}>
-                        <Paper elevation={3} sx={{ p: 2, backgroundColor: theme.palette.background.default, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Paper elevation={3} sx={{ p: 2, backgroundColor: theme.palette.background.default, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
                             <Stack direction="row" spacing={2} alignItems="center">
                                 <FormControlLabel
                                     control={
@@ -197,7 +197,7 @@ export const GalleryPage: React.FC = () => {
                                     sx={{ color: theme.palette.text.primary }}
                                 />
                             </Stack>
-                            <Stack direction="row" spacing={2}>
+                            <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap">
                                 <Button variant="outlined" startIcon={isDownloading ? <CircularProgress size={24} /> : <Download />} onClick={handleDownload} disabled={!selectedImage || isDownloading}>
                                     {isDownloading ? 'Downloading...' : 'Download'}
                                 </Button>
@@ -246,8 +246,8 @@ export const GalleryPage: React.FC = () => {
                 </Grid>
 
                 {/* Gallery Thumbnail Section */}
-                <Grid item xs={12} md={4}>
-                    <Paper elevation={3} sx={{ height: { md: leftSideHeight }, overflowY: 'auto', p: 2, backgroundColor: theme.palette.background.default }}>
+                <Grid item xs={12} lg={4}>
+                    <Paper elevation={3} sx={{ height: { lg: leftSideHeight }, maxHeight: { xs: '500px', lg: 'none' }, overflowY: 'auto', p: 2, backgroundColor: theme.palette.background.default }}>
                         <Grid container spacing={2}>
                             {images.map((image) => (
                                 <Grid item xs={6} key={image.id}>
