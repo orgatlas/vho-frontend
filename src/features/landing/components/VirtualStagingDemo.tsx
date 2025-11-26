@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, Button, Container, Grid, Paper, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Typography, Button, Container, Grid, Paper, useTheme, useMediaQuery, Chip } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Sparkles, MoveRight, ScanEye } from 'lucide-react';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 
-// --- THEME CONSTANTS (Matching your system) ---
+// --- THEME CONSTANTS ---
 const THEME = {
     light: '#c2f2ed',
     normal: '#33998f',
@@ -15,40 +15,45 @@ const THEME = {
     paper: '#373e40'
 };
 
-// --- MOCK DATA FOR ROOMS ---
+// --- MOCK DATA ---
 const ROOMS = [
     {
         id: 'living',
         title: 'Living Room',
-        description: 'Modern Minimalist',
-        // Using placeholder images for demo purposes
-        before: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop', // Empty-ish room
-        after: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop'   // Furnished room
+        subtitle: 'Modern Minimalist',
+        description: 'See how we transformed this cold, empty space into a cozy family hub.',
+        before: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop',
+        after: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop',
+        gridArea: { xs: 12, md: 8 } // Spans 8 cols in grid
     },
     {
         id: 'bedroom',
-        title: 'Master Bedroom',
-        description: 'Scandinavian Style',
+        title: 'Master Suite',
+        subtitle: 'Scandinavian Style',
+        description: 'Soft textures and warm lighting added to create the perfect retreat.',
         before: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=1200&auto=format&fit=crop',
-        after: 'https://images.unsplash.com/photo-1595526051245-4506e0005bd0?q=80&w=1200&auto=format&fit=crop'
+        after: 'https://images.unsplash.com/photo-1595526051245-4506e0005bd0?q=80&w=1200&auto=format&fit=crop',
+        gridArea: { xs: 12, md: 4 } // Spans 4 cols in grid
     },
     {
         id: 'kitchen',
-        title: 'Kitchen & Dining',
-        description: 'Warm & Inviting',
+        title: 'Kitchen',
+        subtitle: 'Warm & Inviting',
+        description: 'A modern chef\'s kitchen visualization that helps buyers imagine cooking here.',
         before: 'https://images.unsplash.com/photo-1556912173-3db996e7c608?q=80&w=1200&auto=format&fit=crop',
-        after: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=1200&auto=format&fit=crop'
+        after: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=1200&auto=format&fit=crop',
+        gridArea: { xs: 12, md: 4 } // Spans 4 cols in grid
     }
 ];
 
-// --- BEFORE/AFTER SLIDER COMPONENT (Adapted from your provided code) ---
+// --- BEFORE/AFTER SLIDER COMPONENT ---
 const BeforeAfterContainer = styled(Box)({
     position: 'relative',
     width: '100%',
     height: '100%',
     overflow: 'hidden',
     cursor: 'ew-resize',
-    touchAction: 'none', // Prevents scrolling while dragging on mobile
+    touchAction: 'none',
     borderRadius: '24px',
 });
 
@@ -92,7 +97,7 @@ const ResizeHandle = styled('div')(({ left }) => ({
         width: '48px',
         height: '48px',
         borderRadius: '50%',
-        backgroundColor: 'background.default',
+        backgroundColor: THEME.normal,
         border: '4px solid white',
         display: 'flex',
         alignItems: 'center',
@@ -104,7 +109,7 @@ const ResizeHandle = styled('div')(({ left }) => ({
 const HandleIconContainer = styled(Box)({
     position: 'absolute',
     top: '50%',
-    left: '50%', // Centered within the handle
+    left: '50%',
     transform: 'translate(-50%, -50%)',
     display: 'flex',
     alignItems: 'center',
@@ -124,52 +129,24 @@ const BeforeAfterSlider = ({ before, after }) => {
             const rect = containerRef.current.getBoundingClientRect();
             const x = clientX - rect.left;
             const percentage = (x / rect.width) * 100;
-            const clampedPercentage = Math.max(0, Math.min(100, percentage));
-            setSliderValue(clampedPercentage);
+            setSliderValue(Math.max(0, Math.min(100, percentage)));
         }
     };
-
-    const handleMouseDown = (e) => {
-        e.preventDefault(); // Prevent text selection
-        setIsDragging(true);
-    };
-
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
-
-    const handleMouseMove = (e) => {
-        if (isDragging) handleMove(e.clientX);
-    };
-
-    const handleTouchStart = () => {
-        setIsDragging(true);
-    };
-
-    const handleTouchMove = (e) => {
-        if (isDragging) handleMove(e.touches[0].clientX);
-    };
-
-    useEffect(() => {
-        // Reset slider when images change
-        setSliderValue(50);
-    }, [before, after]);
 
     return (
         <BeforeAfterContainer
             ref={containerRef}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleMouseUp}
-            onTouchMove={handleTouchMove}
+            onMouseDown={(e) => { e.preventDefault(); setIsDragging(true); }}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseMove={(e) => isDragging && handleMove(e.clientX)}
+            onMouseLeave={() => setIsDragging(false)}
+            onTouchStart={() => setIsDragging(true)}
+            onTouchEnd={() => setIsDragging(false)}
+            onTouchMove={(e) => isDragging && handleMove(e.touches[0].clientX)}
         >
             <BeforeImage style={{ backgroundImage: `url(${before})` }} />
             <AfterImage style={{ backgroundImage: `url(${after})` }} clip={sliderValue} />
 
-            {/* Labels */}
             <Box sx={{ position: 'absolute', top: 20, right: 20, bgcolor: 'rgba(0,0,0,0.6)', color: 'white', px: 2, py: 0.5, borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600, zIndex: 5 }}>BEFORE</Box>
             <Box sx={{ position: 'absolute', top: 20, left: 20, bgcolor: THEME.normal, color: 'white', px: 2, py: 0.5, borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600, zIndex: 5 }}>AFTER</Box>
 
@@ -183,235 +160,335 @@ const BeforeAfterSlider = ({ before, after }) => {
     );
 };
 
-// --- MAIN DEMO COMPONENT ---
+// --- MAIN COMPONENT ---
 export const VirtualStagingDemo = () => {
+    const [viewState, setViewState] = useState('grid'); // 'grid' | 'split'
     const [selectedId, setSelectedId] = useState(ROOMS[0].id);
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+    const handleRoomClick = (id) => {
+        setSelectedId(id);
+        setViewState('split');
+    };
 
     const activeRoom = ROOMS.find(r => r.id === selectedId);
     const inactiveRooms = ROOMS.filter(r => r.id !== selectedId);
 
+    // Animation Variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 50,
+                damping: 15
+            }
+        }
+    };
+
     return (
-        <Box sx={{ py: 12, bgcolor: '#f8fafc', overflow: 'hidden' }}>
+        <Box sx={{ py: 12, bgcolor: '#f8fafc', overflow: 'hidden', minHeight: '800px' }}>
             <Container maxWidth="xl">
 
-                {/* Header Section */}
-                <Box sx={{ textAlign: 'center', mb: 8 }}>
-                    <Typography variant="overline" sx={{ color: THEME.normal, fontWeight: 800, letterSpacing: 2 }}>
-                        INTERACTIVE DEMO
+                {/* Header - Always visible */}
+                <Box sx={{ mb: 6, maxWidth: 600 }}>
+                    <Chip label="Interactive Gallery" sx={{ bgcolor: 'white', color: THEME.normal, fontWeight: 700, mb: 2 }} />
+                    <Typography variant="h2" sx={{ color: THEME.text_dark, fontWeight: 800, mb: 2 }}>
+                        Virtual Staging <br/>
+                        <span style={{ color: THEME.normal }}>Showcase.</span>
                     </Typography>
-                    <Typography variant="h2" sx={{ color: THEME.text_dark, fontWeight: 700, mb: 2 }}>
-                        See the magic for yourself.
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: '#64748b', maxWidth: 600, mx: 'auto' }}>
-                        Click on different rooms to see how our virtual staging transforms empty spaces into sold properties.
+                    <Typography variant="body1" sx={{ color: '#64748b' }}>
+                        Explore our gallery of transformed spaces. Click any room to enter the interactive comparison tool.
                     </Typography>
                 </Box>
 
-                {/* Interactive Layout Group */}
                 <LayoutGroup>
-                    <Grid container spacing={4} alignItems="stretch">
+                    {viewState === 'grid' ? (
+                        // --- GRID VIEW (INITIAL STATE) ---
+                        <motion.div
+                            variants={containerVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-100px" }}
+                            exit={{ opacity: 0 }}
+                        >
+                            <Grid container spacing={3}>
+                                {/* Map through rooms with custom grid spans */}
+                                {ROOMS.map((room) => (
+                                    <Grid item xs={room.gridArea.xs} md={room.gridArea.md} key={room.id}>
+                                        <motion.div
+                                            variants={itemVariants}
+                                            layoutId={`card-${room.id}`}
+                                            onClick={() => handleRoomClick(room.id)}
+                                            whileHover={{ y: -5 }}
+                                            style={{ height: '100%', cursor: 'pointer' }}
+                                        >
+                                            <Paper
+                                                elevation={0}
+                                                sx={{
+                                                    height: '400px', // Fixed height for grid aesthetic
+                                                    borderRadius: '32px',
+                                                    overflow: 'hidden',
+                                                    position: 'relative',
+                                                    bgcolor: 'white',
+                                                    transition: 'box-shadow 0.3s ease',
+                                                    '&:hover': {
+                                                        boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+                                                    }
+                                                }}
+                                            >
+                                                {/* Image Background */}
+                                                <Box sx={{ position: 'absolute', inset: 0 }}>
+                                                    <motion.img
+                                                        layoutId={`image-${room.id}`}
+                                                        src={room.after}
+                                                        alt={room.title}
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                    />
+                                                    <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)' }} />
+                                                </Box>
 
-                        {/* LEFT COLUMN: Stack of Inactive Cards */}
-                        <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                            <AnimatePresence>
-                                {inactiveRooms.map((room) => (
-                                    <motion.div
-                                        key={room.id}
-                                        layoutId={`card-${room.id}`}
-                                        onClick={() => setSelectedId(room.id)}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, scale: 0.9 }}
-                                        transition={{ duration: 0.4, type: "spring", stiffness: 100 }}
-                                        style={{ cursor: 'pointer' }}
-                                    >
+                                                {/* Content Overlay */}
+                                                <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, p: 4 }}>
+                                                    <motion.div layoutId={`content-${room.id}`}>
+                                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                                                            <Box>
+                                                                <Chip
+                                                                    label={room.subtitle}
+                                                                    size="small"
+                                                                    sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white', backdropFilter: 'blur(4px)', mb: 1.5 }}
+                                                                />
+                                                                <motion.h3
+                                                                    layoutId={`title-${room.id}`}
+                                                                    style={{ margin: 0, color: 'white', fontSize: '2rem', fontWeight: 700 }}
+                                                                >
+                                                                    {room.title}
+                                                                </motion.h3>
+                                                            </Box>
+                                                            <Box
+                                                                sx={{
+                                                                    bgcolor: 'white',
+                                                                    width: 48,
+                                                                    height: 48,
+                                                                    borderRadius: '50%',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center',
+                                                                    color: THEME.normal
+                                                                }}
+                                                            >
+                                                                <ScanEye size={24} />
+                                                            </Box>
+                                                        </Box>
+                                                    </motion.div>
+                                                </Box>
+                                            </Paper>
+                                        </motion.div>
+                                    </Grid>
+                                ))}
+
+                                {/* CTA Block in Grid */}
+                                <Grid item xs={12} md={8}>
+                                    <motion.div variants={itemVariants} style={{ height: '100%' }}>
                                         <Paper
                                             elevation={0}
                                             sx={{
-                                                p: 2,
-                                                borderRadius: '20px',
-                                                bgcolor: 'white',
-                                                border: '2px solid transparent',
-                                                transition: 'all 0.3s ease',
+                                                height: '100%',
+                                                minHeight: '200px',
+                                                borderRadius: '32px',
+                                                bgcolor: THEME.dark,
+                                                p: 5,
                                                 display: 'flex',
+                                                flexDirection: { xs: 'column', md: 'row' },
                                                 alignItems: 'center',
-                                                gap: 2,
-                                                '&:hover': {
-                                                    borderColor: THEME.light,
-                                                    transform: 'translateY(-2px)',
-                                                    boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
-                                                }
+                                                justifyContent: 'space-between',
+                                                color: 'white',
+                                                position: 'relative',
+                                                overflow: 'hidden'
                                             }}
                                         >
-                                            {/* Thumbnail */}
-                                            <Box
+                                            {/* Decorative blobs */}
+                                            <Box sx={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.1)' }} />
+
+                                            <Box sx={{ position: 'relative', zIndex: 1 }}>
+                                                <Typography variant="h4" fontWeight={800} gutterBottom>
+                                                    Ready to sell faster?
+                                                </Typography>
+                                                <Typography variant="body1" sx={{ opacity: 0.8, maxWidth: 400 }}>
+                                                    Join 1,000+ agencies using Virtual Home Open to create stunning marketing assets instantly.
+                                                </Typography>
+                                            </Box>
+                                            <Button
+                                                variant="contained"
+                                                size="large"
                                                 sx={{
-                                                    width: 80,
-                                                    height: 80,
-                                                    borderRadius: '16px',
-                                                    overflow: 'hidden',
-                                                    flexShrink: 0
+                                                    bgcolor: 'white',
+                                                    color: THEME.dark,
+                                                    fontWeight: 700,
+                                                    px: 4, py: 1.5, borderRadius: '12px',
+                                                    mt: { xs: 3, md: 0 },
+                                                    '&:hover': { bgcolor: THEME.light }
                                                 }}
                                             >
-                                                <motion.img
-                                                    layoutId={`image-${room.id}`}
-                                                    src={room.after}
-                                                    alt={room.title}
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                />
-                                            </Box>
-
-                                            {/* Text Info */}
-                                            <Box sx={{ flexGrow: 1 }}>
-                                                <motion.h4
-                                                    layoutId={`title-${room.id}`}
-                                                    style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: THEME.text_dark }}
-                                                >
-                                                    {room.title}
-                                                </motion.h4>
-                                                <motion.p
-                                                    layoutId={`desc-${room.id}`}
-                                                    style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8' }}
-                                                >
-                                                    {room.description}
-                                                </motion.p>
-                                            </Box>
-
-                                            <Box sx={{ color: THEME.normal }}>
-                                                <ArrowRight />
-                                            </Box>
+                                                Get Started Free
+                                            </Button>
                                         </Paper>
                                     </motion.div>
-                                ))}
-                            </AnimatePresence>
+                                </Grid>
+                            </Grid>
+                        </motion.div>
+                    ) : (
+                        // --- SPLIT VIEW (ACTIVE STATE) ---
+                        <Grid container spacing={4} alignItems="stretch" sx={{ height: { md: '600px' } }}>
 
-                            {/* CTA Box in the stack */}
-                            <Box
-                                sx={{
-                                    mt: 'auto',
-                                    p: 4,
-                                    borderRadius: '24px',
-                                    bgcolor: THEME.dark,
-                                    color: 'white',
-                                    textAlign: 'center',
-                                    display: { xs: 'none', md: 'block' } // Hide on mobile to save space
-                                }}
-                            >
-                                <Sparkles size={32} style={{ marginBottom: 16, opacity: 0.8 }} />
-                                <Typography variant="h5" fontWeight="700" gutterBottom>
-                                    Ready to start?
-                                </Typography>
-                                <Typography variant="body2" sx={{ opacity: 0.8, mb: 3 }}>
-                                    Get your first image staged for free.
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    fullWidth
-                                    sx={{
-                                        bgcolor: 'white',
-                                        color: THEME.dark,
-                                        fontWeight: 'bold',
-                                        borderRadius: '12px',
-                                        py: 1.5,
-                                        '&:hover': { bgcolor: THEME.light }
-                                    }}
-                                >
-                                    Try It Now
-                                </Button>
-                            </Box>
-                        </Grid>
+                            {/* LEFT SIDEBAR STACK */}
+                            <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
+                                <Box sx={{ mb: 2 }}>
+                                    <Button
+                                        startIcon={<ArrowBackIos size={14} />}
+                                        onClick={() => setViewState('grid')}
+                                        sx={{ color: '#64748b', textTransform: 'none', fontWeight: 600 }}
+                                    >
+                                        Back to Gallery
+                                    </Button>
+                                </Box>
 
-                        {/* RIGHT COLUMN: Active Maximized Card */}
-                        <Grid item xs={12} md={8}>
-                            <motion.div
-                                layoutId={`card-${activeRoom.id}`}
-                                style={{ height: '100%', minHeight: '500px' }}
-                                transition={{ duration: 0.5, type: "spring", bounce: 0.2 }}
-                            >
-                                <Paper
-                                    elevation={10}
-                                    sx={{
-                                        height: '100%',
-                                        borderRadius: '32px',
-                                        overflow: 'hidden',
-                                        position: 'relative',
-                                        bgcolor: 'white',
-                                        display: 'flex',
-                                        flexDirection: 'column'
-                                    }}
-                                >
-                                    {/* Slider Area */}
-                                    <Box sx={{ flexGrow: 1, position: 'relative', minHeight: '400px' }}>
-                                        <motion.div
-                                            layoutId={`image-${activeRoom.id}`}
-                                            style={{ width: '100%', height: '100%' }}
-                                        >
-                                            <BeforeAfterSlider before={activeRoom.before} after={activeRoom.after} />
-                                        </motion.div>
-                                    </Box>
-
-                                    {/* Active Card Details Footer */}
-                                    <Box sx={{ p: 4, bgcolor: 'white', borderTop: '1px solid #f1f5f9' }}>
-                                        <Grid container alignItems="center" spacing={2}>
-                                            <Grid item xs={12} sm={8}>
-                                                <motion.h2
-                                                    layoutId={`title-${activeRoom.id}`}
-                                                    style={{ margin: 0, fontSize: '2rem', fontWeight: 800, color: THEME.text_dark, marginBottom: '0.5rem' }}
-                                                >
-                                                    {activeRoom.title}
-                                                </motion.h2>
-                                                <motion.p
-                                                    layoutId={`desc-${activeRoom.id}`}
-                                                    style={{ margin: 0, fontSize: '1.1rem', color: '#64748b' }}
-                                                >
-                                                    {activeRoom.description}
-                                                </motion.p>
-                                            </Grid>
-                                            <Grid item xs={12} sm={4} sx={{ textAlign: 'right' }}>
-                                                <Button
-                                                    variant="outlined"
-                                                    size="large"
-                                                    endIcon={<ArrowRight />}
+                                <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 2, overflow: 'hidden' }}>
+                                    <AnimatePresence>
+                                        {inactiveRooms.map((room) => (
+                                            <motion.div
+                                                key={room.id}
+                                                layoutId={`card-${room.id}`}
+                                                onClick={() => setSelectedId(room.id)}
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                <Paper
+                                                    elevation={0}
                                                     sx={{
-                                                        borderColor: THEME.normal,
-                                                        color: THEME.normal,
-                                                        borderRadius: '50px',
-                                                        borderWidth: 2,
-                                                        px: 4,
-                                                        '&:hover': { borderWidth: 2, bgcolor: THEME.light, borderColor: THEME.dark, color: THEME.dark }
+                                                        p: 2,
+                                                        borderRadius: '20px',
+                                                        bgcolor: 'white',
+                                                        border: '2px solid transparent',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: 2,
+                                                        transition: 'all 0.2s',
+                                                        '&:hover': { bgcolor: '#f1f5f9', transform: 'scale(1.02)' }
                                                     }}
                                                 >
-                                                    Stage This
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Box>
+                                                    <Box sx={{ width: 60, height: 60, borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
+                                                        <motion.img
+                                                            layoutId={`image-${room.id}`}
+                                                            src={room.after}
+                                                            alt={room.title}
+                                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                        />
+                                                    </Box>
+                                                    <Box sx={{ flexGrow: 1 }}>
+                                                        <motion.h4 layoutId={`title-${room.id}`} style={{ margin: 0, fontSize: '1rem', color: THEME.text_dark }}>
+                                                            {room.title}
+                                                        </motion.h4>
+                                                        <Typography variant="caption" color="text.secondary" noWrap>
+                                                            {room.subtitle}
+                                                        </Typography>
+                                                    </Box>
+                                                    <MoveRight size={16} color={THEME.normal} />
+                                                </Paper>
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
+                                </Box>
 
+                                {/* Sidebar CTA */}
+                                <Paper
+                                    elevation={0}
+                                    sx={{
+                                        p: 3,
+                                        borderRadius: '20px',
+                                        bgcolor: THEME.normal,
+                                        color: 'white',
+                                        textAlign: 'center'
+                                    }}
+                                >
+                                    <Sparkles size={24} style={{ marginBottom: 8 }} />
+                                    <Typography variant="h6" fontWeight={700}>Try it on your listing</Typography>
+                                    <Button
+                                        variant="contained"
+                                        fullWidth
+                                        sx={{ mt: 2, bgcolor: 'white', color: THEME.normal, fontWeight: 'bold', '&:hover': { bgcolor: '#f0fdfa' } }}
+                                    >
+                                        Upload Photo
+                                    </Button>
                                 </Paper>
-                            </motion.div>
-                        </Grid>
+                            </Grid>
 
-                        {/* Mobile-only CTA (since we hide the sidebar one on mobile) */}
-                        <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
-                            <Button
-                                variant="contained"
-                                fullWidth
-                                size="large"
-                                sx={{
-                                    bgcolor: THEME.normal,
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                    borderRadius: '12px',
-                                    py: 2,
-                                }}
-                            >
-                                Try It Now
-                            </Button>
-                        </Grid>
+                            {/* RIGHT ACTIVE CARD */}
+                            <Grid item xs={12} md={8} sx={{ height: '100%' }}>
+                                <motion.div
+                                    key={activeRoom.id}
+                                    layoutId={`card-${activeRoom.id}`}
+                                    style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                >
+                                    <Paper
+                                        elevation={10}
+                                        sx={{
+                                            flexGrow: 1,
+                                            borderRadius: '32px',
+                                            overflow: 'hidden',
+                                            position: 'relative',
+                                            bgcolor: 'white',
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }}
+                                    >
+                                        <Box sx={{ flexGrow: 1, position: 'relative', minHeight: '400px' }}>
+                                            <motion.div
+                                                layoutId={`image-${activeRoom.id}`}
+                                                style={{ width: '100%', height: '100%' }}
+                                            >
+                                                <BeforeAfterSlider before={activeRoom.before} after={activeRoom.after} />
+                                            </motion.div>
+                                        </Box>
 
-                    </Grid>
+                                        <Box sx={{ p: 4, bgcolor: 'white' }}>
+                                            <motion.div layoutId={`content-${activeRoom.id}`}>
+                                                <Grid container alignItems="center">
+                                                    <Grid item xs={12} md={8}>
+                                                        <motion.h2 layoutId={`title-${activeRoom.id}`} style={{ margin: 0, fontSize: '2rem', fontWeight: 800, color: THEME.text_dark }}>
+                                                            {activeRoom.title}
+                                                        </motion.h2>
+                                                        <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+                                                            {activeRoom.description}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={12} md={4} sx={{ textAlign: 'right', mt: { xs: 2, md: 0 } }}>
+                                                        <Button variant="outlined" size="large" sx={{ borderRadius: '50px', borderColor: THEME.normal, color: THEME.normal }}>
+                                                            View Details
+                                                        </Button>
+                                                    </Grid>
+                                                </Grid>
+                                            </motion.div>
+                                        </Box>
+                                    </Paper>
+                                </motion.div>
+                            </Grid>
+
+                        </Grid>
+                    )}
                 </LayoutGroup>
             </Container>
         </Box>
