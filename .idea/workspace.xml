@@ -5,27 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/AddressAutocomplete.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/BeforeAfterSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/DemoSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/FaqSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/Footer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/HeroSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/HowItWorksSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/ImageCarousel.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/PricingCalculator.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/StatsSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/Testimonials.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/TrustSection.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/landing/components-old/VideoPlayer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/landing/components/VirtualStagingDemo.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/AddressAutocomplete.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/BeforeAfterSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/DemoSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/FaqSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/Footer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/HeroSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/HeroSectionMobile.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/HowItWorksSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/ImageCarousel.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/MobileAddressInput.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/PricingCalculator.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/StatsSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/Testimonials.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/TrustSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components-old/VideoPlayer.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/FaqSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/FaqSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSectionMobile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components-old/HeroSectionMobile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/MobileAddressInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components-old/MobileAddressInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/landing/components/Testimonials.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/Testimonials.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/staging/pages/GalleryPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/staging/pages/GalleryPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +188,7 @@
       <workItem from="1763016636849" duration="8199000" />
       <workItem from="1763194488807" duration="3961000" />
       <workItem from="1763989947411" duration="9408000" />
-      <workItem from="1764147085041" duration="5075000" />
+      <workItem from="1764147085041" duration="7774000" />
     </task>
     <servers />
   </component>

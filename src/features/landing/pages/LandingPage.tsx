@@ -11,6 +11,7 @@ import {Footer} from '../components/Footer';
 import {PricingCalculator} from '../components/PricingCalculator';
 import {Testimonials} from '../components/Testimonials';
 import {marketingViewHomepage} from "src/marketing/marketing_api";
+import VirtualStagingDemo from "src/features/landing/components/VirtualStagingDemo";
 
 export const LandingPage: React.FC = () => {
     const theme = useTheme();
@@ -26,6 +27,7 @@ export const LandingPage: React.FC = () => {
         <Box>
             <HeroSection/>
             {/*<TrustSection/>*/}
+            <VirtualStagingDemo/>
             <Testimonials/>
             <BeforeAfterSection/>
             <HowItWorksSection/>

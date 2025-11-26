@@ -1,16 +1,21 @@
-import React from 'react';
-import {Box, Typography, Container, Accordion, AccordionSummary, AccordionDetails, Paper} from '@mui/material';
-import {motion} from 'framer-motion';
-import {SectionHeader} from "src/theme/components/SectionHeader";
-import {useTheme} from "@mui/material/styles";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import FaqBgImage from 'src/assets/images/demo/3.png'; // Using one of the demo images for the background
+import React, { useState } from 'react';
+import {
+    Box,
+    Typography,
+    Container,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    useTheme,
+    Grid
+} from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Minus, HelpCircle } from 'lucide-react';
 
 const faqs = [
     {
         question: 'How long will my video take?',
-        answer: 'It depends on the amount of images your listing has. Allow for 10-15 minutes per image. If you uploaded 10 images, your video should be ready in 1h40m - 2h30m',
+        answer: 'It depends on the amount of images your listing has. Allow for 10-15 minutes per image. If you uploaded 5 images, your video should be ready in 50 - 75 minutes',
     },
     {
         question: 'What types of listings are supported?',
@@ -29,141 +34,193 @@ const faqs = [
         answer: 'Unfortunately, we dont offer a free trial. But no worries! We guarantee you will be satisfied or we will give you your money back! Just email our friendly support team.',
     },
     {
-        question: 'How much does it cost?',
-        answer: 'Our pricing ranges based on the amount of images in your listing, and the settings you wish to apply to your video. You can use our pricing calculator to see our available packages.',
-    },
-    {
         question: 'Can I use my own branding in the video?',
-        answer: 'This functionality is coming soon, stay tuned!',
+        answer: 'Yes! You can add your companies logo to our virtual tours. Simply select where you would like the logo placed in the video settings.',
     },
 ];
 
-const containerVariants = {
-    hidden: {opacity: 0},
-    visible: {
-        opacity: 1,
-        transition: {staggerChildren: 0.1, delayChildren: 0.2},
-    },
-};
-
-const itemVariants = {
-    hidden: {y: 20, opacity: 0},
-    visible: {y: 0, opacity: 1, transition: {duration: 0.5, ease: "easeOut"}},
-};
-
 export const FaqSection: React.FC = () => {
     const theme = useTheme();
-    const [expanded, setExpanded] = React.useState<string | false>('panel0');
+    const [expanded, setExpanded] = useState<string | false>('panel0');
 
     const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const glassmorphicStyles = {
-        bgcolor: theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.7)' : 'rgba(255, 255, 255, 0.7)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: 3,
-        overflow: 'hidden',
-        transition: 'all 0.3s ease-in-out',
-    };
-
     return (
-        <Box sx={{
-            position: 'relative',
-            py: {xs: 8, md: 12},
-            overflow: 'hidden',
-        }} id={'faq'}>
-            <Box sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundImage: `url(${FaqBgImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                filter: 'blur(10px)',
-                '&:after': {
-                    content: '""',
+        <Box
+            id="faq"
+            sx={{
+                py: { xs: 8, md: 12 },
+                backgroundColor: theme.palette.background.default,
+                position: 'relative',
+                overflow: 'hidden',
+            }}
+        >
+            {/* Background Elements (Matches HeroSection) */}
+            <Box
+                component={motion.div}
+                animate={{
+                    y: [0, -30, 0],
+                    rotate: [0, -5, 0]
+                }}
+                transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                sx={{
                     position: 'absolute',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.4)',
-                }
-            }}/>
+                    top: '10%',
+                    left: -100,
+                    width: { xs: 300, md: 500 },
+                    height: { xs: 300, md: 500 },
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${theme.palette.secondary.light} 0%, transparent 70%)`,
+                    opacity: 0.4,
+                    pointerEvents: 'none',
+                    zIndex: 0
+                }}
+            />
+             <Box
+                component={motion.div}
+                animate={{
+                    y: [0, 40, 0],
+                    rotate: [0, 10, 0]
+                }}
+                transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                sx={{
+                    position: 'absolute',
+                    bottom: -100,
+                    right: -100,
+                    width: { xs: 400, md: 600 },
+                    height: { xs: 400, md: 600 },
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${theme.palette.primary.main}10 0%, transparent 70%)`,
+                    opacity: 0.3,
+                    pointerEvents: 'none',
+                    zIndex: 0
+                }}
+            />
 
-            <Container maxWidth="md" sx={{position: 'relative', zIndex: 2}}>
-                <SectionHeader
-                    title="Frequently Asked Questions"
-                    subtitle="Can't find the answer you're looking for? Reach out to our friendly support team."
-                    color={'text.secondary'}
-                />
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{once: true, amount: 0.2}}
-                    variants={containerVariants}
-                >
-                    <Box sx={{mt: 6, display: 'flex', flexDirection: 'column', gap: 2}}>
-                        {faqs.map((faq, index) => {
-                            const panelId = `panel${index}`;
-                            const isExpanded = expanded === panelId;
-                            return (
-                                <motion.div key={index} variants={itemVariants}>
-                                    <Paper
-                                        elevation={0}
-                                        sx={{
-                                            ...glassmorphicStyles,
-                                            ...(isExpanded && {
-                                                boxShadow: `0 0 20px ${theme.palette.primary.light}33`,
-                                            }),
-                                        }}
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+                <Grid container spacing={6}>
+                    {/* Header Column */}
+                    <Grid item xs={12} md={4}>
+                        <Box sx={{ position: 'sticky', top: 100 }}>
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <Typography
+                                    variant="h2"
+                                    sx={{
+                                        fontWeight: 700,
+                                        color: theme.palette.text.primary,
+                                        mb: 2,
+                                        fontSize: { xs: '2rem', md: '2.5rem' }
+                                    }}
+                                >
+                                    Frequently Asked <Box component="span" sx={{ color: theme.palette.primary.main }}>Questions.</Box>
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    sx={{
+                                        color: theme.palette.text.primary,
+                                        opacity: 0.7,
+                                        mb: 4,
+                                        fontSize: '1.1rem'
+                                    }}
+                                >
+                                    Can't find the answer you're looking for? Reach out to our friendly support team.
+                                </Typography>
+                                
+                                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', color: theme.palette.primary.main }}>
+                                    <HelpCircle size={24} />
+                                    <Typography variant="button" fontWeight="bold">Contact Support</Typography>
+                                </Box>
+                            </motion.div>
+                        </Box>
+                    </Grid>
+
+                    {/* FAQ List Column */}
+                    <Grid item xs={12} md={8}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            {faqs.map((faq, index) => {
+                                const panelId = `panel${index}`;
+                                const isExpanded = expanded === panelId;
+
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
                                     >
                                         <Accordion
-                                            disableGutters
-                                            elevation={0}
                                             expanded={isExpanded}
                                             onChange={handleChange(panelId)}
+                                            elevation={0}
                                             sx={{
-                                                '&:before': {display: 'none'},
-                                                bgcolor: 'transparent',
+                                                backgroundColor: theme.palette.background.paper,
+                                                color: theme.palette.text.secondary,
+                                                borderRadius: '16px !important',
+                                                overflow: 'hidden',
+                                                mb: 0,
+                                                border: isExpanded ? `1px solid ${theme.palette.primary.main}` : '1px solid transparent',
+                                                transition: 'all 0.3s ease',
+                                                '&:before': {
+                                                    display: 'none',
+                                                },
+                                                boxShadow: isExpanded 
+                                                    ? `0 10px 30px -10px rgba(0,0,0,0.5)` 
+                                                    : `0 4px 10px -4px rgba(0,0,0,0.1)`
                                             }}
                                         >
                                             <AccordionSummary
-                                                expandIcon={isExpanded ? <RemoveCircleOutlineIcon color="primary"/> :
-                                                    <AddCircleOutlineIcon sx={{color: 'text.primary'}}/>}
-                                                aria-controls={`${panelId}a-content`}
-                                                id={`${panelId}a-header`}
+                                                expandIcon={
+                                                    isExpanded 
+                                                        ? <Minus size={20} color={theme.palette.primary.main} /> 
+                                                        : <Plus size={20} color={theme.palette.text.secondary} />
+                                                }
+                                                aria-controls={`${panelId}bh-content`}
+                                                id={`${panelId}bh-header`}
                                                 sx={{
-                                                    py: 1.5,
                                                     px: 3,
-                                                    '& .MuiAccordionSummary-content': {mr: 2},
+                                                    py: 1,
+                                                    '& .MuiAccordionSummary-content': {
+                                                        margin: '12px 0',
+                                                    }
                                                 }}
                                             >
-                                                <Typography variant="h6" component="p"
-                                                            sx={{fontWeight: 500, color: 'text.primary'}}>
+                                                <Typography 
+                                                    variant="h6" 
+                                                    sx={{ 
+                                                        fontSize: '1.1rem', 
+                                                        fontWeight: isExpanded ? 600 : 500,
+                                                        color: isExpanded ? theme.palette.primary.main : theme.palette.text.secondary
+                                                    }}
+                                                >
                                                     {faq.question}
                                                 </Typography>
                                             </AccordionSummary>
-                                            <AccordionDetails sx={{px: 3, pb: 3, pt: 0}}>
-                                                <Typography color="text.primary" sx={{
-                                                    '& a': {
-                                                        color: 'primary.main',
-                                                        textDecoration: 'none',
-                                                        '&:hover': {
-                                                            textDecoration: 'underline',
-                                                        }
-                                                    }
-                                                }}>
+                                            <AccordionDetails sx={{ px: 3, pb: 3, pt: 0 }}>
+                                                <Typography 
+                                                    sx={{ 
+                                                        color: theme.palette.secondary.light,
+                                                        lineHeight: 1.6,
+                                                        opacity: 0.9
+                                                    }}
+                                                >
                                                     {faq.answer}
                                                 </Typography>
                                             </AccordionDetails>
                                         </Accordion>
-                                    </Paper>
-                                </motion.div>
-                            );
-                        })}
-                    </Box>
-                </motion.div>
+                                    </motion.div>
+                                );
+                            })}
+                        </Box>
+                    </Grid>
+                </Grid>
             </Container>
         </Box>
     );

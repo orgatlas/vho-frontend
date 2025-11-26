@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Loader2, ArrowRight } from 'lucide-react';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { toast } from 'react-toastify';
 
-const THEME = {
-    normal: '#33998f',
-    dark: '#02645b',
-    paper: '#373e40',
-    light: '#c2f2ed',
-};
+interface AddressAutocompleteProps {
+    onAddressSelect: (address: string) => void;
+}
 
-const AddressAutocomplete = ({ onAddressSelect }) => {
+const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSelect }) => {
+    const theme = useTheme();
+
     // Custom script loading state
     const [isLoaded, setIsLoaded] = useState(false);
 
     // State for autocomplete
     const [inputValue, setInputValue] = useState('');
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState<any[]>([]);
     const [isFocused, setIsFocused] = useState(false);
-    const [autocompleteService, setAutocompleteService] = useState(null);
+    const [autocompleteService, setAutocompleteService] = useState<any>(null);
 
     // Load Google Maps Script Natively
     useEffect(() => {
         const loadScript = () => {
             // Check if script already exists
-            if (window.google && window.google.maps && window.google.maps.places) {
+            if ((window as any).google && (window as any).google.maps && (window as any).google.maps.places) {
                 setIsLoaded(true);
                 return;
             }
@@ -51,13 +50,13 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
 
     // Initialize Services once API is loaded
     useEffect(() => {
-        if (isLoaded && window.google) {
-            setAutocompleteService(new window.google.maps.places.AutocompleteService());
+        if (isLoaded && (window as any).google) {
+            setAutocompleteService(new (window as any).google.maps.places.AutocompleteService());
         }
     }, [isLoaded]);
 
     // Handle Input Change & Fetch Predictions
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setInputValue(value);
 
@@ -69,8 +68,8 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
         if (autocompleteService) {
             autocompleteService.getPlacePredictions(
                 { input: value, componentRestrictions: { country: 'au' } }, // Adjust country as needed
-                (predictions, status) => {
-                    if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+                (predictions: any[], status: any) => {
+                    if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && predictions) {
                         setOptions(predictions);
                     } else {
                         setOptions([]);
@@ -80,7 +79,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
         }
     };
 
-    const handleSelect = (description) => {
+    const handleSelect = (description: string) => {
         setInputValue(description);
         setOptions([]);
         setIsFocused(false);
@@ -117,9 +116,9 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                     component={motion.div}
                     animate={{
                         boxShadow: isFocused
-                            ? `0 20px 40px -10px ${THEME.normal}40`
+                            ? `0 20px 40px -10px ${theme.palette.primary.main}40`
                             : '0 10px 30px -10px rgba(0,0,0,0.1)',
-                        borderColor: isFocused ? THEME.normal : 'transparent'
+                        borderColor: isFocused ? theme.palette.primary.main : 'transparent'
                     }}
                     sx={{
                         display: 'flex',
@@ -143,7 +142,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                                 position: 'absolute',
                                 inset: -4,
                                 borderRadius: '50px',
-                                border: `2px solid ${THEME.normal}`,
+                                border: `2px solid ${theme.palette.primary.main}`,
                                 pointerEvents: 'none',
                                 opacity: 0.3
                             }}
@@ -151,7 +150,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                     )}
 
                     {/* Icon */}
-                    <Box sx={{ pl: 2, pr: 1.5, color: THEME.normal, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ pl: 2, pr: 1.5, color: theme.palette.primary.main, display: 'flex', alignItems: 'center' }}>
                         <MapPin size={24} />
                     </Box>
 
@@ -171,7 +170,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                                 outline: 'none',
                                 background: 'transparent',
                                 fontSize: '1.1rem',
-                                color: '#333',
+                                color: '#333', // Hardcoded dark for input text readability on white
                                 padding: '12px 0',
                                 fontWeight: 500
                             }}
@@ -184,7 +183,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                         whileTap={{ scale: 0.95 }}
                         onClick={handleSubmit}
                         style={{
-                            background: `linear-gradient(135deg, ${THEME.normal} 0%, ${THEME.dark} 100%)`,
+                            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
                             color: 'white',
                             border: 'none',
                             borderRadius: '50px',
@@ -195,7 +194,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                             gap: '8px',
                             fontWeight: 600,
                             fontSize: '1rem',
-                            boxShadow: `0 4px 15px ${THEME.normal}60`
+                            boxShadow: `0 4px 15px ${theme.palette.primary.main}60`
                         }}
                     >
                         <span>Create</span>
@@ -243,7 +242,7 @@ const AddressAutocomplete = ({ onAddressSelect }) => {
                                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8fafc'}
                                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                                 >
-                                    <Box sx={{ p: 1, bgcolor: THEME.light, borderRadius: '50%', color: THEME.dark }}>
+                                    <Box sx={{ p: 1, bgcolor: theme.palette.secondary.light, borderRadius: '50%', color: theme.palette.primary.dark }}>
                                         <MapPin size={14} />
                                     </Box>
                                     <Box>
