@@ -15,7 +15,7 @@ import {
     StagedImage,
     Payment,
     CostBreakdown,
-    Invoice
+    Invoice, HomepageTourInfo
 } from "src/types";
 import {marketingViewPackage} from 'src/marketing/marketing_api'
 
@@ -496,6 +496,16 @@ export const getPropertyMedia = async (
 export const convertCurrency = async (cost: number, code: string): Promise<number> => {
     const response = await api.post('billing/currency/convert', {cost: cost, code: code});
     return response.data.converted_price;
+};
+
+export const socialSignup = async (name: string,  email: string) => {
+    const response = await api.post('marketing/homepage/social/signup', {email, name});
+    return response.data;
+};
+
+export const getTourGallery = async (): Promise<HomepageTourInfo[]> => {
+    const response = await api.post('marketing/homepage/tour/gallery', {});
+    return response.data.tours;
 };
 
 

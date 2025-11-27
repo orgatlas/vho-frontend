@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Typography, Container, Grid, Paper, useTheme, useMediaQuery, alpha } from '@mui/material';
 import { motion } from 'framer-motion';
 import { MapPin, UploadCloud, Wand2, SlidersHorizontal } from 'lucide-react';
+import AddressAutocomplete from './AddressAutocomplete';
+import { useNavigate } from 'react-router-dom';
 
 const STEPS = [
     {
@@ -31,6 +33,11 @@ const STEPS = [
 export const HowItWorksSection = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const navigate = useNavigate();
+
+    const handleAddressSelect = (address: string) => {
+        navigate('/extracting-details', { state: { address } });
+    };
 
     // Animation Variants
     const containerVariants = {
@@ -229,6 +236,15 @@ export const HowItWorksSection = () => {
                             </Grid>
                         ))}
                     </Grid>
+
+                    {/* CTA at the bottom */}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8, position: 'relative', zIndex: 2 }}>
+                        <AddressAutocomplete 
+                            onAddressSelect={handleAddressSelect} 
+                            variant="minimal"
+                            sx={{ maxWidth: '600px' }}
+                        />
+                    </Box>
                 </Box>
 
             </Container>

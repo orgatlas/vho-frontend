@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Loader2, ArrowRight } from 'lucide-react';
-import { Box, Typography, Paper, useTheme, alpha } from '@mui/material';
+import { Box, Typography, Paper, useTheme, alpha, SxProps, Theme, Popper } from '@mui/material';
 import { toast } from 'react-toastify';
 
 interface AddressAutocompleteProps {
     onAddressSelect: (address: string) => void;
+    variant?: 'hero' | 'minimal' | 'contrast';
+    sx?: SxProps<Theme>;
 }
 
-const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSelect }) => {
+const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSelect, variant = 'hero', sx }) => {
     const theme = useTheme();
 
     // Custom script loading state
@@ -19,6 +21,18 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
     const [options, setOptions] = useState<any[]>([]);
     const [isFocused, setIsFocused] = useState(false);
     const [autocompleteService, setAutocompleteService] = useState<any>(null);
+
+    // Popper State
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [popperOpen, setPopperOpen] = useState(false);
+
+    const showDropdown = isFocused && options.length > 0;
+
+    useEffect(() => {
+        if (showDropdown) {
+            setPopperOpen(true);
+        }
+    }, [showDropdown]);
 
     // Load Google Maps Script Natively
     useEffect(() => {
@@ -94,6 +108,48 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
         onAddressSelect(inputValue);
     };
 
+    // --- STYLES BASED ON VARIANT ---
+    const getStyles = () => {
+        switch (variant) {
+            case 'contrast':
+                return {
+                    paperBg: 'white',
+                    textColor: theme.palette.text.primary,
+                    iconColor: theme.palette.primary.main,
+                    borderColor: isFocused ? theme.palette.primary.main : alpha(theme.palette.divider, 0.5),
+                    buttonBg: theme.palette.primary.main,
+                    buttonTextColor: 'white',
+                    placeholderColor: alpha(theme.palette.text.primary, 0.5),
+                    shadow: isFocused ? '0 8px 20px rgba(0,0,0,0.1)' : '0 2px 10px rgba(0,0,0,0.05)'
+                };
+            case 'minimal':
+                return {
+                    paperBg: 'white',
+                    textColor: theme.palette.text.primary,
+                    iconColor: theme.palette.primary.main,
+                    borderColor: isFocused ? theme.palette.primary.main : alpha(theme.palette.divider, 0.5),
+                    buttonBg: theme.palette.primary.main,
+                    buttonTextColor: 'white',
+                    placeholderColor: alpha(theme.palette.text.primary, 0.5),
+                    shadow: isFocused ? '0 8px 20px rgba(0,0,0,0.1)' : '0 2px 10px rgba(0,0,0,0.05)'
+                };
+            case 'hero':
+            default:
+                return {
+                    paperBg: alpha(theme.palette.background.default, 0.95),
+                    textColor: theme.palette.text.primary,
+                    iconColor: theme.palette.primary.main,
+                    borderColor: isFocused ? theme.palette.primary.main : 'transparent',
+                    buttonBg: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+                    buttonTextColor: 'white',
+                    placeholderColor: alpha(theme.palette.text.primary, 0.6),
+                    shadow: isFocused ? `0 20px 40px -10px ${alpha(theme.palette.primary.main, 0.25)}` : '0 10px 30px -10px rgba(0,0,0,0.1)'
+                };
+        }
+    };
+
+    const styles = getStyles();
+
     if (!isLoaded) {
         return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: alpha(theme.palette.background.default, 0.5), borderRadius: '50px' }}>
@@ -104,7 +160,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
     }
 
     return (
-        <Box sx={{ position: 'relative', width: '100%', maxWidth: '600px', zIndex: 50 }}>
+        <Box sx={{ position: 'relative', width: '100%', maxWidth: '600px', zIndex: 50, ...sx }}>
             {/* Main Input Container */}
             <motion.div
                 initial={{ scale: 0.95, opacity: 0 }}
@@ -112,29 +168,29 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                 transition={{ duration: 0.5 }}
             >
                 <Paper
+                    ref={setAnchorEl}
                     elevation={isFocused ? 12 : 4}
                     component={motion.div}
                     animate={{
-                        boxShadow: isFocused
-                            ? `0 20px 40px -10px ${alpha(theme.palette.primary.main, 0.25)}`
-                            : '0 10px 30px -10px rgba(0,0,0,0.1)',
-                        borderColor: isFocused ? theme.palette.primary.main : 'transparent'
+                        boxShadow: styles.shadow,
+                        borderColor: styles.borderColor
                     }}
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
                         p: '8px',
                         borderRadius: '50px',
-                        bgcolor: alpha(theme.palette.background.default, 0.95),
+                        bgcolor: styles.paperBg,
                         backdropFilter: 'blur(10px)',
-                        border: '2px solid transparent',
+                        border: '2px solid',
+                        borderColor: 'transparent', // Overridden by animate
                         transition: 'all 0.3s ease',
                         position: 'relative',
                         overflow: 'visible' // Allow glow to spill out
                     }}
                 >
-                    {/* Glowing Pulse Effect when idle */}
-                    {!isFocused && !inputValue && (
+                    {/* Glowing Pulse Effect when idle - Only for Hero */}
+                    {variant === 'hero' && !isFocused && !inputValue && (
                         <motion.div
                             animate={{ opacity: [0.5, 0.2, 0.5], scale: [1, 1.02, 1] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -150,7 +206,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                     )}
 
                     {/* Icon */}
-                    <Box sx={{ pl: 2, pr: 1.5, color: theme.palette.primary.main, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ pl: 2, pr: 1.5, color: styles.iconColor, display: 'flex', alignItems: 'center' }}>
                         <MapPin size={24} />
                     </Box>
 
@@ -170,95 +226,90 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                                 outline: 'none',
                                 background: 'transparent',
                                 fontSize: '1.1rem',
-                                color: theme.palette.text.primary,
+                                color: styles.textColor,
                                 padding: '12px 0',
-                                fontWeight: 500
+                                fontWeight: 500,
                             }}
                         />
+                        <style>
+                            {`
+                                input::placeholder {
+                                    color: ${styles.placeholderColor};
+                                    opacity: 1;
+                                }
+                            `}
+                        </style>
                     </Box>
-
-                    {/* Action Button */}
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleSubmit}
-                        style={{
-                            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '50px',
-                            padding: '12px 24px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            fontWeight: 600,
-                            fontSize: '1rem',
-                            boxShadow: `0 4px 15px ${alpha(theme.palette.primary.main, 0.4)}`
-                        }}
-                    >
-                        <span>Create</span>
-                        <ArrowRight size={18} />
-                    </motion.button>
                 </Paper>
             </motion.div>
 
-            {/* Dropdown Predictions */}
-            <AnimatePresence>
-                {isFocused && options.length > 0 && (
-                    <Paper
-                        component={motion.div}
-                        initial={{ opacity: 0, y: -10, height: 0 }}
-                        animate={{ opacity: 1, y: 12, height: 'auto' }}
-                        exit={{ opacity: 0, y: -10, height: 0 }}
-                        elevation={6}
-                        sx={{
-                            position: 'absolute',
-                            top: '100%',
-                            left: '20px',
-                            right: '20px',
-                            bgcolor: theme.palette.background.default,
-                            borderRadius: '20px',
-                            overflow: 'hidden',
-                            zIndex: 100,
-                        }}
-                    >
-                        <ul style={{ listStyle: 'none', margin: 0, padding: '8px 0' }}>
-                            {options.map((option, index) => (
-                                <motion.li
-                                    key={option.place_id}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.05 }}
-                                    onClick={() => handleSelect(option.description)}
-                                    style={{
-                                        padding: '12px 24px',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '12px',
-                                        borderBottom: index !== options.length - 1 ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.action.hover, 0.05)}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                                >
-                                    <Box sx={{ p: 1,  borderRadius: '50%', color: theme.palette.primary.dark }}>
-                                        <MapPin size={14} />
-                                    </Box>
-                                    <Box>
-                                        <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
-                                            {option.structured_formatting.main_text}
-                                        </Typography>
-                                        <Typography variant="caption" sx={{ color: alpha(theme.palette.text.primary, 0.6) }}>
-                                            {option.structured_formatting.secondary_text}
-                                        </Typography>
-                                    </Box>
-                                </motion.li>
-                            ))}
-                        </ul>
-                    </Paper>
-                )}
-            </AnimatePresence>
+            {/* Dropdown Predictions via Popper */}
+            <Popper
+                open={popperOpen}
+                anchorEl={anchorEl}
+                placement="bottom"
+                modifiers={[
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [0, 12],
+                        },
+                    },
+                ]}
+                sx={{ zIndex: 1300 }}
+            >
+                <AnimatePresence onExitComplete={() => setPopperOpen(false)}>
+                    {showDropdown && (
+                        <Paper
+                            component={motion.div}
+                            initial={{ opacity: 0, y: -10, height: 0 }}
+                            animate={{ opacity: 1, y: 0, height: 'auto' }}
+                            exit={{ opacity: 0, y: -10, height: 0 }}
+                            elevation={6}
+                            sx={{
+                                width: anchorEl ? anchorEl.clientWidth - 40 : 'auto',
+                                bgcolor: theme.palette.background.default,
+                                borderRadius: '20px',
+                                overflow: 'visible',
+                            }}
+                        >
+                            <ul style={{ listStyle: 'none', margin: 0, padding: '8px 0' }}>
+                                {options.map((option, index) => (
+                                    <motion.li
+                                        key={option.place_id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: index * 0.05 }}
+                                        onClick={() => handleSelect(option.description)}
+                                        style={{
+                                            padding: '12px 24px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            borderBottom: index !== options.length - 1 ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.action.hover, 0.05)}
+                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                    >
+                                        <Box sx={{ p: 1,  borderRadius: '50%', color: theme.palette.primary.dark }}>
+                                            <MapPin size={14} />
+                                        </Box>
+                                        <Box>
+                                            <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+                                                {option.structured_formatting.main_text}
+                                            </Typography>
+                                            <Typography variant="caption" sx={{ color: alpha(theme.palette.text.primary, 0.6) }}>
+                                                {option.structured_formatting.secondary_text}
+                                            </Typography>
+                                        </Box>
+                                    </motion.li>
+                                ))}
+                            </ul>
+                        </Paper>
+                    )}
+                </AnimatePresence>
+            </Popper>
         </Box>
     );
 };

@@ -4,6 +4,8 @@ import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { ArrowRight, Sparkles, MoveRight, ScanEye } from 'lucide-react';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import AddressAutocomplete from './AddressAutocomplete';
 
 // --- MOCK DATA ---
 const ROOMS = [
@@ -23,7 +25,7 @@ const ROOMS = [
         description: 'Soft textures and designer touches added to create the perfect retreat.',
         before: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/bedroom-before.jpeg',
         after: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/bedroom-after.jpeg',
-        gridArea: { xs: 12, md: 2 } // Spans 4 cols in grid
+        gridArea: { xs: 12, md: 3 } // Spans 4 cols in grid
     },
     {
         id: 'kitchen',
@@ -32,7 +34,7 @@ const ROOMS = [
         description: 'A modern entertainer\'s kitchen, visualise cooking here.',
         before: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/kitchen-before.jpeg',
         after: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/kitchen-after.png',
-        gridArea: { xs: 12, md: 4 } // Spans 4 cols in grid
+        gridArea: { xs: 12, md: 3 } // Spans 4 cols in grid
     },
     {
         id: 'bathroom',
@@ -178,10 +180,15 @@ export const VirtualStagingDemo = () => {
     const [viewState, setViewState] = useState<'grid' | 'split'>('grid');
     const [selectedId, setSelectedId] = useState(ROOMS[0].id);
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const handleRoomClick = (id: string) => {
         setSelectedId(id);
         setViewState('split');
+    };
+    
+    const handleAddressSelect = (address: string) => {
+        navigate('/extracting-details', { state: { address } });
     };
 
     const activeRoom = ROOMS.find(r => r.id === selectedId) || ROOMS[0];
@@ -213,7 +220,7 @@ export const VirtualStagingDemo = () => {
     };
 
     return (
-        <Box sx={{ py: 12, bgcolor: theme.palette.background.default, overflow: 'hidden', minHeight: '800px' }}>
+        <Box id="virtual-staging" sx={{ py: 12, bgcolor: theme.palette.background.default, overflow: 'hidden', minHeight: '800px' }}>
             <Container maxWidth="xl">
 
                 {/* Header - Always visible */}
@@ -325,34 +332,28 @@ export const VirtualStagingDemo = () => {
                                                 justifyContent: 'space-between',
                                                 color: 'white',
                                                 position: 'relative',
-                                                overflow: 'hidden'
+                                                overflow: 'hidden',
+                                                gap: 4
                                             }}
                                         >
                                             {/* Decorative blobs */}
                                             <Box sx={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.1)' }} />
 
-                                            <Box sx={{ position: 'relative', zIndex: 1 }}>
+                                            <Box sx={{ position: 'relative', zIndex: 1, flexShrink: 0, maxWidth: {md: '50%'} }}>
                                                 <Typography variant="h4" fontWeight={800} gutterBottom>
                                                     Ready to sell faster?
                                                 </Typography>
-                                                <Typography variant="body1" sx={{ opacity: 0.8, maxWidth: 400 }}>
-                                                    Join 1,000+ agencies using Virtual Home Open to create stunning marketing assets instantly.
+                                                <Typography variant="body1" sx={{ opacity: 0.8 }}>
+                                                    Join successful agencies already using Virtual Home Open and create stunning marketing assets instantly.
                                                 </Typography>
                                             </Box>
-                                            <Button
-                                                variant="contained"
-                                                size="large"
-                                                sx={{
-                                                    bgcolor: 'white',
-                                                    color: theme.palette.primary.dark,
-                                                    fontWeight: 700,
-                                                    px: 4, py: 1.5, borderRadius: '12px',
-                                                    mt: { xs: 3, md: 0 },
-                                                    '&:hover': { bgcolor: theme.palette.secondary.light }
-                                                }}
-                                            >
-                                                Get Started Free
-                                            </Button>
+                                            
+                                            <Box sx={{ width: '100%', maxWidth: '400px', position: 'relative', zIndex: 2 }}>
+                                                <AddressAutocomplete 
+                                                    onAddressSelect={handleAddressSelect} 
+                                                    variant="contrast"
+                                                />
+                                            </Box>
                                         </Paper>
                                     </motion.div>
                                 </Grid>
@@ -428,15 +429,15 @@ export const VirtualStagingDemo = () => {
                                         textAlign: 'center'
                                     }}
                                 >
-                                    <Sparkles size={24} style={{ marginBottom: 8 }} />
-                                    <Typography variant="h6" fontWeight={700}>Try it on your listing</Typography>
-                                    <Button
-                                        variant="contained"
-                                        fullWidth
-                                        sx={{ mt: 2, bgcolor: 'white', color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { bgcolor: '#f0fdfa' } }}
-                                    >
-                                        Upload Photo
-                                    </Button>
+
+                                    <Typography variant="h6" fontWeight={700}><Sparkles size={24}/> Try it on your listing</Typography>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', pt:2 }}>
+                                        <AddressAutocomplete
+                                            onAddressSelect={handleAddressSelect}
+                                            variant="hero"
+                                            sx={{ maxWidth: '600px' }}
+                                        />
+                                    </Box>
                                 </Paper>
                             </Grid>
 

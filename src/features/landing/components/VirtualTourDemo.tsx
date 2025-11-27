@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Box, Typography, Button, useTheme, alpha } from '@mui/material';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { RotateCcw, RefreshCcw } from 'lucide-react';
+import { Play, RefreshCcw } from 'lucide-react';
 
 // --- ASSETS ---
 const IMAGE_MAIN = "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop";
@@ -102,11 +102,10 @@ export const VirtualTourDemo = () => {
         return () => unsubscribe();
     }, [videoOpacity, isLocked]);
 
-    const handleReplay = () => {
-        if (videoRef.current) {
-            videoRef.current.currentTime = 0;
-            videoRef.current.play();
-            setVideoFinished(false);
+    const handleWatchFullTour = () => {
+        const gallerySection = document.getElementById('tour-gallery');
+        if (gallerySection) {
+            gallerySection.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
@@ -124,7 +123,7 @@ export const VirtualTourDemo = () => {
 
     return (
         // A 300vh container creates the scroll space ("track")
-        <Box ref={containerRef} sx={{ height: '300vh', bgcolor: theme.palette.background.paper, position: 'relative' }}>
+        <Box id="virtual-tours" ref={containerRef} sx={{ height: '300vh', bgcolor: theme.palette.background.paper, position: 'relative' }}>
 
             {/* Sticky Viewport */}
             <Box sx={{
@@ -298,8 +297,8 @@ export const VirtualTourDemo = () => {
                                         <Button
                                             variant="contained"
                                             size="large"
-                                            startIcon={<RotateCcw />}
-                                            onClick={handleReplay}
+                                            startIcon={<Play />}
+                                            onClick={handleWatchFullTour}
                                             sx={{
                                                 bgcolor: 'white',
                                                 color: '#0f172a',

@@ -12,6 +12,7 @@ import VirtualStagingDemo from "src/features/landing/components/VirtualStagingDe
 import {SocialComingSoon} from "src/features/landing/components/SocialComingSoon";
 import VirtualTourDemo from "src/features/landing/components/VirtualTourDemo";
 import VirtualTourGallery from "src/features/landing/components/VirtualTourGallery";
+import {CallToAction} from "../components/CallToAction";
 
 export const LandingPage: React.FC = () => {
     const theme = useTheme();
@@ -34,6 +35,7 @@ export const LandingPage: React.FC = () => {
             <Testimonials/>
             <FaqSection/>
             <Pricing/>
+            <CallToAction/>
             <Footer/>
         </Box>
     );

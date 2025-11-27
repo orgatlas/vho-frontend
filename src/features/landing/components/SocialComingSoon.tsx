@@ -9,10 +9,13 @@ import {
     Paper,
     InputAdornment,
     useTheme,
-    alpha
+    alpha,
+    CircularProgress
 } from '@mui/material';
-import {motion} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import {Mail, User, CheckCircle2, Heart, MessageCircle, Share2, Sparkles, Zap} from 'lucide-react';
+import {socialSignup} from 'src/services/api';
+import {toast} from 'react-toastify';
 
 // --- ASSETS ---
 // Reusing the social image generated earlier for consistency
@@ -69,15 +72,23 @@ export const SocialComingSoon = () => {
     const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
     const [formData, setFormData] = useState({name: '', email: ''});
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name || !formData.email) return;
+        if (!formData.name || !formData.email) {
+            toast.error("Please fill in all fields");
+            return;
+        }
 
         setFormState('submitting');
-        // Simulate API call
-        setTimeout(() => {
+
+        try {
+            await socialSignup(formData.name, formData.email);
             setFormState('success');
-        }, 1500);
+        } catch (error) {
+            console.error("Signup error:", error);
+            // Error handling is already done in api.tsx interceptor mostly, but we reset state
+            setFormState('idle');
+        }
     };
 
     // Custom Input Style
@@ -112,7 +123,7 @@ export const SocialComingSoon = () => {
     };
 
     return (
-        <Box sx={{
+        <Box id="social-content" sx={{
             position: 'relative',
             py: 12,
             bgcolor: theme.palette.background.paper,
@@ -195,7 +206,11 @@ export const SocialComingSoon = () => {
                                     backdropFilter: 'blur(10px)',
                                     border: '1px solid rgba(255,255,255,0.1)',
                                     mb: 4,
-                                    boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+                                    boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+                                    minHeight: 350, // Fix height to prevent layout jump
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center'
                                 }}
                             >
                                 <Box sx={{display: 'flex', alignItems: 'center', gap: 2, mb: 3}}>
@@ -218,100 +233,121 @@ export const SocialComingSoon = () => {
                                     </Box>
                                 </Box>
 
-                                {formState === 'success' ? (
-                                    <motion.div
-                                        initial={{opacity: 0, scale: 0.9}}
-                                        animate={{opacity: 1, scale: 1}}
-                                        style={{textAlign: 'center', padding: '20px'}}
-                                    >
-                                        <CheckCircle2 size={56} color={theme.palette.secondary.light}
-                                                      style={{marginBottom: 16, margin: '0 auto'}}/>
-                                        <Typography variant="h5" fontWeight={700} color="white" gutterBottom>
-                                            You're on the list!
-                                        </Typography>
-                                        <Typography variant="body1" sx={{opacity: 0.8}}>
-                                            Keep an eye on your inbox. We'll notify you when your free credit is ready.
-                                        </Typography>
-                                    </motion.div>
-                                ) : (
-                                    <form onSubmit={handleSubmit}>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    fullWidth
-                                                    placeholder="Your Name"
-                                                    value={formData.name}
-                                                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                                    variant="filled"
-                                                    sx={inputStyle}
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                            <InputAdornment position="start">
-                                                                <User size={20}/>
-                                                            </InputAdornment>
-                                                        ),
-                                                    }}
-                                                />
+                                <AnimatePresence mode="wait">
+                                    {formState === 'success' ? (
+                                        <motion.div
+                                            key="success"
+                                            initial={{opacity: 0, scale: 0.9}}
+                                            animate={{opacity: 1, scale: 1}}
+                                            exit={{opacity: 0, scale: 0.9}}
+                                            style={{textAlign: 'center', padding: '20px'}}
+                                        >
+                                            <CheckCircle2 size={56} color={theme.palette.secondary.light}
+                                                          style={{marginBottom: 16, margin: '0 auto'}}/>
+                                            <Typography variant="h5" fontWeight={700} color="white" gutterBottom>
+                                                You're on the list!
+                                            </Typography>
+                                            <Typography variant="body1" sx={{opacity: 0.8}}>
+                                                Keep an eye on your inbox. We'll send you information on how to redeem your free video when 'Social Content' is ready.
+                                            </Typography>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.form
+                                            key="form"
+                                            initial={{opacity: 0}}
+                                            animate={{opacity: 1}}
+                                            exit={{opacity: 0}}
+                                            onSubmit={handleSubmit}
+                                        >
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={12} sm={6}>
+                                                    <TextField
+                                                        fullWidth
+                                                        placeholder="Your Name"
+                                                        value={formData.name}
+                                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                                        variant="filled"
+                                                        sx={inputStyle}
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                                <InputAdornment position="start">
+                                                                    <User size={20}/>
+                                                                </InputAdornment>
+                                                            ),
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6}>
+                                                    <TextField
+                                                        fullWidth
+                                                        placeholder="Email Address"
+                                                        value={formData.email}
+                                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                                        variant="filled"
+                                                        sx={inputStyle}
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                                <InputAdornment position="start">
+                                                                    <Mail size={20}/>
+                                                                </InputAdornment>
+                                                            ),
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <Button
+                                                        fullWidth
+                                                        component={motion.button}
+                                                        whileHover={{scale: 1.02}}
+                                                        whileTap={{scale: 0.98}}
+                                                        type="submit"
+                                                        variant="contained"
+                                                        disabled={formState === 'submitting'}
+                                                        sx={{
+                                                            background: `linear-gradient(135deg, ${theme.palette.secondary.light} 0%, ${theme.palette.primary.main} 100%)`,
+                                                            color: theme.palette.primary.dark,
+                                                            fontWeight: 800,
+                                                            py: 2,
+                                                            fontSize: '1rem',
+                                                            borderRadius: '16px',
+                                                            textTransform: 'none',
+                                                            boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.4)}`,
+                                                            border: '1px solid rgba(255,255,255,0.3)',
+                                                            transition: 'all 0.3s ease',
+                                                            '&:disabled': {
+                                                                background: `rgba(255,255,255,0.1)`,
+                                                                color: 'rgba(255,255,255,0.5)',
+                                                                boxShadow: 'none'
+                                                            },
+                                                            '&:hover': {
+                                                                background: `linear-gradient(135deg, ${theme.palette.secondary.light} 0%, ${theme.palette.primary.main} 80%)`,
+                                                                boxShadow: `0 12px 30px ${alpha(theme.palette.primary.main, 0.6)}`
+                                                            }
+                                                        }}
+                                                    >
+                                                        {formState === 'submitting' ? (
+                                                            <CircularProgress size={24} color="inherit"/>
+                                                        ) : (
+                                                            <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                                                                <Zap size={20} fill={theme.palette.primary.dark}/>
+                                                                Claim My Free Video
+                                                            </Box>
+                                                        )}
+                                                    </Button>
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    fullWidth
-                                                    placeholder="Email Address"
-                                                    value={formData.email}
-                                                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                                    variant="filled"
-                                                    sx={inputStyle}
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                            <InputAdornment position="start">
-                                                                <Mail size={20}/>
-                                                            </InputAdornment>
-                                                        ),
-                                                    }}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <Button
-                                                    fullWidth
-                                                    component={motion.button}
-                                                    whileHover={{scale: 1.02}}
-                                                    whileTap={{scale: 0.98}}
-                                                    type="submit"
-                                                    variant="contained"
-                                                    disabled={formState === 'submitting'}
-                                                    sx={{
-                                                        background: `linear-gradient(135deg, ${theme.palette.secondary.light} 0%, ${theme.palette.primary.main} 100%)`,
-                                                        color: theme.palette.primary.dark,
-                                                        fontWeight: 800,
-                                                        py: 2,
-                                                        fontSize: '1rem',
-                                                        borderRadius: '16px',
-                                                        textTransform: 'none',
-                                                        boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.4)}`,
-                                                        border: '1px solid rgba(255,255,255,0.3)',
-                                                        '&:hover': {
-                                                            background: `linear-gradient(135deg, ${theme.palette.secondary.light} 0%, ${theme.palette.primary.main} 80%)`,
-                                                            boxShadow: `0 12px 30px ${alpha(theme.palette.primary.main, 0.6)}`
-                                                        }
-                                                    }}
-                                                >
-                                                    {formState === 'submitting' ? (
-                                                        'Reserving Spot...'
-                                                    ) : (
-                                                        <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                                                            <Zap size={20} fill={theme.palette.primary.dark}/>
-                                                            Claim My Free Video
-                                                        </Box>
-                                                    )}
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                        <Typography variant="caption"
-                                                    sx={{display: 'block', mt: 2.5, textAlign: 'center', opacity: 0.5}}>
-                                            Limited to the first 100 signups.
-                                        </Typography>
-                                    </form>
-                                )}
+                                            <Typography variant="caption"
+                                                        sx={{
+                                                            display: 'block',
+                                                            mt: 2.5,
+                                                            textAlign: 'center',
+                                                            opacity: 0.5
+                                                        }}>
+                                                Limited to the first 100 signups.
+                                            </Typography>
+                                        </motion.form>
+                                    )}
+                                </AnimatePresence>
                             </Paper>
                         </motion.div>
                     </Grid>

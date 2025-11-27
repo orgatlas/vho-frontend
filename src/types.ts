@@ -202,3 +202,11 @@ export interface ChangeCardData {
     field2?: string;
 
 }
+
+export interface HomepageTourInfo {
+    address: string;
+    video_url: string;
+    preview_url: string;
+    agent: string;
+    company: string;
+}
