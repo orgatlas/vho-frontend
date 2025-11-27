@@ -393,6 +393,7 @@ export const SocialComingSoon = () => {
                                 <img
                                     src={PHONE_IMAGE}
                                     alt="Social Media Preview"
+                                    loading="lazy"
                                     style={{width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9}}
                                 />
 

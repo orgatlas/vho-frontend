@@ -276,9 +276,9 @@ export const VirtualStagingDemo = () => {
                                                         layoutId={`image-${room.id}`}
                                                         src={room.after}
                                                         alt={room.title}
+                                                        loading="lazy"
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                    />
-                                                    <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)' }} />
+                                                    />                                                    <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)' }} />
                                                 </Box>
 
                                                 {/* Content Overlay */}
@@ -403,9 +403,9 @@ export const VirtualStagingDemo = () => {
                                                             layoutId={`image-${room.id}`}
                                                             src={room.after}
                                                             alt={room.title}
+                                                            loading="lazy"
                                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                        />
-                                                    </Box>
+                                                        />                                                    </Box>
                                                     <Box sx={{ flexGrow: 1 }}>
                                                         <motion.h4 layoutId={`title-${room.id}`} style={{ margin: 0, fontSize: '1.2rem', color: theme.palette.text.primary }}>
                                                             {room.title}

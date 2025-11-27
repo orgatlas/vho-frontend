@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Loader2, ArrowRight } from 'lucide-react';
 import { Box, Typography, Paper, useTheme, alpha, SxProps, Theme, Popper } from '@mui/material';
 import { toast } from 'react-toastify';
+import { useDebounce } from 'src/hooks/useDebounce';
 
 interface AddressAutocompleteProps {
     onAddressSelect: (address: string) => void;
@@ -18,6 +19,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
 
     // State for autocomplete
     const [inputValue, setInputValue] = useState('');
+    const debouncedInputValue = useDebounce(inputValue, 300);
     const [options, setOptions] = useState<any[]>([]);
     const [isFocused, setIsFocused] = useState(false);
     const [autocompleteService, setAutocompleteService] = useState<any>(null);
@@ -69,19 +71,16 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
         }
     }, [isLoaded]);
 
-    // Handle Input Change & Fetch Predictions
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInputValue(value);
-
-        if (!value.trim()) {
+    // Fetch Predictions when debounced input changes
+    useEffect(() => {
+        if (!debouncedInputValue.trim()) {
             setOptions([]);
             return;
         }
 
         if (autocompleteService) {
             autocompleteService.getPlacePredictions(
-                { input: value, componentRestrictions: { country: 'au' } }, // Adjust country as needed
+                { input: debouncedInputValue, componentRestrictions: { country: 'au' } }, // Adjust country as needed
                 (predictions: any[], status: any) => {
                     if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && predictions) {
                         setOptions(predictions);
@@ -91,6 +90,11 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                 }
             );
         }
+    }, [debouncedInputValue, autocompleteService]);
+
+    // Handle Input Change
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(e.target.value);
     };
 
     const handleSelect = (description: string) => {

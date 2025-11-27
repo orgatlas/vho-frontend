@@ -273,6 +273,7 @@ export const VirtualTourDemo = () => {
                                 src={VIDEO_URL}
                                 muted
                                 playsInline
+                                preload="none"
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 onEnded={() => setVideoFinished(true)}
                             />

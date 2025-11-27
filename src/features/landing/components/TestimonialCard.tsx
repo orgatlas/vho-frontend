@@ -127,6 +127,7 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ data }) => {
                             <Avatar 
                                 src={data.image} 
                                 alt={data.name}
+                                imgProps={{ loading: 'lazy' }}
                                 sx={{ 
                                     width: 48, 
                                     height: 48,

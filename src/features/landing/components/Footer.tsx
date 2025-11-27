@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
                     <Grid container spacing={4} justifyContent="space-between" alignItems="center">
                         <Grid item xs={12} sm={4}>
                             <Box display="flex" alignItems="center" mb={{xs: 2, sm: 0}}>
-                                <img src={Logo} alt="Virtual Home Open Logo" style={{ height: 40, marginRight: 16, filter: 'brightness(0) invert(1)' }} />
+                                <img src={Logo} alt="Virtual Home Open Logo" loading="lazy" style={{ height: 40, marginRight: 16, filter: 'brightness(0) invert(1)' }} />
                                 <Typography variant="h6" component="h2" fontWeight="bold">
                                     Virtual Home Open
                                 </Typography>

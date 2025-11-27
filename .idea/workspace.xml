@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e81cb7f-3e71-42ff-b064-175dbd66bc07" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/AddressAutocomplete.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HeroSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/HowItWorksSection.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/landing/components/SocialComingSoon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/SocialComingSoon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/VirtualStagingDemo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/VirtualStagingDemo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/VirtualTourDemo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/VirtualTourDemo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/components/VirtualTourGallery.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/components/VirtualTourGallery.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/landing/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/api.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +167,7 @@
       <workItem from="1763016636849" duration="8199000" />
       <workItem from="1763194488807" duration="3961000" />
       <workItem from="1763989947411" duration="9408000" />
-      <workItem from="1764147085041" duration="40493000" />
+      <workItem from="1764147085041" duration="42312000" />
     </task>
     <servers />
   </component>
