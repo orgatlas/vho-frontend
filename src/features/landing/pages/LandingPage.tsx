@@ -1,21 +1,20 @@
 import React, {useEffect} from 'react';
 import {Box, useTheme, useMediaQuery} from '@mui/material';
 import {HeroSection} from '../components/HeroSection';
-import {TrustSection} from '../components/TrustSection';
 import {StatsSection} from '../components/StatsSection';
 import {HowItWorksSection} from '../components/HowItWorksSection';
-import {DemoSection} from '../components/DemoSection';
-import BeforeAfterSection from '../components/BeforeAfterSection';
 import {FaqSection} from 'src/features/landing/components/FaqSection';
 import {Footer} from '../components/Footer';
-import {PricingCalculator} from '../components/PricingCalculator';
+import {Pricing} from '../components/Pricing';
 import {Testimonials} from '../components/Testimonials';
 import {marketingViewHomepage} from "src/marketing/marketing_api";
 import VirtualStagingDemo from "src/features/landing/components/VirtualStagingDemo";
+import {SocialComingSoon} from "src/features/landing/components/SocialComingSoon";
+import VirtualTourDemo from "src/features/landing/components/VirtualTourDemo";
+import VirtualTourGallery from "src/features/landing/components/VirtualTourGallery";
 
 export const LandingPage: React.FC = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     useEffect(() => {
         if (process.env.REACT_APP_MARKETING === 'on') {
@@ -26,15 +25,15 @@ export const LandingPage: React.FC = () => {
     return (
         <Box>
             <HeroSection/>
-            {/*<TrustSection/>*/}
             <VirtualStagingDemo/>
-            <Testimonials/>
-            <BeforeAfterSection/>
+            <VirtualTourDemo/>
+            <VirtualTourGallery/>
+            <SocialComingSoon/>
             <HowItWorksSection/>
             <StatsSection/>
-            {/*<DemoSection/>*/}
+            <Testimonials/>
             <FaqSection/>
-            <PricingCalculator/>
+            <Pricing/>
             <Footer/>
         </Box>
     );

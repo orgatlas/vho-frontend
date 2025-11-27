@@ -72,7 +72,7 @@ export const HeroSection = () => {
         <Box
             sx={{
                 mt: '60px', // Header offset
-                backgroundColor: theme.palette.background.default, // text_light from original map
+                backgroundColor: theme.palette.background.default,
                 py: { xs: 6, md: 10, lg: 12 },
                 position: 'relative',
                 overflow: 'hidden',

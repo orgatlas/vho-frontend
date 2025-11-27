@@ -200,15 +200,15 @@ export const VirtualStagingDemo = () => {
     };
 
     return (
-        <Box sx={{ py: 12, bgcolor: '#f8fafc', overflow: 'hidden', minHeight: '800px' }}>
+        <Box sx={{ py: 12, bgcolor: 'theme.palette.background.default', overflow: 'hidden', minHeight: '800px' }}>
             <Container maxWidth="xl">
 
                 {/* Header - Always visible */}
                 <Box sx={{ mb: 6, maxWidth: 600 }}>
                     <Chip label="Interactive Gallery" sx={{ bgcolor: 'white', color: THEME.normal, fontWeight: 700, mb: 2 }} />
                     <Typography variant="h2" sx={{ color: THEME.text_dark, fontWeight: 800, mb: 2 }}>
-                        Virtual Staging <br/>
-                        <span style={{ color: THEME.normal }}>Showcase.</span>
+                        Virtual Staging
+                        <span style={{ color: THEME.normal }}> Showcase.</span>
                     </Typography>
                     <Typography variant="body1" sx={{ color: '#64748b' }}>
                         Explore our gallery of transformed spaces. Click any room to enter the interactive comparison tool.
