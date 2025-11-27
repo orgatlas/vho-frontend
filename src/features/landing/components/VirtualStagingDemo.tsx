@@ -56,6 +56,7 @@ const BeforeAfterContainer = styled(Box)({
     cursor: 'ew-resize',
     touchAction: 'none',
     borderRadius: '24px',
+    backgroundColor: '#f0f0f0',
 });
 
 const BeforeImage = styled('div')({
@@ -463,7 +464,6 @@ export const VirtualStagingDemo = () => {
                                     >
                                         <Box sx={{ flexGrow: 1, position: 'relative', minHeight: '400px' }}>
                                             <motion.div
-                                                layoutId={`image-${activeRoom.id}`}
                                                 style={{ width: '100%', height: '100%' }}
                                             >
                                                 <BeforeAfterSlider before={activeRoom.before} after={activeRoom.after} />

@@ -13,7 +13,7 @@ interface CounterProps {
 
 const Counter: React.FC<CounterProps> = ({ from, to, prefix = '', suffix = '' }) => {
   const nodeRef = useRef<HTMLSpanElement>(null);
-  const inView = useInView(nodeRef, { once: true, margin: "-50px" });
+  const inView = useInView(nodeRef, { once: true, margin: "0px" });
 
   useEffect(() => {
     const node = nodeRef.current;
@@ -30,7 +30,7 @@ const Counter: React.FC<CounterProps> = ({ from, to, prefix = '', suffix = '' })
     return () => controls.stop();
   }, [from, to, inView, prefix, suffix]);
 
-  return <span ref={nodeRef} />;
+  return <span ref={nodeRef}>{prefix}{from}{suffix}</span>;
 };
 
 // --- STAT CARD COMPONENT ---
