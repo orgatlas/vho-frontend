@@ -1,17 +1,7 @@
 import React from 'react';
-import { Box, Card, CardContent, Typography, Button, Container, Grid } from '@mui/material';
+import { Box, Card, CardContent, Typography, Button, Container, Grid, useTheme, alpha } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
-
-// --- THEME ---
-const THEME = {
-    light: '#c2f2ed',
-    normal: '#33998f',
-    dark: '#02645b',
-    text_dark: '#373e40',
-    text_light: '#f2f2f2',
-    paper: '#373e40'
-};
 
 const PRICING_PLANS = [
     {
@@ -80,8 +70,9 @@ const cardVariants = {
 };
 
 export const Pricing = () => {
+    const theme = useTheme();
     return (
-        <Box sx={{ py: { xs: 10, md: 16 }, bgcolor: '#f8fafc', overflow: 'hidden' }} id="pricing">
+        <Box sx={{ py: { xs: 10, md: 16 }, bgcolor: theme.palette.background.default, overflow: 'hidden' }} id="pricing">
             <Container maxWidth="lg">
 
                 {/* Header */}
@@ -92,11 +83,11 @@ export const Pricing = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <Typography variant="h2" sx={{ color: THEME.text_dark, fontWeight: 800, mb: 2 }}>
+                        <Typography variant="h2" sx={{ color: theme.palette.text.primary, fontWeight: 800, mb: 2 }}>
                             Pay per listing. <br/>
-                            <span style={{ color: THEME.normal }}>No hidden fees.</span>
+                            <span style={{ color: theme.palette.primary.main }}>No hidden fees.</span>
                         </Typography>
-                        <Typography variant="body1" sx={{ color: '#64748b', fontSize: '1.1rem' }}>
+                        <Typography variant="body1" sx={{ color: alpha(theme.palette.text.primary, 0.7), fontSize: '1.1rem' }}>
                             Choose the package that fits your property marketing needs. All plans include our satisfaction guarantee.
                         </Typography>
                     </motion.div>
@@ -122,7 +113,7 @@ export const Pricing = () => {
                                         sx={{
                                             width: '100%',
                                             borderRadius: '24px',
-                                            border: plan.highlight ? `2px solid ${THEME.normal}` : '1px solid #e2e8f0',
+                                            border: plan.highlight ? `2px solid ${theme.palette.primary.main}` : `1px solid ${alpha(theme.palette.text.primary, 0.1)}`,
                                             bgcolor: 'white',
                                             position: 'relative',
                                             display: 'flex',
@@ -139,7 +130,7 @@ export const Pricing = () => {
                                                     top: -16,
                                                     left: '50%',
                                                     transform: 'translateX(-50%)',
-                                                    bgcolor: THEME.dark,
+                                                    bgcolor: theme.palette.primary.dark,
                                                     color: 'white',
                                                     py: 0.5, px: 2,
                                                     borderRadius: '50px',
@@ -161,14 +152,14 @@ export const Pricing = () => {
 
                                             {/* Title & Price */}
                                             <Box sx={{ mb: 3, textAlign: 'center' }}>
-                                                <Typography variant="h5" fontWeight={800} gutterBottom color={THEME.text_dark}>
+                                                <Typography variant="h5" fontWeight={800} gutterBottom color={theme.palette.text.primary}>
                                                     {plan.title}
                                                 </Typography>
                                                 <Typography variant="body2" color="text.primary" sx={{ minHeight: '48px', mb: 2 }}>
                                                     {plan.description}
                                                 </Typography>
                                                 <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 0.5 }}>
-                                                    <Typography variant="h3" fontWeight={800} color={plan.highlight ? THEME.normal : THEME.text_dark}>
+                                                    <Typography variant="h3" fontWeight={800} color={plan.highlight ? theme.palette.primary.main : theme.palette.text.primary}>
                                                         {plan.price}
                                                     </Typography>
                                                     <Typography variant="subtitle2" color="text.primary">
@@ -188,15 +179,20 @@ export const Pricing = () => {
                                                             alignItems: 'flex-start',
                                                             gap: 1.5,
                                                             mb: 2,
-                                                            color: '#475569'
+                                                            color: alpha(theme.palette.text.primary, 0.8)
                                                         }}
                                                     >
                                                         <Box sx={{
-                                                            mt: 0.5,
+                                                            mt: 0.25,
                                                             p: 0.25,
                                                             borderRadius: '50%',
-                                                            bgcolor: plan.highlight ? THEME.light : '#f1f5f9',
-                                                            color: plan.highlight ? THEME.dark : '#94a3b8'
+                                                            width: 20,
+                                                            height: 20,
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                            bgcolor: plan.highlight ? theme.palette.secondary.light : alpha(theme.palette.background.default, 0.8),
+                                                            color: plan.highlight ? theme.palette.primary.dark : alpha(theme.palette.text.primary, 0.4)
                                                         }}>
                                                             <Check size={14} strokeWidth={3} />
                                                         </Box>
@@ -219,12 +215,12 @@ export const Pricing = () => {
                                                     fontWeight: 700,
                                                     fontSize: '1rem',
                                                     textTransform: 'none',
-                                                    bgcolor: plan.highlight ? THEME.normal : 'transparent',
-                                                    color: plan.highlight ? 'white' : THEME.text_dark,
-                                                    borderColor: plan.highlight ? 'transparent' : '#cbd5e1',
+                                                    bgcolor: plan.highlight ? theme.palette.primary.main : 'transparent',
+                                                    color: plan.highlight ? 'white' : theme.palette.text.primary,
+                                                    borderColor: plan.highlight ? 'transparent' : alpha(theme.palette.text.primary, 0.3),
                                                     '&:hover': {
-                                                        bgcolor: plan.highlight ? THEME.dark : '#f8fafc',
-                                                        borderColor: plan.highlight ? 'transparent' : THEME.normal,
+                                                        bgcolor: plan.highlight ? theme.palette.primary.dark : alpha(theme.palette.background.default, 0.5),
+                                                        borderColor: plan.highlight ? 'transparent' : theme.palette.primary.main,
                                                     }
                                                 }}
                                             >

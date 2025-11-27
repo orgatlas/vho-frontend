@@ -1,19 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, Button, Container, Grid, Paper, useTheme, useMediaQuery, Chip } from '@mui/material';
+import { Box, Typography, Button, Container, Grid, Paper, useTheme, Chip, alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { ArrowRight, Sparkles, MoveRight, ScanEye } from 'lucide-react';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
-
-// --- THEME CONSTANTS ---
-const THEME = {
-    light: '#c2f2ed',
-    normal: '#33998f',
-    dark: '#02645b',
-    text_dark: '#373e40',
-    text_light: '#f2f2f2',
-    paper: '#373e40'
-};
 
 // --- MOCK DATA ---
 const ROOMS = [
@@ -21,27 +11,36 @@ const ROOMS = [
         id: 'living',
         title: 'Living Room',
         subtitle: 'Modern Minimalist',
-        description: 'See how we transformed this cold, empty space into a cozy family hub.',
-        before: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1200&auto=format&fit=crop',
-        after: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop',
-        gridArea: { xs: 12, md: 8 } // Spans 8 cols in grid
+        description: 'See how we transformed this cold, empty space into a chic family hub.',
+        before: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/livingroom-before.jpeg',
+        after: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/livingroom-after.png',
+        gridArea: { xs: 12, md: 6 } // Spans 8 cols in grid
     },
     {
         id: 'bedroom',
-        title: 'Master Suite',
+        title: 'Bedroom',
         subtitle: 'Scandinavian Style',
-        description: 'Soft textures and warm lighting added to create the perfect retreat.',
-        before: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=1200&auto=format&fit=crop',
-        after: 'https://images.unsplash.com/photo-1595526051245-4506e0005bd0?q=80&w=1200&auto=format&fit=crop',
-        gridArea: { xs: 12, md: 4 } // Spans 4 cols in grid
+        description: 'Soft textures and designer touches added to create the perfect retreat.',
+        before: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/bedroom-before.jpeg',
+        after: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/bedroom-after.jpeg',
+        gridArea: { xs: 12, md: 2 } // Spans 4 cols in grid
     },
     {
         id: 'kitchen',
         title: 'Kitchen',
         subtitle: 'Warm & Inviting',
-        description: 'A modern chef\'s kitchen visualization that helps buyers imagine cooking here.',
-        before: 'https://images.unsplash.com/photo-1556912173-3db996e7c608?q=80&w=1200&auto=format&fit=crop',
-        after: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=1200&auto=format&fit=crop',
+        description: 'A modern entertainer\'s kitchen, visualise cooking here.',
+        before: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/kitchen-before.jpeg',
+        after: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/kitchen-after.png',
+        gridArea: { xs: 12, md: 4 } // Spans 4 cols in grid
+    },
+    {
+        id: 'bathroom',
+        title: 'Bathroom',
+        subtitle: 'Warm & Inviting',
+        description: 'Premium styled touches bring this bathroom to life.',
+        before: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/bathroom-before.jpg',
+        after: 'https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/staging/bathroom-after.png',
         gridArea: { xs: 12, md: 4 } // Spans 4 cols in grid
     }
 ];
@@ -67,7 +66,11 @@ const BeforeImage = styled('div')({
     backgroundPosition: 'center',
 });
 
-const AfterImage = styled('div')(({ clip }) => ({
+interface AfterImageProps {
+    clip: number;
+}
+
+const AfterImage = styled('div')<AfterImageProps>(({ clip }) => ({
     position: 'absolute',
     top: 0,
     left: 0,
@@ -78,7 +81,11 @@ const AfterImage = styled('div')(({ clip }) => ({
     clipPath: `polygon(0 0, ${clip}% 0, ${clip}% 100%, 0 100%)`,
 }));
 
-const ResizeHandle = styled('div')(({ left }) => ({
+interface ResizeHandleProps {
+    left: number;
+}
+
+const ResizeHandle = styled('div')<ResizeHandleProps>(({ theme, left }) => ({
     position: 'absolute',
     top: 0,
     left: `${left}%`,
@@ -97,7 +104,7 @@ const ResizeHandle = styled('div')(({ left }) => ({
         width: '48px',
         height: '48px',
         borderRadius: '50%',
-        backgroundColor: THEME.normal,
+        backgroundColor: theme.palette.primary.main,
         border: '4px solid white',
         display: 'flex',
         alignItems: 'center',
@@ -119,12 +126,18 @@ const HandleIconContainer = styled(Box)({
     pointerEvents: 'none'
 });
 
-const BeforeAfterSlider = ({ before, after }) => {
+interface BeforeAfterSliderProps {
+    before: string;
+    after: string;
+}
+
+const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({ before, after }) => {
     const [sliderValue, setSliderValue] = useState(50);
     const [isDragging, setIsDragging] = useState(false);
-    const containerRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const theme = useTheme();
 
-    const handleMove = (clientX) => {
+    const handleMove = (clientX: number) => {
         if (containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
             const x = clientX - rect.left;
@@ -148,7 +161,7 @@ const BeforeAfterSlider = ({ before, after }) => {
             <AfterImage style={{ backgroundImage: `url(${after})` }} clip={sliderValue} />
 
             <Box sx={{ position: 'absolute', top: 20, right: 20, bgcolor: 'rgba(0,0,0,0.6)', color: 'white', px: 2, py: 0.5, borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600, zIndex: 5 }}>BEFORE</Box>
-            <Box sx={{ position: 'absolute', top: 20, left: 20, bgcolor: THEME.normal, color: 'white', px: 2, py: 0.5, borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600, zIndex: 5 }}>AFTER</Box>
+            <Box sx={{ position: 'absolute', top: 20, left: 20, bgcolor: theme.palette.primary.main, color: 'white', px: 2, py: 0.5, borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600, zIndex: 5 }}>AFTER</Box>
 
             <ResizeHandle left={sliderValue}>
                 <HandleIconContainer>
@@ -162,16 +175,16 @@ const BeforeAfterSlider = ({ before, after }) => {
 
 // --- MAIN COMPONENT ---
 export const VirtualStagingDemo = () => {
-    const [viewState, setViewState] = useState('grid'); // 'grid' | 'split'
+    const [viewState, setViewState] = useState<'grid' | 'split'>('grid');
     const [selectedId, setSelectedId] = useState(ROOMS[0].id);
     const theme = useTheme();
 
-    const handleRoomClick = (id) => {
+    const handleRoomClick = (id: string) => {
         setSelectedId(id);
         setViewState('split');
     };
 
-    const activeRoom = ROOMS.find(r => r.id === selectedId);
+    const activeRoom = ROOMS.find(r => r.id === selectedId) || ROOMS[0];
     const inactiveRooms = ROOMS.filter(r => r.id !== selectedId);
 
     // Animation Variants
@@ -200,17 +213,17 @@ export const VirtualStagingDemo = () => {
     };
 
     return (
-        <Box sx={{ py: 12, bgcolor: 'theme.palette.background.default', overflow: 'hidden', minHeight: '800px' }}>
+        <Box sx={{ py: 12, bgcolor: theme.palette.background.default, overflow: 'hidden', minHeight: '800px' }}>
             <Container maxWidth="xl">
 
                 {/* Header - Always visible */}
                 <Box sx={{ mb: 6, maxWidth: 600 }}>
-                    <Chip label="Interactive Gallery" sx={{ bgcolor: 'white', color: THEME.normal, fontWeight: 700, mb: 2 }} />
-                    <Typography variant="h2" sx={{ color: THEME.text_dark, fontWeight: 800, mb: 2 }}>
+                    <Chip label="Interactive Gallery" sx={{ bgcolor: 'white', color: theme.palette.primary.main, fontWeight: 700, mb: 2 }} />
+                    <Typography variant="h2" sx={{ color: theme.palette.text.primary, fontWeight: 800, mb: 2 }}>
                         Virtual Staging
-                        <span style={{ color: THEME.normal }}> Showcase.</span>
+                        <span style={{ color: theme.palette.primary.main }}> Showcase.</span>
                     </Typography>
-                    <Typography variant="body1" sx={{ color: '#64748b' }}>
+                    <Typography variant="body1" sx={{ color: alpha(theme.palette.text.primary, 0.7) }}>
                         Explore our gallery of transformed spaces. Click any room to enter the interactive comparison tool.
                     </Typography>
                 </Box>
@@ -228,7 +241,7 @@ export const VirtualStagingDemo = () => {
                             <Grid container spacing={3}>
                                 {/* Map through rooms with custom grid spans */}
                                 {ROOMS.map((room) => (
-                                    <Grid item xs={room.gridArea.xs} md={room.gridArea.md} key={room.id}>
+                                    <Grid item xs={room.gridArea.xs as any} md={room.gridArea.md as any} key={room.id}>
                                         <motion.div
                                             variants={itemVariants}
                                             layoutId={`card-${room.id}`}
@@ -266,11 +279,6 @@ export const VirtualStagingDemo = () => {
                                                     <motion.div layoutId={`content-${room.id}`}>
                                                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                                                             <Box>
-                                                                <Chip
-                                                                    label={room.subtitle}
-                                                                    size="small"
-                                                                    sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white', backdropFilter: 'blur(4px)', mb: 1.5 }}
-                                                                />
                                                                 <motion.h3
                                                                     layoutId={`title-${room.id}`}
                                                                     style={{ margin: 0, color: 'white', fontSize: '2rem', fontWeight: 700 }}
@@ -287,7 +295,7 @@ export const VirtualStagingDemo = () => {
                                                                     display: 'flex',
                                                                     alignItems: 'center',
                                                                     justifyContent: 'center',
-                                                                    color: THEME.normal
+                                                                    color: theme.palette.primary.main
                                                                 }}
                                                             >
                                                                 <ScanEye size={24} />
@@ -309,7 +317,7 @@ export const VirtualStagingDemo = () => {
                                                 height: '100%',
                                                 minHeight: '200px',
                                                 borderRadius: '32px',
-                                                bgcolor: THEME.dark,
+                                                bgcolor: theme.palette.primary.dark,
                                                 p: 5,
                                                 display: 'flex',
                                                 flexDirection: { xs: 'column', md: 'row' },
@@ -336,11 +344,11 @@ export const VirtualStagingDemo = () => {
                                                 size="large"
                                                 sx={{
                                                     bgcolor: 'white',
-                                                    color: THEME.dark,
+                                                    color: theme.palette.primary.dark,
                                                     fontWeight: 700,
                                                     px: 4, py: 1.5, borderRadius: '12px',
                                                     mt: { xs: 3, md: 0 },
-                                                    '&:hover': { bgcolor: THEME.light }
+                                                    '&:hover': { bgcolor: theme.palette.secondary.light }
                                                 }}
                                             >
                                                 Get Started Free
@@ -360,7 +368,7 @@ export const VirtualStagingDemo = () => {
                                     <Button
                                         startIcon={<ArrowBackIos size={14} />}
                                         onClick={() => setViewState('grid')}
-                                        sx={{ color: '#64748b', textTransform: 'none', fontWeight: 600 }}
+                                        sx={{ color: alpha(theme.palette.text.primary, 0.7), textTransform: 'none', fontWeight: 600 }}
                                     >
                                         Back to Gallery
                                     </Button>
@@ -386,7 +394,7 @@ export const VirtualStagingDemo = () => {
                                                         alignItems: 'center',
                                                         gap: 2,
                                                         transition: 'all 0.2s',
-                                                        '&:hover': { bgcolor: '#f1f5f9', transform: 'scale(1.02)' }
+                                                        '&:hover': { bgcolor: alpha(theme.palette.background.default, 0.5), transform: 'scale(1.02)' }
                                                     }}
                                                 >
                                                     <Box sx={{ width: 60, height: 60, borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
@@ -398,14 +406,11 @@ export const VirtualStagingDemo = () => {
                                                         />
                                                     </Box>
                                                     <Box sx={{ flexGrow: 1 }}>
-                                                        <motion.h4 layoutId={`title-${room.id}`} style={{ margin: 0, fontSize: '1rem', color: THEME.text_dark }}>
+                                                        <motion.h4 layoutId={`title-${room.id}`} style={{ margin: 0, fontSize: '1.2rem', color: theme.palette.text.primary }}>
                                                             {room.title}
                                                         </motion.h4>
-                                                        <Typography variant="caption" color="text.secondary" noWrap>
-                                                            {room.subtitle}
-                                                        </Typography>
                                                     </Box>
-                                                    <MoveRight size={16} color={THEME.normal} />
+                                                    <MoveRight size={16} color={theme.palette.primary.main} />
                                                 </Paper>
                                             </motion.div>
                                         ))}
@@ -418,7 +423,7 @@ export const VirtualStagingDemo = () => {
                                     sx={{
                                         p: 3,
                                         borderRadius: '20px',
-                                        bgcolor: THEME.normal,
+                                        bgcolor: theme.palette.primary.main,
                                         color: 'white',
                                         textAlign: 'center'
                                     }}
@@ -428,7 +433,7 @@ export const VirtualStagingDemo = () => {
                                     <Button
                                         variant="contained"
                                         fullWidth
-                                        sx={{ mt: 2, bgcolor: 'white', color: THEME.normal, fontWeight: 'bold', '&:hover': { bgcolor: '#f0fdfa' } }}
+                                        sx={{ mt: 2, bgcolor: 'white', color: theme.palette.primary.main, fontWeight: 'bold', '&:hover': { bgcolor: '#f0fdfa' } }}
                                     >
                                         Upload Photo
                                     </Button>
@@ -436,7 +441,7 @@ export const VirtualStagingDemo = () => {
                             </Grid>
 
                             {/* RIGHT ACTIVE CARD */}
-                            <Grid item xs={12} md={8} sx={{ height: '100%' }}>
+                            <Grid item xs={12} md={8} sx={{ height: '100%', }}>
                                 <motion.div
                                     key={activeRoom.id}
                                     layoutId={`card-${activeRoom.id}`}
@@ -468,18 +473,18 @@ export const VirtualStagingDemo = () => {
                                             <motion.div layoutId={`content-${activeRoom.id}`}>
                                                 <Grid container alignItems="center">
                                                     <Grid item xs={12} md={8}>
-                                                        <motion.h2 layoutId={`title-${activeRoom.id}`} style={{ margin: 0, fontSize: '2rem', fontWeight: 800, color: THEME.text_dark }}>
+                                                        <motion.h2 layoutId={`title-${activeRoom.id}`} style={{ margin: 0, fontSize: '2rem', fontWeight: 800, color: theme.palette.text.primary }}>
                                                             {activeRoom.title}
                                                         </motion.h2>
-                                                        <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+                                                        <Typography variant="body1" color="text.primary" sx={{ mt: 1 }}>
                                                             {activeRoom.description}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xs={12} md={4} sx={{ textAlign: 'right', mt: { xs: 2, md: 0 } }}>
-                                                        <Button variant="outlined" size="large" sx={{ borderRadius: '50px', borderColor: THEME.normal, color: THEME.normal }}>
-                                                            View Details
-                                                        </Button>
-                                                    </Grid>
+                                                    {/*<Grid item xs={12} md={4} sx={{ textAlign: 'right', mt: { xs: 2, md: 0 } }}>*/}
+                                                    {/*    <Button variant="outlined" size="large" sx={{ borderRadius: '50px', borderColor: theme.palette.primary.main, color: theme.palette.primary.main }}>*/}
+                                                    {/*        View Details*/}
+                                                    {/*    </Button>*/}
+                                                    {/*</Grid>*/}
                                                 </Grid>
                                             </motion.div>
                                         </Box>

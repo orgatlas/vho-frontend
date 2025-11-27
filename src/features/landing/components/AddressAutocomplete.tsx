@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Loader2, ArrowRight } from 'lucide-react';
-import { Box, Typography, Paper, useTheme } from '@mui/material';
+import { Box, Typography, Paper, useTheme, alpha } from '@mui/material';
 import { toast } from 'react-toastify';
 
 interface AddressAutocompleteProps {
@@ -96,7 +96,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
 
     if (!isLoaded) {
         return (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: 'rgba(255,255,255,0.5)', borderRadius: '50px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: alpha(theme.palette.background.default, 0.5), borderRadius: '50px' }}>
                 <Loader2 className="animate-spin text-slate-500" />
                 <Typography variant="body2" color="text.secondary">Loading maps...</Typography>
             </Box>
@@ -116,7 +116,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                     component={motion.div}
                     animate={{
                         boxShadow: isFocused
-                            ? `0 20px 40px -10px ${theme.palette.primary.main}40`
+                            ? `0 20px 40px -10px ${alpha(theme.palette.primary.main, 0.25)}`
                             : '0 10px 30px -10px rgba(0,0,0,0.1)',
                         borderColor: isFocused ? theme.palette.primary.main : 'transparent'
                     }}
@@ -125,7 +125,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                         alignItems: 'center',
                         p: '8px',
                         borderRadius: '50px',
-                        bgcolor: 'rgba(255, 255, 255, 0.95)',
+                        bgcolor: alpha(theme.palette.background.default, 0.95),
                         backdropFilter: 'blur(10px)',
                         border: '2px solid transparent',
                         transition: 'all 0.3s ease',
@@ -170,7 +170,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                                 outline: 'none',
                                 background: 'transparent',
                                 fontSize: '1.1rem',
-                                color: '#333', // Hardcoded dark for input text readability on white
+                                color: theme.palette.text.primary,
                                 padding: '12px 0',
                                 fontWeight: 500
                             }}
@@ -194,7 +194,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                             gap: '8px',
                             fontWeight: 600,
                             fontSize: '1rem',
-                            boxShadow: `0 4px 15px ${theme.palette.primary.main}60`
+                            boxShadow: `0 4px 15px ${alpha(theme.palette.primary.main, 0.4)}`
                         }}
                     >
                         <span>Create</span>
@@ -217,7 +217,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                             top: '100%',
                             left: '20px',
                             right: '20px',
-                            bgcolor: 'white',
+                            bgcolor: theme.palette.background.default,
                             borderRadius: '20px',
                             overflow: 'hidden',
                             zIndex: 100,
@@ -237,19 +237,19 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({ onAddressSele
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '12px',
-                                        borderBottom: index !== options.length - 1 ? '1px solid #f0f0f0' : 'none'
+                                        borderBottom: index !== options.length - 1 ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none'
                                     }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8fafc'}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = alpha(theme.palette.action.hover, 0.05)}
+                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                 >
-                                    <Box sx={{ p: 1, bgcolor: theme.palette.secondary.light, borderRadius: '50%', color: theme.palette.primary.dark }}>
+                                    <Box sx={{ p: 1,  borderRadius: '50%', color: theme.palette.primary.dark }}>
                                         <MapPin size={14} />
                                     </Box>
                                     <Box>
-                                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#333' }}>
+                                        <Typography variant="body2" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
                                             {option.structured_formatting.main_text}
                                         </Typography>
-                                        <Typography variant="caption" sx={{ color: '#888' }}>
+                                        <Typography variant="caption" sx={{ color: alpha(theme.palette.text.primary, 0.6) }}>
                                             {option.structured_formatting.secondary_text}
                                         </Typography>
                                     </Box>

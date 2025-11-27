@@ -69,13 +69,13 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ data }) => {
                         p: 4,
                         borderRadius: '20px',
                         backgroundColor: theme.palette.background.paper,
-                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)', // Softer shadow than hero
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
                         border: `1px solid ${theme.palette.divider}`,
                         display: 'flex',
                         flexDirection: 'column',
                         position: 'relative',
                         overflow: 'hidden',
-                        transform: 'translateZ(0)', // Fix for Safari
+                        transform: 'translateZ(0)',
                     }}
                 >
                     {/* Decorative Gradient Overlay */}
@@ -97,7 +97,7 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ data }) => {
                             top: 20,
                             right: 20,
                             opacity: 0.05,
-                            color: theme.palette.text.primary,
+                            color: theme.palette.text.secondary, // Fixed: Use light text for contrast
                             transform: 'rotate(10deg)',
                             pointerEvents: 'none',
                         }}
@@ -116,7 +116,7 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ data }) => {
                                     fontSize: '1.1rem',
                                     lineHeight: 1.6,
                                     fontStyle: 'italic',
-                                    color: theme.palette.text.secondary, // Light text on dark paper (if paper is dark) or vice versa
+                                    color: theme.palette.text.secondary,
                                 }}
                             >
                                 "{data.quote}"
@@ -137,10 +137,10 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ data }) => {
                                 {data.name.charAt(0)}
                             </Avatar>
                             <Box>
-                                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
+                                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: theme.palette.text.secondary }}> {/* Fixed: Light color */}
                                     {data.name}
                                 </Typography>
-                                <Typography variant="caption" sx={{ color: theme.palette.primary.light, fontWeight: 500 }}>
+                                <Typography variant="caption" sx={{ color: theme.palette.primary.main, fontWeight: 500 }}>
                                     {data.role}
                                 </Typography>
                             </Box>

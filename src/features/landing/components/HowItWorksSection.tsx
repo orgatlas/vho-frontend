@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Typography, Container, Grid, Paper, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Typography, Container, Grid, Paper, useTheme, useMediaQuery, alpha } from '@mui/material';
 import { motion } from 'framer-motion';
-import { MapPin, UploadCloud, Wand2, SlidersHorizontal, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { MapPin, UploadCloud, Wand2, SlidersHorizontal } from 'lucide-react';
 
 const STEPS = [
     {
@@ -60,7 +60,7 @@ export const HowItWorksSection = () => {
     };
 
     return (
-        <Box sx={{ py: { xs: 8, md: 16 }, bgcolor: 'white', position: 'relative', overflow: 'hidden' }}>
+        <Box sx={{ py: { xs: 8, md: 16 }, bgcolor: 'background.default', position: 'relative', overflow: 'hidden' }}>
             <Container maxWidth="lg">
 
                 {/* Header */}
@@ -73,7 +73,7 @@ export const HowItWorksSection = () => {
                     >
                         <Typography variant="h2" sx={{ color: 'text.primary', fontWeight: 800, mb: 2 }}>
                             From listing to launch in <br/>
-                            <span style={{ color: 'primary.main' }}>three simple steps.</span>
+                            <span style={{ color: theme.palette.primary.main }}>three simple steps.</span>
                         </Typography>
                         <Typography variant="body1" sx={{ color: 'text.primary', fontSize: '1.1rem' }}>
                             We've stripped away the complexity. You don't need even need to leave the office.
@@ -118,7 +118,7 @@ export const HowItWorksSection = () => {
                             // Horizontal Curve for Desktop
                             <motion.path
                                 d="M150 100 C 400 100, 400 100, 600 100 S 800 100, 1050 100"
-                                stroke={theme.palette.primary.light}
+                                stroke={theme.palette.secondary.light}
                                 strokeWidth="4"
                                 strokeDasharray="12 12"
                                 variants={lineVariants}
@@ -146,14 +146,14 @@ export const HowItWorksSection = () => {
                                             borderRadius: '24px',
                                             bgcolor: 'white',
                                             border: '1px solid',
-                                            borderColor: step.highlight ? theme.palette.primary.main : 'grey.200',
+                                            borderColor: step.highlight ? theme.palette.primary.main : alpha(theme.palette.text.primary, 0.1),
                                             textAlign: 'center',
                                             position: 'relative',
                                             transition: 'all 0.3s ease',
-                                            boxShadow: step.highlight ? `0 20px 40px ${theme.palette.primary.light}80` : 'none',
+                                            boxShadow: step.highlight ? `0 20px 40px ${alpha(theme.palette.primary.main, 0.2)}` : 'none',
                                             '&:hover': {
                                                 transform: 'translateY(-5px)',
-                                                boxShadow: `0 20px 40px ${theme.palette.primary.light}`
+                                                boxShadow: `0 20px 40px ${alpha(theme.palette.primary.main, 0.2)}`
                                             }
                                         }}
                                     >
@@ -172,7 +172,7 @@ export const HowItWorksSection = () => {
                                             <Box sx={{
                                                 width: 40, height: 40,
                                                 borderRadius: '50%',
-                                                bgcolor: step.highlight ? theme.palette.primary.dark : theme.palette.primary.light,
+                                                bgcolor: step.highlight ? theme.palette.primary.dark : theme.palette.secondary.light,
                                                 color: step.highlight ? 'white' : theme.palette.primary.dark,
                                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                 fontWeight: 800,
@@ -191,7 +191,7 @@ export const HowItWorksSection = () => {
                                                 p: 2,
                                                 borderRadius: '20px',
                                                 bgcolor: step.highlight ? theme.palette.primary.dark : theme.palette.primary.main,
-                                                color: 'text.secondary'
+                                                color: theme.palette.secondary.light
                                             }}
                                         >
                                             <step.icon size={32} strokeWidth={1.5} />
@@ -211,7 +211,7 @@ export const HowItWorksSection = () => {
                                                 sx={{
                                                     mt: 3,
                                                     pt: 3,
-                                                    borderTop: `1px dashed ${theme.palette.primary.light}`,
+                                                    borderTop: `1px dashed ${theme.palette.secondary.light}`,
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',

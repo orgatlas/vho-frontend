@@ -1,17 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, Container, Chip, useTheme, useMediaQuery, IconButton } from '@mui/material';
+import { Box, Typography, Container, Chip, useTheme, useMediaQuery, IconButton, alpha } from '@mui/material';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { MapPin, Play, X, ArrowRight } from 'lucide-react';
-
-// --- THEME ---
-const THEME = {
-    light: '#c2f2ed',
-    normal: '#33998f',
-    dark: '#02645b',
-    text_dark: '#373e40',
-    text_light: '#f2f2f2',
-    paper: '#373e40'
-};
 
 // --- MOCK DATA ---
 const VIDEO_URL = "https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/examples.mp4";
@@ -58,33 +48,37 @@ const TOURS = [
 const INFINITE_TOURS = [...TOURS, ...TOURS, ...TOURS];
 
 // --- HELPER: AURORA GLOW ---
-const AuroraGlow = () => (
-    <Box
-        sx={{
-            position: 'absolute',
-            inset: -20,
-            zIndex: -1,
-            filter: 'blur(30px)',
-            opacity: 0.6,
-            borderRadius: '40px',
-            pointerEvents: 'none',
-        }}
-    >
-        <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            style={{
-                width: '100%', height: '100%',
-                background: `conic-gradient(from 0deg, ${THEME.normal}, ${THEME.light}, #818cf8, ${THEME.dark}, ${THEME.normal})`
+const AuroraGlow = () => {
+    const theme = useTheme();
+    return (
+        <Box
+            sx={{
+                position: 'absolute',
+                inset: -20,
+                zIndex: -1,
+                filter: 'blur(30px)',
+                opacity: 0.6,
+                borderRadius: '40px',
+                pointerEvents: 'none',
             }}
-        />
-    </Box>
-);
+        >
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                style={{
+                    width: '100%', height: '100%',
+                    background: `conic-gradient(from 0deg, ${theme.palette.primary.main}, ${theme.palette.secondary.light}, #818cf8, ${theme.palette.primary.dark}, ${theme.palette.primary.main})`
+                }}
+            />
+        </Box>
+    );
+};
 
 // --- COMPONENT: DESKTOP TOUR CARD ---
-const DesktopTourCard = ({ tour, onExpand, onHoverChange }) => {
+const DesktopTourCard = ({ tour, onExpand, onHoverChange }: { tour: any, onExpand: (t: any) => void, onHoverChange: (h: boolean) => void }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const videoRef = useRef(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const theme = useTheme();
 
     // --- TILT LOGIC (Subtle) ---
     const x = useMotionValue(0);
@@ -97,7 +91,7 @@ const DesktopTourCard = ({ tour, onExpand, onHoverChange }) => {
     const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["3deg", "-3deg"]);
     const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-3deg", "3deg"]);
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: React.MouseEvent) => {
         if (!isHovered) return;
         const rect = e.currentTarget.getBoundingClientRect();
         const width = rect.width;
@@ -210,7 +204,7 @@ const DesktopTourCard = ({ tour, onExpand, onHoverChange }) => {
                         <Typography variant="h6" fontWeight={800} color="white" noWrap>
                             {tour.title}
                         </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: THEME.light, mt: 0.5 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: theme.palette.secondary.light, mt: 0.5 }}>
                             <MapPin size={14} />
                             <Typography variant="caption" fontWeight={600}>{tour.location}</Typography>
                         </Box>
@@ -220,7 +214,10 @@ const DesktopTourCard = ({ tour, onExpand, onHoverChange }) => {
                         animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
                         style={{ position: 'absolute', top: '50%', left: '50%', x: '-50%', y: '-50%' }}
                     >
-                        <Box sx={{ p: 2, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', border: `1px solid ${THEME.normal}` }}>
+                        <Box sx={{ p: 2,display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '50%', borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', border: `1px solid ${theme.palette.primary.main}` }}>
                             <Play fill="white" size={24} color="white" />
                         </Box>
                     </motion.div>
@@ -231,7 +228,8 @@ const DesktopTourCard = ({ tour, onExpand, onHoverChange }) => {
 };
 
 // --- COMPONENT: MOBILE TOUR CARD ---
-const MobileTourCard = ({ tour, onExpand }) => {
+const MobileTourCard = ({ tour, onExpand }: { tour: any, onExpand: (t: any) => void }) => {
+    const theme = useTheme();
     return (
         <Box
             onClick={() => onExpand(tour)}
@@ -266,7 +264,7 @@ const MobileTourCard = ({ tour, onExpand }) => {
                 <Typography variant="h5" fontWeight={800} color="white">
                     {tour.title}
                 </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: THEME.light, mt: 0.5, mb: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: theme.palette.secondary.light, mt: 0.5, mb: 2 }}>
                     <MapPin size={16} />
                     <Typography variant="body2" fontWeight={600}>{tour.location}</Typography>
                 </Box>
@@ -282,22 +280,22 @@ const MobileTourCard = ({ tour, onExpand }) => {
 
 // --- MAIN GALLERY COMPONENT ---
 export const VirtualTourGallery = () => {
-    const [expandedTour, setExpandedTour] = useState(null);
+    const [expandedTour, setExpandedTour] = useState<any | null>(null);
     const [isMarqueePaused, setIsMarqueePaused] = useState(false);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <Box sx={{ bgcolor: 'theme.background.default', py: 12, overflow: 'hidden', position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <Box sx={{ bgcolor: theme.palette.background.default, py: 12, overflow: 'hidden', position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
             <Container maxWidth="lg" sx={{textAlign: 'center', mb: {xs: 4, md: 8}, position: 'relative', zIndex: 10}}>
-                <Typography variant="h2" sx={{color: 'text.primary', fontWeight: 800, mb: 2, display:'inline-flex'}}>
+                <Typography variant="h2" sx={{color: theme.palette.text.primary, fontWeight: 800, mb: 2, display:'inline-flex'}}>
                     Properties We've Brought to&nbsp;
                 </Typography>
-                <Typography variant="h2" sx={{color: 'primary.main', fontWeight: 800, mb: 2, display:'inline-flex'}}>
+                <Typography variant="h2" sx={{color: theme.palette.primary.main, fontWeight: 800, mb: 2, display:'inline-flex'}}>
                      Life.
                 </Typography>
-                <Typography variant="body1" sx={{color: 'text.primary'}}>
+                <Typography variant="body1" sx={{color: theme.palette.text.primary}}>
                     {isMobile ? "Swipe to explore our latest tours." : "Hover to preview. Click to step inside."}
                 </Typography>
             </Container>
@@ -384,7 +382,7 @@ export const VirtualTourGallery = () => {
                                 width: '100%', maxWidth: '1200px', aspectRatio: '16/9',
                                 position: 'relative', backgroundColor: 'black',
                                 borderRadius: isMobile ? 0 : '24px', overflow: 'hidden',
-                                boxShadow: `0 0 100px ${THEME.normal}40`
+                                boxShadow: `0 0 100px ${alpha(theme.palette.primary.main, 0.4)}`
                             }}
                         >
                             <video

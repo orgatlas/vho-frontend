@@ -93,7 +93,7 @@ export const Testimonials: React.FC = () => {
                                 fontSize: { xs: '2rem', md: '3rem' }
                             }}
                         >
-                            Loved by <Box component="span" sx={{ color: theme.palette.primary.main }}>Pros</Box> & Owners.
+                            <Box component="span" sx={{ color: theme.palette.error.main }}>Loved</Box> by Agents & Owners.
                         </Typography>
                         <Typography
                             variant="body1"

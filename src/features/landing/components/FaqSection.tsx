@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Typography,
@@ -7,22 +7,12 @@ import {
     AccordionSummary,
     AccordionDetails,
     useTheme,
-    Grid
+    Grid,
+    alpha
 } from '@mui/material';
-import {motion, AnimatePresence} from 'framer-motion';
-import {Plus, Minus, HelpCircle} from 'lucide-react';
-import {Link} from "react-router-dom";
-
-// --- THEME ---
-// (Using the theme provided in previous context for consistency)
-const THEME = {
-    light: '#c2f2ed',
-    normal: '#33998f',
-    dark: '#02645b',
-    text_dark: '#373e40',
-    text_light: '#f2f2f2',
-    paper: '#373e40'
-};
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Minus, HelpCircle } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 const FAQS = [
     {
@@ -52,18 +42,19 @@ const FAQS = [
 ];
 
 export const FaqSection = () => {
+    const theme = useTheme();
     const [expanded, setExpanded] = useState('panel0'); // Open first one by default
 
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
+    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : '');
     };
 
     return (
         <Box
             id="faq"
             sx={{
-                py: {xs: 8, md: 16},
-                backgroundColor: '#f8fafc', // Very light grey background
+                py: { xs: 8, md: 16 },
+                backgroundColor: theme.palette.background.default,
                 position: 'relative',
                 overflow: 'hidden',
             }}
@@ -75,15 +66,15 @@ export const FaqSection = () => {
                     y: [0, -30, 0],
                     rotate: [0, -5, 0]
                 }}
-                transition={{duration: 12, repeat: Infinity, ease: "easeInOut"}}
+                transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
                 sx={{
                     position: 'absolute',
                     top: '10%',
                     left: -100,
-                    width: {xs: 300, md: 500},
-                    height: {xs: 300, md: 500},
+                    width: { xs: 300, md: 500 },
+                    height: { xs: 300, md: 500 },
                     borderRadius: '50%',
-                    background: `radial-gradient(circle, ${THEME.light} 0%, transparent 70%)`,
+                    background: `radial-gradient(circle, ${theme.palette.secondary.light} 0%, transparent 70%)`,
                     opacity: 0.6,
                     pointerEvents: 'none',
                     zIndex: 0
@@ -95,35 +86,35 @@ export const FaqSection = () => {
                     y: [0, 40, 0],
                     rotate: [0, 10, 0]
                 }}
-                transition={{duration: 15, repeat: Infinity, ease: "easeInOut"}}
+                transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
                 sx={{
                     position: 'absolute',
                     bottom: -100,
                     right: -100,
-                    width: {xs: 400, md: 600},
-                    height: {xs: 400, md: 600},
+                    width: { xs: 400, md: 600 },
+                    height: { xs: 400, md: 600 },
                     borderRadius: '50%',
-                    background: `radial-gradient(circle, ${THEME.normal}10 0%, transparent 70%)`,
+                    background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 70%)`,
                     opacity: 0.3,
                     pointerEvents: 'none',
                     zIndex: 0
                 }}
             />
 
-            <Container maxWidth="lg" sx={{position: 'relative', zIndex: 1}}>
-                <Grid container spacing={{xs: 6, md: 10}}>
+            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+                <Grid container spacing={{ xs: 6, md: 10 }}>
 
                     {/* Left Column: Sticky Header */}
                     <Grid item xs={12} md={4}>
-                        <Box sx={{position: {md: 'sticky'}, top: 120}}>
+                        <Box sx={{ position: { md: 'sticky' }, top: 120 }}>
                             <motion.div
-                                initial={{opacity: 0, x: -20}}
-                                whileInView={{opacity: 1, x: 0}}
-                                viewport={{once: true}}
-                                transition={{duration: 0.6}}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
                             >
                                 <Typography variant="overline" sx={{
-                                    color: THEME.normal,
+                                    color: theme.palette.primary.main,
                                     fontWeight: 800,
                                     letterSpacing: 1.5,
                                     mb: 1,
@@ -135,19 +126,19 @@ export const FaqSection = () => {
                                     variant="h2"
                                     sx={{
                                         fontWeight: 800,
-                                        color: THEME.text_dark,
+                                        color: theme.palette.text.primary,
                                         mb: 2,
-                                        fontSize: {xs: '2rem', md: '2.5rem'},
+                                        fontSize: { xs: '2rem', md: '2.5rem' },
                                         lineHeight: 1.1
                                     }}
                                 >
-                                    Frequently Asked <br/>
-                                    <Box component="span" sx={{color: THEME.normal}}>Questions.</Box>
+                                    Frequently Asked <br />
+                                    <Box component="span" sx={{ color: theme.palette.primary.main }}>Questions.</Box>
                                 </Typography>
                                 <Typography
                                     variant="body1"
                                     sx={{
-                                        color: '#64748b',
+                                        color: alpha(theme.palette.text.primary, 0.7),
                                         mb: 4,
                                         fontSize: '1.1rem',
                                         lineHeight: 1.6
@@ -156,19 +147,19 @@ export const FaqSection = () => {
                                     Can't find the answer you're looking for? Reach out to our friendly support team.
                                 </Typography>
 
-                                <Link to="/support" style={{textDecoration: 'none'}}>
+                                <Link to="/support" style={{ textDecoration: 'none' }}>
                                     <Box sx={{
                                         display: 'flex',
                                         gap: 1.5,
                                         alignItems: 'center',
-                                        color: THEME.dark,
+                                        color: theme.palette.primary.dark,
                                         cursor: 'pointer'
                                     }}>
-                                        <Box sx={{p: 1, borderRadius: '50%'}}>
-                                            <HelpCircle size={20}/>
+                                        <Box sx={{ p: 1, borderRadius: '50%' }}>
+                                            <HelpCircle size={20} />
                                         </Box>
                                         <Typography variant="button" fontWeight="700"
-                                                    sx={{textTransform: 'none', fontSize: '1rem'}}>
+                                            sx={{ textTransform: 'none', fontSize: '1rem' }}>
                                             Contact Support
                                         </Typography>
                                     </Box>
@@ -179,7 +170,7 @@ export const FaqSection = () => {
 
                     {/* Right Column: Animated Accordion List */}
                     <Grid item xs={12} md={8}>
-                        <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                             {FAQS.map((faq, index) => {
                                 const panelId = `panel${index}`;
                                 const isExpanded = expanded === panelId;
@@ -187,10 +178,10 @@ export const FaqSection = () => {
                                 return (
                                     <motion.div
                                         key={index}
-                                        initial={{opacity: 0, y: 20}}
-                                        whileInView={{opacity: 1, y: 0}}
-                                        viewport={{once: true}}
-                                        transition={{duration: 0.5, delay: index * 0.1}}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
                                     >
                                         <Accordion
                                             expanded={isExpanded}
@@ -202,25 +193,25 @@ export const FaqSection = () => {
                                                 borderRadius: '16px !important',
                                                 overflow: 'hidden',
                                                 border: '1px solid',
-                                                borderColor: isExpanded ? THEME.normal : 'transparent',
+                                                borderColor: isExpanded ? theme.palette.primary.main : 'transparent',
                                                 transition: 'all 0.3s ease',
-                                                '&:before': {display: 'none'},
+                                                '&:before': { display: 'none' },
                                                 boxShadow: isExpanded
-                                                    ? `0 15px 30px -10px ${THEME.light}80`
+                                                    ? `0 15px 30px -10px ${alpha(theme.palette.secondary.light, 0.5)}`
                                                     : `0 4px 6px -4px rgba(0,0,0,0.05)`
                                             }}
                                         >
                                             <AccordionSummary
                                                 expandIcon={
                                                     <Box sx={{
-                                                        color: isExpanded ? 'white' : '#94a3b8',
-                                                        bgcolor: isExpanded ? THEME.normal : '#f1f5f9',
+                                                        color: isExpanded ? 'white' : alpha(theme.palette.text.primary, 0.5),
+                                                        bgcolor: isExpanded ? theme.palette.primary.main : alpha(theme.palette.background.default, 0.8),
                                                         p: 0.5,
                                                         borderRadius: '8px',
                                                         display: 'flex',
                                                         transition: 'all 0.3s ease'
                                                     }}>
-                                                        {isExpanded ? <Minus size={18}/> : <Plus size={18}/>}
+                                                        {isExpanded ? <Minus size={18} /> : <Plus size={18} />}
                                                     </Box>
                                                 }
                                                 aria-controls={`${panelId}bh-content`}
@@ -242,17 +233,17 @@ export const FaqSection = () => {
                                                     sx={{
                                                         fontSize: '1.1rem',
                                                         fontWeight: isExpanded ? 700 : 600,
-                                                        color: isExpanded ? THEME.dark : THEME.text_dark
+                                                        color: isExpanded ? theme.palette.primary.dark : theme.palette.text.primary
                                                     }}
                                                 >
                                                     {faq.question}
                                                 </Typography>
                                             </AccordionSummary>
-                                            <AccordionDetails sx={{px: 3, pb: 3, pt: 0, ml: {sm: 6}}}>
+                                            <AccordionDetails sx={{ px: 3, pb: 3, pt: 0, ml: { sm: 6 } }}>
                                                 <Typography
                                                     variant="body1"
                                                     sx={{
-                                                        color: '#64748b',
+                                                        color: alpha(theme.palette.text.primary, 0.7),
                                                         lineHeight: 1.7,
                                                     }}
                                                 >

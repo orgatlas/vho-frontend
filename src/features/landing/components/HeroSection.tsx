@@ -6,7 +6,6 @@ import {
     Typography,
     Container,
     Grid,
-    useMediaQuery,
     useTheme,
 } from '@mui/material';
 import { Sofa, Smartphone, MousePointer2, CheckCircle2 } from 'lucide-react';
@@ -15,9 +14,9 @@ import TiltCard from './TiltCard';
 
 // --- Assets ---
 const IMAGES = {
-    staging: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800&auto=format&fit=crop",
-    tours: "https://images.unsplash.com/photo-1628744876497-eb30460be9f6?q=80&w=800&auto=format&fit=crop",
-    social: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop"
+    staging: "https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/header/staging.png",
+    tours: "https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/header/video.jpg",
+    social: "https://sgp1.digitaloceanspaces.com/virtualhomeopen/static/homepage/header/socials.png"
 };
 
 const PRODUCTS = [
@@ -35,7 +34,7 @@ const PRODUCTS = [
     {
         id: 'tours',
         title: 'Virtual Tours',
-        subtitle: '360° Walkthroughs',
+        subtitle: 'Narrated Video Tours',
         description: 'Immersive exploration from anywhere.',
         link: '/demo/virtual-tours',
         image: IMAGES.tours,
@@ -60,9 +59,6 @@ const PRODUCTS = [
 export const HeroSection = () => {
     const theme = useTheme();
     const navigate = useNavigate();
-    // isMobile unused in logic but might be useful for conditional rendering if needed later. 
-    // Keeping it as per original file logic if it was there, but original used it.
-    const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
     const handleAddressSelect = (address: string) => {
         navigate('/extracting-details', { state: { address } });

@@ -1,61 +1,55 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {Box, Typography, Chip, Button, useMediaQuery, IconButton} from '@mui/material';
-import {motion, useScroll, useTransform, useSpring, AnimatePresence} from 'framer-motion';
-import {Zap, Play, Database, RotateCcw, RefreshCcw} from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
+import { Box, Typography, Button, useTheme, alpha } from '@mui/material';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { RotateCcw, RefreshCcw } from 'lucide-react';
 
 // --- ASSETS ---
 const IMAGE_MAIN = "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop";
 const IMAGE_WIREFRAME = "http://googleusercontent.com/image_generation_content/8";
 const VIDEO_URL = "https://virtualhomeopen.sgp1.cdn.digitaloceanspaces.com/static/homepage/hero/examples.mp4";
 
-// --- THEME ---
-const THEME = {
-    light: '#c2f2ed',
-    normal: '#33998f',
-    dark: '#02645b',
-    text_dark: '#373e40',
-    text_light: '#f2f2f2',
-    paper: '#373e40'
-};
-
 // --- AURORA GLOW COMPONENT ---
-const VideoGlow = () => (
-    <Box
-        sx={{
-            position: 'absolute',
-            inset: -10, // Extend significantly beyond the video
-            zIndex: -1,
-            filter: 'blur(40px)', // Strong blur for a soft, flowing effect
-            opacity: 0.6, // Slightly lower opacity for a subtle effect
-        }}
-    >
-        <motion.div
-            animate={{rotate: 360}}
-            transition={{duration: 10, repeat: Infinity, ease: "linear"}} // Slower rotation
-            style={{
+const VideoGlow = () => {
+    const theme = useTheme();
+    return (
+        <Box
+            sx={{
                 position: 'absolute',
-                top: '-50%', left: '-50%', right: '-50%', bottom: '-50%',
-                background: `conic-gradient(from 0deg, ${THEME.normal}, ${THEME.light}, #818cf8, ${THEME.dark}, ${THEME.normal})`
+                inset: -10, // Extend significantly beyond the video
+                zIndex: -1,
+                filter: 'blur(40px)', // Strong blur for a soft, flowing effect
+                opacity: 0.6, // Slightly lower opacity for a subtle effect
             }}
-        />
-    </Box>
-);
+        >
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }} // Slower rotation
+                style={{
+                    position: 'absolute',
+                    top: '-50%', left: '-50%', right: '-50%', bottom: '-50%',
+                    background: `conic-gradient(from 0deg, ${theme.palette.primary.main}, ${theme.palette.secondary.light}, #818cf8, ${theme.palette.primary.dark}, ${theme.palette.primary.main})`
+                }}
+            />
+        </Box>
+    );
+};
 
 // --- MAIN COMPONENT ---
 export const VirtualTourDemo = () => {
-    const containerRef = useRef(null);
-    const videoRef = useRef(null);
+    const theme = useTheme();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
     const [videoFinished, setVideoFinished] = useState(false);
     const [isLocked, setIsLocked] = useState(false);
 
     // Track scroll progress within this specific section
-    const {scrollYProgress} = useScroll({
+    const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
     });
 
     // Smooth out the scroll value
-    const smoothScroll = useSpring(scrollYProgress, {stiffness: 200, damping: 30});
+    const smoothScroll = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
 
     // --- ANIMATION MAPPINGS ---
 
@@ -77,10 +71,7 @@ export const VirtualTourDemo = () => {
     // 5. Video Z-Index management
     const videoZIndex = useTransform(smoothScroll, (v) => v > 0.85 ? 50 : -1);
 
-    // 6. Header Opacity
-    const headerOpacity = useTransform(smoothScroll, [0, 0.2], [1, 0]);
-
-    // 7. Bottom Indicator Animations
+    // 6. Bottom Indicator Animations
     const indicatorOpacity = useTransform(smoothScroll, [0.8, 0.9], [1, 0]);
     const indicatorY = useTransform(smoothScroll, [0, 1], [0, 20]);
 
@@ -98,7 +89,7 @@ export const VirtualTourDemo = () => {
                     const playPromise = videoRef.current.play();
                     if (playPromise !== undefined) {
                         playPromise.catch(error => {
-                            console.log("Auto-play prevented");
+                            // Auto-play was prevented
                         });
                     }
                 } else {
@@ -127,13 +118,13 @@ export const VirtualTourDemo = () => {
             videoRef.current.currentTime = 0;
         }
         if (containerRef.current) {
-            containerRef.current.scrollIntoView({behavior: 'smooth'});
+            containerRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
     return (
         // A 300vh container creates the scroll space ("track")
-        <Box ref={containerRef} sx={{height: '300vh', bgcolor: 'primary.main', position: 'relative'}}>
+        <Box ref={containerRef} sx={{ height: '300vh', bgcolor: theme.palette.background.paper, position: 'relative' }}>
 
             {/* Sticky Viewport */}
             <Box sx={{
@@ -151,21 +142,21 @@ export const VirtualTourDemo = () => {
                 {/* Dynamic Header */}
                 <Box sx={{
                     position: 'absolute',
-                    top: {xs: 40, md: 80},
+                    top: { xs: 40, md: 80 },
                     zIndex: 20,
                     textAlign: 'center',
                     width: '100%',
                     px: 2,
                     pt: 2
                 }}>
-                    <Typography variant="h3" fontWeight={800} color="text.secondary" sx={{display:'inline-flex'}}>
+                    <Typography variant="h3" fontWeight={800} color="text.secondary" sx={{ display: 'inline-flex' }}>
                         Static Becomes&nbsp;
-                        <Typography variant="h3" fontWeight={800} color="text.primary">
+                        <Typography variant="h3" fontWeight={800} color="primary.main">
                             Dynamic
                         </Typography>
                     </Typography>
-                    <Typography color="rgba(255,255,255,0.6)">
-                        We transform static 2D images into 3D video
+                    <Typography color='text.secondary'>
+                        Static 2D images becomes 3D video
                     </Typography>
                 </Box>
 
@@ -173,18 +164,18 @@ export const VirtualTourDemo = () => {
                 <AnimatePresence>
                     {isLocked && (
                         <motion.div
-                            initial={{opacity: 0, y: -20}}
-                            animate={{opacity: 1, y: 0}}
-                            exit={{opacity: 0, y: -20}}
-                            style={{position: 'absolute', top: 40, right: 40, zIndex: 100}}
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            style={{ position: 'absolute', top: 40, right: 40, zIndex: 100 }}
                         >
                             <Button
-                                startIcon={<RefreshCcw size={14}/>}
+                                startIcon={<RefreshCcw size={14} />}
                                 onClick={handleReset}
                                 sx={{
                                     color: 'rgba(255,255,255,0.5)',
                                     textTransform: 'none',
-                                    '&:hover': {color: 'white', bgcolor: 'rgba(255,255,255,0.1)'}
+                                    '&:hover': { color: 'white', bgcolor: 'rgba(255,255,255,0.1)' }
                                 }}
                             >
                                 Reset Experience
@@ -201,7 +192,7 @@ export const VirtualTourDemo = () => {
                     aspectRatio: '16/9',
                     perspective: '1000px',
                     transformStyle: 'preserve-3d',
-                    px: {xs: 2, md: 0}
+                    px: { xs: 2, md: 0 }
                 }}>
 
                     {/* LAYER 1: Main Photo */}
@@ -233,8 +224,8 @@ export const VirtualTourDemo = () => {
                             z: wireframeZ,
                             opacity: isLocked ? 0 : wireframeOpacity,
                             mixBlendMode: 'screen',
-                            border: `1px solid ${THEME.normal}`,
-                            boxShadow: `0 0 100px ${THEME.normal}40`
+                            border: `1px solid ${theme.palette.primary.main}`,
+                            boxShadow: `0 0 100px ${alpha(theme.palette.primary.main, 0.4)}`
                         }}
                     />
 
@@ -246,8 +237,8 @@ export const VirtualTourDemo = () => {
                             top: scanLineTop,
                             left: 0, right: 0,
                             height: '4px',
-                            background: THEME.normal,
-                            boxShadow: `0 0 40px 5px ${THEME.normal}`,
+                            background: theme.palette.primary.main,
+                            boxShadow: `0 0 40px 5px ${theme.palette.primary.main}`,
                             opacity: isLocked ? 0 : scanOpacity,
                             zIndex: 50
                         }}
@@ -266,7 +257,7 @@ export const VirtualTourDemo = () => {
                     >
                         {/* Aurora Background Effect (Only visible when playing/locked) */}
                         <AnimatePresence>
-                            {isLocked && <VideoGlow/>}
+                            {isLocked && <VideoGlow />}
                         </AnimatePresence>
 
                         {/* Inner container to clip the video, but keep glow outside */}
@@ -283,7 +274,7 @@ export const VirtualTourDemo = () => {
                                 src={VIDEO_URL}
                                 muted
                                 playsInline
-                                style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 onEnded={() => setVideoFinished(true)}
                             />
 
@@ -291,9 +282,9 @@ export const VirtualTourDemo = () => {
                             <AnimatePresence>
                                 {videoFinished && (
                                     <motion.div
-                                        initial={{opacity: 0}}
-                                        animate={{opacity: 1}}
-                                        exit={{opacity: 0}}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
                                         style={{
                                             position: 'absolute',
                                             inset: 0,
@@ -307,7 +298,7 @@ export const VirtualTourDemo = () => {
                                         <Button
                                             variant="contained"
                                             size="large"
-                                            startIcon={<RotateCcw/>}
+                                            startIcon={<RotateCcw />}
                                             onClick={handleReplay}
                                             sx={{
                                                 bgcolor: 'white',
@@ -317,7 +308,7 @@ export const VirtualTourDemo = () => {
                                                 px: 6, py: 2,
                                                 borderRadius: '50px',
                                                 boxShadow: '0 20px 50px rgba(255,255,255,0.3)',
-                                                '&:hover': {bgcolor: '#f1f5f9', transform: 'scale(1.05)'}
+                                                '&:hover': { bgcolor: '#f1f5f9', transform: 'scale(1.05)' }
                                             }}
                                         >
                                             Watch Full Tour
@@ -337,14 +328,14 @@ export const VirtualTourDemo = () => {
                             position: 'absolute', bottom: 40,
                             opacity: indicatorOpacity
                         }}
-                        animate={{y: [0, 20, 0]}} // Bouncing animation
-                        transition={{duration: 1, repeat: Infinity, ease: "easeInOut"}}
+                        animate={{ y: [0, 20, 0] }} // Bouncing animation
+                        transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
                     >
                         <Box
-                            sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, opacity: 0.5}}>
-                            <Typography variant="caption" color="white" sx={{letterSpacing: 2}}>KEEP
+                            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, opacity: 0.5 }}>
+                            <Typography variant="caption" color="white" sx={{ letterSpacing: 2 }}>KEEP
                                 SCROLLING</Typography>
-                            <Box sx={{width: 1, height: 40, bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1}}>
+                            <Box sx={{ width: 1, height: 40, bgcolor: 'rgba(255,255,255,0.2)', borderRadius: 1 }}>
                                 <motion.div
                                     style={{
                                         width: '100%',

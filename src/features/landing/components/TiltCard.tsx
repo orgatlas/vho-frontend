@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useTheme, alpha } from '@mui/material';
 
 interface TiltCardProps {
     product: {
@@ -162,7 +162,7 @@ const TiltCard: React.FC<TiltCardProps> = ({ product }) => {
                             }}
                             className="group-hover:h-auto group-hover:opacity-100 group-hover:mb-2"
                         >
-                            <Typography variant="body2" sx={{ color: '#bdbdbd', lineHeight: 1.4 }}>
+                            <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.7), lineHeight: 1.4 }}>
                                 {product.description}
                             </Typography>
                         </Box>
