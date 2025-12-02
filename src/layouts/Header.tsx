@@ -268,8 +268,8 @@ export const Header: React.FC<{ isLandingPage?: boolean }> = ({isLandingPage}) =
                                     >
                                         Sign In
                                     </Button>
-                                    <Button variant="contained" component="a" href="/#beforeafter">
-                                        View Showcase
+                                    <Button variant="contained" component="a" href="/register">
+                                        Create Account
                                     </Button>
                                 </Box>
                             )}
@@ -349,8 +349,8 @@ export const Header: React.FC<{ isLandingPage?: boolean }> = ({isLandingPage}) =
                             }}>
                                 Sign In
                             </Button>
-                            <Button fullWidth variant="contained" component="a" href="/#beforeafter" sx={{mt: 1}}>
-                                View Showcase
+                            <Button fullWidth variant="contained" component="a" href="/register" sx={{mt: 1}}>
+                                Create Account
                             </Button>
                         </Box>
                     )}
